@@ -30,7 +30,15 @@
       "../guides",
       "../backend/guides",
       "../frontend/guides",
-      "../mobile/guides"
+      "../mobile/guides",
+      "../base/guides"
+    ]
+  },
+  "docs": {
+    "directories": [
+      "../base/docs",
+      "../base/docs/checklists",
+      "../base/docs/guides"
     ]
   },
   "preferences": {
