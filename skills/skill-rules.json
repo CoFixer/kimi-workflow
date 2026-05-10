@@ -1,0 +1,35 @@
+{
+  "version": "1.0",
+  "rules": [
+    {
+      "name": "commit",
+      "trigger": "/skill:commit",
+      "description": "Git commit & PR workflow"
+    },
+    {
+      "name": "feature",
+      "trigger": "/skill:feature",
+      "description": "Feature development pipeline"
+    },
+    {
+      "name": "gap",
+      "trigger": "/skill:gap",
+      "description": "Find implementation gaps"
+    },
+    {
+      "name": "fix",
+      "trigger": "/skill:fix",
+      "description": "Fix implementation gaps"
+    },
+    {
+      "name": "review",
+      "trigger": "/skill:review",
+      "description": "Code review checklist"
+    },
+    {
+      "name": "docs",
+      "trigger": "/skill:docs",
+      "description": "Documentation generation"
+    }
+  ]
+}
