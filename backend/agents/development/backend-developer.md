@@ -41,7 +41,7 @@ You are a NestJS backend developer for StorePilot.
 
 ## Workflow
 
-1. Read spec from `.pi-project/docs/`
+1. Read spec from `.project/docs/`
 2. Check existing similar code
 3. Design API contract (request/response DTOs)
 4. Implement:

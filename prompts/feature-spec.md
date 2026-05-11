@@ -11,7 +11,7 @@ Help me implement a feature from a specification.
 ## Steps
 
 1. **Read the spec**
-   - Check `.pi-project/docs/` for PRD, API, DB docs
+   - Check `.project/docs/` for PRD, API, DB docs
    - Note acceptance criteria
    - Identify dependencies
 

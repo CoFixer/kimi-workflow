@@ -7,7 +7,7 @@ description: Feature development workflow for StorePilot. Use when implementing 
 
 ## Planning
 
-1. Read relevant `.pi-project/docs/` and `.kimi/guides/`
+1. Read relevant `.project/docs/` and `.kimi/guides/`
 2. Check existing patterns in the target package
 3. Identify files to create or modify
 
@@ -25,5 +25,5 @@ description: Feature development workflow for StorePilot. Use when implementing 
 
 ## Documentation
 
-- Update `.pi-project/docs/` if schema or API changes
+- Update `.project/docs/` if schema or API changes
 - Update inline code docs for public methods

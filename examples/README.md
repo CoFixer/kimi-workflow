@@ -100,7 +100,7 @@ Steps:
 User: "Run the backend-agent to implement a new order status endpoint"
 
 Agent:
-1. Read spec from .pi-project/docs/PROJECT_API.md
+1. Read spec from .project/docs/PROJECT_API.md
 2. Found pattern in existing OrderController
 3. Created:
    - UpdateOrderStatusDto

@@ -1,4 +1,4 @@
-ï»¿---
+---
 name: find-gaps
 description: Methodology and checklists for finding implementation gaps across the full stack
 ---
@@ -21,17 +21,17 @@ Dynamically discover and load before scanning:
 
 | Document | Discovery | What to Extract |
 |----------|-----------|-----------------|
-| PRD files | `Glob(pattern="**/*.{md,pdf}", path=".pi-project/prd/")` | Required screens, features, flows |
-| Project docs | `Glob(pattern="*.md", path=".pi-project/docs/")` | Design system, API specs, DB schema, architecture (use all found) |
+| PRD files | `Glob(pattern="**/*.{md,pdf}", path=".project/prd/")` | Required screens, features, flows |
+| Project docs | `Glob(pattern="*.md", path=".project/docs/")` | Design system, API specs, DB schema, architecture (use all found) |
 | CLAUDE.md | Read `CLAUDE.md` at project root | Design values, conventions, architecture rules |
 | Tailwind config | `Glob(pattern="tailwind.config.*")` | Theme colors, fonts, spacing tokens |
-| HTML Prototypes | `Glob(pattern="**/*.html", path=".pi-project/resources/HTML/")` | Visual reference (optional, skip if missing) |
+| HTML Prototypes | `Glob(pattern="**/*.html", path=".project/resources/HTML/")` | Visual reference (optional, skip if missing) |
 
 **Discovery rules:**
-- PRD files are required â€” at least one must exist for meaningful gap analysis
-- All other docs are optional â€” adapt the scan to use whatever is available
+- PRD files are required — at least one must exist for meaningful gap analysis
+- All other docs are optional — adapt the scan to use whatever is available
 - CLAUDE.md is the best fallback for design system values when no dedicated design guidelines doc exists
-- Never fail if specific named docs are missing â€” proceed with what you have
+- Never fail if specific named docs are missing — proceed with what you have
 
 ---
 
@@ -42,7 +42,7 @@ Dynamically discover and load before scanning:
 **Step 1a: Extract design values from available sources**
 
 Check these in priority order:
-1. Design guidelines doc (if found in `.pi-project/docs/`)
+1. Design guidelines doc (if found in `.project/docs/`)
 2. `CLAUDE.md` at project root (look for color hex codes, font names, spacing values)
 3. Tailwind config file (`tailwind.config.js` or `tailwind.config.ts`) for theme customizations
 
@@ -59,11 +59,11 @@ Extract these tokens:
 Using the extracted values, find deviations:
 
 ```
-# Find custom hex colors â€” compare against approved palette
+# Find custom hex colors — compare against approved palette
 Grep(pattern="bg-\\[#", glob="*.tsx", path="frontend/")
 Grep(pattern="text-\\[#", glob="*.tsx", path="frontend/")
 
-# Find heading-sized text â€” verify it uses project's heading font
+# Find heading-sized text — verify it uses project's heading font
 Grep(pattern="text-(2xl|3xl|4xl)", glob="*.tsx", path="frontend/")
 
 # Check Tailwind config for theme definition
@@ -87,7 +87,7 @@ Grep(pattern="rounded-", glob="*.tsx", path="frontend/")
 Grep(pattern="shadow-", glob="*.tsx", path="frontend/")
 ```
 
-**If NO design system values found:** Skip color/typography/spacing compliance checks. Report: "Design system compliance skipped â€” no design guidelines or design values found."
+**If NO design system values found:** Skip color/typography/spacing compliance checks. Report: "Design system compliance skipped — no design guidelines or design values found."
 
 ### 2. Missing Icons
 
@@ -95,7 +95,7 @@ Grep(pattern="shadow-", glob="*.tsx", path="frontend/")
 # Pages that import from icon library (e.g., lucide-react)
 Grep(pattern="from 'lucide-react'", glob="*.tsx", path="frontend/", output_mode="files_with_matches")
 
-# All page files â€” compare against icon-importing files to find gaps
+# All page files — compare against icon-importing files to find gaps
 Glob(pattern="pages/**/*.tsx", path="frontend/app/")
 
 # Count icon imports per file
@@ -124,7 +124,7 @@ Grep(pattern="path:", glob="*.tsx", path="frontend/app/")
 Grep(pattern="Route ", glob="*.tsx", path="frontend/app/")
 
 # List HTML prototypes (if directory exists)
-Glob(pattern="**/*.html", path=".pi-project/resources/HTML/")
+Glob(pattern="**/*.html", path=".project/resources/HTML/")
 ```
 
 **Cross-reference:**
@@ -271,7 +271,7 @@ Glob(pattern="**/*.ts", path="frontend/app/services/")
 Grep(pattern="catch|error", glob="*.ts", path="frontend/app/services/", output_mode="files_with_matches")
 ```
 
-**Cross-reference against API documentation (if found in `.pi-project/docs/` or CLAUDE.md):**
+**Cross-reference against API documentation (if found in `.project/docs/` or CLAUDE.md):**
 - Each documented endpoint should have a service function
 - Each service function should have error handling
 - Each endpoint with pagination should pass page/limit params
@@ -280,21 +280,21 @@ Grep(pattern="catch|error", glob="*.ts", path="frontend/app/services/", output_m
 ### 8. Backend Gaps
 
 ```
-# Controllers with Swagger â€” find controllers, then check each for @ApiTags
+# Controllers with Swagger — find controllers, then check each for @ApiTags
 Grep(pattern="@Controller", glob="*.ts", path="backend/src/", output_mode="files_with_matches")
 # Then for each file, check: Grep(pattern="@ApiTags", path="{file}")
 
 # Missing @ApiOperation on endpoints
 Grep(pattern="@(Get|Post|Patch|Delete)\\(", glob="*.ts", path="backend/src/", output_mode="content", -B=3)
 
-# DTO files â€” check each for validation decorators
+# DTO files — check each for validation decorators
 Glob(pattern="**/dto/**/*.ts", path="backend/src/")
 # Then for each: Grep(pattern="(IsString|IsNumber|IsEmail|IsUUID|IsOptional)", path="{file}")
 
 # Endpoints without guards
 Grep(pattern="@(Get|Post|Patch|Delete)\\(", glob="*.ts", path="backend/src/", output_mode="content", -B=5)
 
-# Service files â€” check each for proper exception usage
+# Service files — check each for proper exception usage
 Glob(pattern="**/providers/**/*.ts", path="backend/src/modules/")
 # Then for each: Grep(pattern="(NotFoundException|ConflictException|BadRequestException)", path="{file}")
 ```
@@ -321,7 +321,7 @@ Grep(pattern="\\.rejected.*initialState|\\.rejected.*=>.*\\{", glob="*.ts", path
 ```
 
 **Flag:**
-- useEffect dispatches thunk â†’ thunk.rejected resets state that useEffect depends on â†’ infinite loop
+- useEffect dispatches thunk ? thunk.rejected resets state that useEffect depends on ? infinite loop
 - No "checked" or "attempted" flag to break the dispatch cycle after first failure
 
 #### 9b. Auth Guard Re-entrance
@@ -393,6 +393,6 @@ See the [gap-finder agent](../../agents/quality/gap-finder.md) for the full repo
 
 ## Related
 
-- **Agent:** [gap-finder](../../agents/quality/gap-finder.md) â€” Executes the scan
-- **Command:** [/dev:gap-finder](../../commands/dev/gap-finder.md) â€” Invocation entry point
+- **Agent:** [gap-finder](../../agents/quality/gap-finder.md) — Executes the scan
+- **Command:** [/dev:gap-finder](../../commands/dev/gap-finder.md) — Invocation entry point
 - **Related agents:** [reviewer](../../agents/quality/reviewer.md), [api-integration-agent](../../agents/development/api-integration-agent.md)

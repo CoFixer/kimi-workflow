@@ -1,4 +1,4 @@
-﻿---
+---
 name: learning-extractor
 description: Extract learnings, mistakes, and discoveries from session in TIL format
 role: specialist
@@ -143,7 +143,7 @@ Look for these patterns:
 
 - **Personal** (`~/.pi/memory/`): "I prefer..." (individual preference)
 - **Team** (`.pi/base/memory/`): "We always...", "Our team..."
-- **Project** (`.pi-project/memory/`): "In this project...", "This codebase..."
+- **Project** (`.project/memory/`): "In this project...", "This codebase..."
 
 When unclear, default to **Project** level.
 

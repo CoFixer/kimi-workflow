@@ -68,7 +68,7 @@ Agents are specialized roles for complex tasks:
 
 4. **Reference guides**
    - Backend patterns → `.pi/backend/guides/`
-   - Project specs → `.pi-project/docs/`
+   - Project specs → `.project/docs/`
    - Kimi workflows → `.kimi/guides/`
 
 ## Adding New Skills

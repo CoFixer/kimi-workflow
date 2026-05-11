@@ -15,7 +15,7 @@ description: Documentation generation workflow for StorePilot. Use when creating
 ## Process
 
 1. Read relevant code or specs
-2. Write in `.pi-project/docs/` for project-level docs
+2. Write in `.project/docs/` for project-level docs
 3. Write in `backend/docs/` or package docs for package-level
 4. Keep in sync with code — docs drift is technical debt
 

@@ -45,7 +45,7 @@ You are a NestJS backend specialist for StorePilot.
 
 When implementing backend features:
 
-1. Read spec from `.pi-project/docs/`
+1. Read spec from `.project/docs/`
 2. Check existing similar code for patterns
 3. Design API contract (request/response)
 4. Implement:

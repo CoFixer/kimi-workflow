@@ -1,4 +1,4 @@
-﻿---
+---
 name: run-fullstack
 description: Full development lifecycle pipeline orchestrator - from project setup to deployment
 ---
@@ -40,7 +40,7 @@ Automatically activates when you mention:
 
 | # | Phase | Tier | Prerequisites | Output |
 |---|-------|------|---------------|--------|
-| 1 | init | base | - | .pi-project/, .pi/ |
+| 1 | init | base | - | .project/, .pi/ |
 | 2 | prd | backend | init | PROJECT_KNOWLEDGE.md |
 | 3 | database | backend | prd | Entities, migrations |
 | 4 | backend | backend | database | API endpoints |
@@ -52,5 +52,5 @@ Automatically activates when you mention:
 
 ## Related
 
-- **Command:** [/dev:fullstack](../../commands/dev/fullstack.md) — Full execution instructions
+- **Command:** [/dev:fullstack](../../commands/dev/fullstack.md) � Full execution instructions
 - **Sub-skills:** [project-init.md](project-init.md), [deployment.md](deployment.md), [iteration-manager.md](iteration-manager.md)
