@@ -64,14 +64,11 @@ status = --status flag (show current status)
 - If `--autopilot`:
   1. Check tmux is installed → error with install instructions if not
   2. Derive task slug from `--prd` filename or `--task` first words
-  3. Launch `.pi/base/scripts/autopilot.sh` with remaining args
-  4. Report: "Autopilot launched in tmux session: claude-autopilot"
-  5. Show monitoring commands: `tmux attach`, `tail -f`, stop instructions
-  6. Exit — the script handles everything from here
+  3. Autopilot is not available in Kimi Code CLI. Proceed with manual dispatch using the Agent tool.
 
 **Handle --stop and --status first:**
-- If `--stop`: Find active team at `~/.pi/teams/team-*`, read config, send shutdown to all agents, TeamDelete, update status files, report.
-- If `--status`: Find status files in `.project/status/`, read and display them.
+- If `--stop`: Update all `.project/status/` files to mark running tasks as stopped. No persistent team sessions in Kimi — agents are ephemeral subagent calls.
+- If `--status`: Read `.project/status/` files and display them.
 
 **Auto-detect mode if not provided:**
 - Has `--project` (with or without other flags) → `ticket`
@@ -83,28 +80,19 @@ status = --status flag (show current status)
 
 ### Step 2: Load Agent Registry
 
-1. Read `.pi/stack-config.json` to get `enabledStacks` array
-2. Read and merge `agent-manifest.json` files in this order (later overrides earlier):
-
-```
-.pi/base/agents/agent-manifest.json            # always loaded
-.pi/{stack}/agents/agent-manifest.json         # for each enabled stack
-.pi/agents/agent-manifest.json                 # project overrides (if exists)
-```
-
-3. Build merged agent map: `{ agentName: { file, model, tier, domain, roles, description } }`
-4. For `file` paths, resolve relative to the manifest's directory:
-   - Base agent file: `.pi/base/agents/{file}`
-   - NestJS agent file: `.pi/nestjs/agents/{file}`
-   - React agent file: `.pi/react/agents/{file}`
-   - Project agent file: `.pi/agents/{file}`
+1. Read `.kimi/base/settings.json` to get configuration
+2. Read `.kimi/agents/agent-registry.json` as the single source of truth
+3. Build agent map: `{ agentName: { name, file, stack, tags } }`
+4. For `file` paths, resolve from `.kimi/agents/`:
+   - Base agent file: `.kimi/agents/{file}`
+   - Project agent file: `.kimi/agents/{file}`
 
 ### Step 3: Read Mode File
 
 Read the mode's instruction file:
 
 ```
-.pi/base/orchestration/modes/{mode}.md
+.kimi/prompts/team.md (this file)
 ```
 
 This file contains:
@@ -119,43 +107,44 @@ This file contains:
 Follow the mode file's instructions, using:
 - **Merged agent registry** for agent selection
 - **Agent `.md` files** read from registry paths as agent personas
-- **Native tools**: TeamCreate, SendMessage, Task, TodoWrite
-- **Templates** from `.pi/base/templates/` for status files
+- **Native tools**: Agent (subagent dispatch), SetTodoList (task tracking), Shell (scripts)
+- **Dispatcher**: `node .kimi/scripts/dispatcher.js` for executable orchestration
+- **Templates** from `.kimi/base/templates/` for status files
 
 Key execution patterns by mode:
 
 #### Team Mode
-1. `TeamCreate` with team name
-2. Initialize status files from templates
-3. Build backlog from PRD
-4. Spawn dev + QA agents via Task tool (with agent `.md` as prompt context)
+1. Initialize status files from `.kimi/base/templates/`
+2. Build backlog from PRD
+3. Spawn dev + QA agents via **Agent tool** (with agent `.md` as prompt context)
+4. Use **SetTodoList** to track tasks across cycles
 5. Run cycle loop: PM specs → Dev builds → QA verifies → repeat
 
 #### Parallel Mode
 1. Split task into independent domains
 2. Select best agent for each domain from registry
-3. Dispatch ALL agents in a SINGLE message (parallel Task tool calls)
-4. Wait for completion, review results, verify no conflicts
+3. Dispatch ALL agents in a **single response** using multiple parallel Agent tool calls with `run_in_background=true`
+4. Use TaskList to check progress, review results when all complete, verify no conflicts
 
 #### Pipeline Mode
-1. Define phases with dependencies
-2. Create PIPELINE_STATUS.md from template
-3. Execute phases sequentially (or parallel when no dependencies)
-4. Each phase gets its own agent from registry
-5. Track completion promises in status file
+1. Use the dispatcher: `node .kimi/scripts/dispatcher.js init <project>`
+2. The dispatcher creates `pipeline.json` (structured) and `PIPELINE_STATUS.md` (human-readable)
+3. Execute phases sequentially via `node .kimi/scripts/dispatcher.js run <project> --phase <name>`
+4. Each phase dispatches to an agent via the Agent tool
+5. Validate PHASE_RESULT, then `node .kimi/scripts/dispatcher.js complete ...`
 
 #### Solo Mode
 1. Parse task for domain signals
 2. Select best agent from registry
-3. Single Task tool call with agent persona
+3. Single Agent tool call with agent persona as prompt context
 
 #### Ticket Mode
 1. Read `NOTION_API_KEY` from `backend/.env`
 2. Find project page ID via Notion Projects DB (if `--project` provided)
-3. `TeamCreate` with `ticket-{project-slug}` name
-4. Initialize `TICKET_STATUS.md` from template
-5. Fetch "New" tickets → Dev Backlog, "Ready for test" → QA Queue
-6. Spawn Dev + QA agents with inline Notion API commands
+3. Initialize `TICKET_STATUS.md` in `.project/status/ticket-{slug}/`
+4. Fetch "New" tickets → Dev Backlog, "Ready for test" → QA Queue
+5. Spawn Dev + QA agents via Agent tool with inline Notion API commands
+6. Use SetTodoList to track ticket queue state
 7. Run cycle: PM specs → Dev fixes (+ Notion sync) → QA verifies → repeat
 8. QA also processes pre-existing "Ready for test" tickets in parallel
 
@@ -163,7 +152,7 @@ Key execution patterns by mode:
 
 - **Team mode**: Track in `.project/status/{slug}/TEAM_STATUS.md` + `CYCLE_LOG.md`
 - **Ticket mode**: Track in `.project/status/ticket-{slug}/TICKET_STATUS.md` + `CYCLE_LOG.md`
-- **Pipeline mode**: Track in `.project/status/{slug}/PIPELINE_STATUS.md`
+- **Pipeline mode**: Track in `.project/status/{slug}/pipeline.json` (primary) + `PIPELINE_STATUS.md` (human-readable)
 - **Parallel/Solo**: No persistent status (one-shot execution)
 - On completion or stop: shut down agents, update status, clean up team
 
@@ -178,19 +167,23 @@ Use `--agents` to override automatic agent selection:
 /dev:team solo --task "fix the bug" --agents ticket-fixer
 
 # Force team composition
-/dev:team team --prd ./prd.md --agents "backend-developer,design-qa-agent"
+/dev:team team --prd ./project/prd/my-prd.md --agents "backend-developer,design-qa-agent"
 ```
 
 ---
 
 ## Model Routing
 
-Each agent in the registry declares its preferred model (`haiku`/`sonnet`/`opus`). The orchestrator respects this:
+Kimi Code CLI uses the model configured in the current session. All subagent dispatches inherit the parent session's model. For cost optimization, use `run_in_background=true` for parallel agents and keep agent prompts compact.
 
-| Tier | Model | Typical Agents |
-|------|-------|----------------|
-| high | opus | backend-developer, frontend-developer, plan-reviewer |
-| medium | sonnet | code-architecture-reviewer, playwright-qa-agent, auto-error-resolver |
-| low | haiku | duplicate-checker, automation-scout |
+**Token budget guidelines:**
+| Phase | Target Prompt Size |
+|-------|-------------------|
+| Simple review | ≤ 2,000 tokens |
+| Standard implementation | ≤ 4,000 tokens |
+| Complex multi-file feature | ≤ 6,000 tokens |
 
-This saves cost: not every agent needs opus. Simple validation tasks use haiku, standard work uses sonnet, complex implementation uses opus.
+Keep prompts small by:
+- Referencing guide files by path instead of pasting their contents
+- Using compact PHASE_RESULT (≤ 500 tokens)
+- Using `artifact_paths` to store detailed output externally

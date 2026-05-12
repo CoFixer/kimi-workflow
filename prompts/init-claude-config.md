@@ -246,7 +246,7 @@ Configuration:
 - Frontend: claude-$FRONTEND ($FRONTEND patterns)
 
 Structure:
-.pi/
+.kimi/
 {if base included: ├── base/           → claude-base}
 ├── $BACKEND/       → claude-$BACKEND
 ├── $FRONTEND/      → claude-$FRONTEND

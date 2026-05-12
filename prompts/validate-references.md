@@ -19,7 +19,7 @@ Detect three types of issues:
 This command requires `claude-registry.json` to exist. If not found:
 
 ```bash
-ls .pi/claude-registry.json
+ls .kimi/claude-registry.json
 ```
 
 If missing, prompt user:
@@ -32,7 +32,7 @@ Registry not found. Run /build-registry first to generate it.
 ## Step 1: Load Registry
 
 ```bash
-cat .pi/claude-registry.json
+cat .kimi/claude-registry.json
 ```
 
 Parse the registry to get:
@@ -58,9 +58,9 @@ done
 
 **Example checks:**
 ```bash
-ls .pi/base/commands/dev/ralph.md
-ls .pi/react/skills/design-qa-patterns.md
-ls .pi/react/agents/frontend-developer.md
+ls .kimi/base/commands/dev/ralph.md
+ls .kimi/frontend/guides/design-qa-patterns.md
+ls .kimi/react/agents/frontend-developer.md
 ```
 
 **Report format:**
@@ -68,7 +68,7 @@ ls .pi/react/agents/frontend-developer.md
 === File Existence Check ===
 
 MISSING FILES:
-  - .pi/react/skills/old-skill.md (referenced in registry)
+  - .kimi/frontend/guides/old-skill.md (referenced in registry)
 
 All other files: OK (45 files verified)
 ```
@@ -86,8 +86,8 @@ grep -l "ralph" CLAUDE.md
 
 **Check each cross-reference:**
 ```bash
-# For skill "design-qa-patterns" documented in ".pi/react/README.md"
-grep -i "design-qa" .pi/react/README.md
+# For skill "design-qa-patterns" documented in ".kimi/react/README.md"
+grep -i "design-qa" .kimi/react/README.md
 ```
 
 **Report format:**
@@ -96,7 +96,7 @@ grep -i "design-qa" .pi/react/README.md
 
 STALE REFERENCES:
   - design-qa-patterns: Listed as documented in CLAUDE.md but not found there
-  - route-tester: Listed as documented in .pi/nestjs/README.md but not found there
+  - route-tester: Listed as documented in .kimi/nestjs/README.md but not found there
 
 Valid references: 42
 ```
@@ -137,12 +137,12 @@ Compare against registry to find references to non-existent resources.
 ```bash
 # Main documentation
 CLAUDE.md
-.pi/base/README.md
-.pi/react/README.md
-.pi/nestjs/README.md
+.kimi/base/README.md
+.kimi/react/README.md
+.kimi/nestjs/README.md
 
 # Command files (they reference skills)
-.pi/base/commands/**/*.md
+.kimi/base/commands/**/*.md
 ```
 
 **Report format:**
@@ -151,7 +151,7 @@ CLAUDE.md
 
 References to non-existent resources:
   - CLAUDE.md:45 mentions "database-verification" skill (NOT IN REGISTRY)
-  - .pi/base/commands/dev/fullstack.md:23 references "api-validator" (NOT IN REGISTRY)
+  - .kimi/base/commands/dev/fullstack.md:23 references "api-validator" (NOT IN REGISTRY)
 
 Possible causes:
   - Skill was renamed or removed
@@ -185,10 +185,10 @@ Verify skills defined in skill-rules.json have corresponding markdown files:
 
 ```bash
 # Parse skill-rules.json files
-cat .pi/skills/skill-rules.json
-cat .pi/react/skills/skill-rules.json
-cat .pi/nestjs/skills/skill-rules.json
-cat .pi/base/skills/skill-rules.json
+cat .kimi/skills/skill-rules.json
+cat .kimi/frontend/guides/skill-rules.json
+cat .kimi/backend/guides/skill-rules.json
+cat .kimi/base/skills/skill-rules.json
 ```
 
 For each skill defined, check if its documentation file exists.
@@ -250,14 +250,14 @@ If `$ARGUMENTS` contains `--fix`, provide actionable suggestions:
 ```
 === Suggested Fixes ===
 
-1. MISSING FILE: .pi/react/skills/old-skill.md
+1. MISSING FILE: .kimi/frontend/guides/old-skill.md
    Action: Remove from registry, run /build-registry
 
 2. STALE REFERENCE: design-qa-patterns not in CLAUDE.md
    Action: Add to CLAUDE.md or remove documentedIn entry
 
 3. ORPHANED: organize-types not documented
-   Action: Add to .pi/react/README.md:
+   Action: Add to .kimi/react/README.md:
 
    ## Skills
    - **organize-types** - Organize TypeScript types and interfaces
@@ -289,7 +289,7 @@ Recommended workflow:
 
 | Pattern | Example | Issue Type |
 |---------|---------|------------|
-| File path reference | `Command File: .pi/base/commands/foo.md` | Check file exists |
+| File path reference | `Command File: .kimi/base/commands/foo.md` | Check file exists |
 | Skill name in prose | "use the **design-qa** skill" | Check skill in registry |
 | Slash command | `/ralph design-qa` | Check command exists |
 | Related skill | `related_skills: [e2e-test-generator]` | Check skill exists |

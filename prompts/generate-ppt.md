@@ -94,7 +94,7 @@ Read the `.md` file and create a Reveal.js HTML presentation.
 
 ### Apply Brand Guidelines
 
-> **Brand guidelines:** See `.pi/base/brand/BRAND_GUIDELINES.md` for the canonical color palette, typography, and logo rules.
+> **Brand guidelines:** See `.kimi/base/brand/BRAND_GUIDELINES.md` for the canonical color palette, typography, and logo rules.
 
 | Element | Value |
 |---------|-------|
@@ -113,7 +113,7 @@ Read the `.md` file and create a Reveal.js HTML presentation.
 
 ### Logo (Title Slide Only)
 
-> Logo SVG source: `.pi/base/brand/logo.svg` (when available). Inline SVG below is the embedded copy.
+> Logo SVG source: `.kimi/base/brand/logo.svg` (when available). Inline SVG below is the embedded copy.
 
 ```html
 <div class="logo">

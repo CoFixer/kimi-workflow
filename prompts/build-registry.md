@@ -32,7 +32,7 @@ For each command file found, read it and extract:
 ```json
 {
   "source": "base",
-  "file": ".pi/base/commands/ralph.md",
+  "file": ".kimi/base/commands/ralph.md",
   "description": "Run autonomous workflow loops"
 }
 ```
@@ -57,10 +57,10 @@ find .pi -name "skill-rules.json" -type f 2>/dev/null | sort
 
 For each skill-rules.json, parse and extract skill definitions:
 ```bash
-cat .pi/skills/skill-rules.json 2>/dev/null
-cat .pi/base/skills/skill-rules.json 2>/dev/null
-cat .pi/react/skills/skill-rules.json 2>/dev/null
-cat .pi/nestjs/skills/skill-rules.json 2>/dev/null
+cat .kimi/skills/skill-rules.json 2>/dev/null
+cat .kimi/base/skills/skill-rules.json 2>/dev/null
+cat .kimi/frontend/guides/skill-rules.json 2>/dev/null
+cat .kimi/backend/guides/skill-rules.json 2>/dev/null
 ```
 
 **Extract from skill-rules.json:**
@@ -73,8 +73,8 @@ cat .pi/nestjs/skills/skill-rules.json 2>/dev/null
 ```json
 {
   "source": "react",
-  "file": ".pi/react/skills/design-qa-patterns.md",
-  "skillRulesFile": ".pi/react/skills/skill-rules.json",
+  "file": ".kimi/frontend/guides/design-qa-patterns.md",
+  "skillRulesFile": ".kimi/frontend/guides/skill-rules.json",
   "description": "Compare UI screens against Figma designs",
   "type": "domain",
   "triggers": {
@@ -104,7 +104,7 @@ For each agent file, read and extract:
 ```json
 {
   "source": "react",
-  "file": ".pi/react/agents/frontend-developer.md",
+  "file": ".kimi/react/agents/frontend-developer.md",
   "description": "Frontend development agent for React applications"
 }
 ```
@@ -131,13 +131,13 @@ Scan documentation files to find where resources are referenced.
 ```bash
 echo "=== Scanning for References ==="
 # Main documentation files
-ls CLAUDE.md .pi/base/README.md .pi/react/README.md .pi/nestjs/README.md 2>/dev/null
+ls CLAUDE.md .kimi/base/README.md .kimi/react/README.md .kimi/nestjs/README.md 2>/dev/null
 ```
 
 For each resource discovered in Steps 1-4, search for references:
 ```bash
 # Example: Search for references to "design-qa" skill
-grep -r "design-qa" CLAUDE.md .pi/*/README.md .pi/base/commands/*.md 2>/dev/null
+grep -r "design-qa" CLAUDE.md .kimi/*/README.md .kimi/base/commands/*.md 2>/dev/null
 ```
 
 **Build cross-reference map:**
@@ -151,7 +151,7 @@ grep -r "design-qa" CLAUDE.md .pi/*/README.md .pi/base/commands/*.md 2>/dev/null
 
 ```bash
 echo "=== Identifying Submodules ==="
-cat .pi/.gitmodules 2>/dev/null
+cat .kimi/.gitmodules 2>/dev/null
 ```
 
 For each submodule, record:
@@ -182,7 +182,7 @@ Combine all discovered data into `pi-registry.json`:
 
 **Write the file:**
 ```bash
-# The JSON will be written to .pi/pi-registry.json
+# The JSON will be written to .kimi/pi-registry.json
 ```
 
 ---
@@ -245,7 +245,7 @@ Discovered:
 Cross-references mapped:
   Total references: 47
 
-Registry written to: .pi/pi-registry.json
+Registry written to: .kimi/pi-registry.json
 
 [If --generate-docs]
 Updated CLAUDE.md:
@@ -264,7 +264,7 @@ If `$ARGUMENTS` contains `--verbose`, show:
 
 ## Registry Schema Reference
 
-The output must conform to `.pi/claude-registry.schema.json`.
+The output must conform to `.kimi/claude-registry.schema.json`.
 
 Key constraints:
 - `version` must be "1.0"

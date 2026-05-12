@@ -24,7 +24,7 @@ Always use the standardized response wrapper:
 }
 ```
 
-See `.pi/backend/guides/RESPONSE-LAYOUT-GUIDE.md` for details.
+See `.kimi/backend/guides/RESPONSE-LAYOUT-GUIDE.md` for details.
 
 ## Controller Pattern
 
@@ -40,7 +40,7 @@ export class ProductController extends BaseController {
 }
 ```
 
-See `.pi/backend/guides/BASE-CONTROLLER-GUIDE.md` and `ONE-DECORATOR-GUIDE.md`.
+See `.kimi/backend/guides/BASE-CONTROLLER-GUIDE.md` and `ONE-DECORATOR-GUIDE.md`.
 
 ## Service Pattern
 

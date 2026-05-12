@@ -41,6 +41,16 @@
       "../base/docs/guides"
     ]
   },
+  "schemas": {
+    "directory": "../base/schemas",
+    "files": [
+      "../base/schemas/pipeline.json",
+      "../base/schemas/phase-result.json"
+    ]
+  },
+  "scripts": {
+    "dispatcher": "../scripts/dispatcher.js"
+  },
   "preferences": {
     "codeStyle": "minimal-changes",
     "testBeforeCommit": true,

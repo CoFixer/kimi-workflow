@@ -7,7 +7,7 @@ argument-hint: "<project> [--run | --loop | --phase <name> | --reset <phase> | -
 
 A true multi-agent orchestrator that runs the full development lifecycle from project setup to deployment.
 Each phase dispatches to a specialized agent team (documentation-architect, backend-developer,
-frontend-developer, quality-lead) via the Task() tool. Phases init and ship execute inline.
+frontend-developer, quality-lead) via the **Agent tool** (subagent dispatch). Phases init and ship execute inline.
 
 **Orchestration Model:**
 ```
@@ -50,10 +50,10 @@ See `workflow_v2/docs/FULLSTACK_ORCHESTRATOR_HISTORY.md` for architectural decis
 /fullstack my-project --reset database --yes
 
 # BUILD IN A DIFFERENT FOLDER (remote project)
-# Uses .pi/ from current project, outputs to target path
+# Uses .kimi/ from current project, outputs to target path
 /fullstack tirebank --path /Users/me/projects/tirebank --prd .project/prd/ABCTire_PRD.md --run-all --skip-spec
 
-# After first run, target project has its own .pi/ — can run natively:
+# After first run, target project has its own .kimi/ — can run natively:
 # cd /Users/me/projects/tirebank && claude
 # /fullstack tirebank --loop
 ```
@@ -64,7 +64,7 @@ See `workflow_v2/docs/FULLSTACK_ORCHESTRATOR_HISTORY.md` for architectural decis
 
 | # | Phase | Skill | Tier | Prerequisites | Output |
 |---|-------|-------|------|---------------|--------|
-| 1 | init | project-init.md | base | - | .project/, .pi/ |
+| 1 | init | project-init.md | base | - | .project/, .kimi/ |
 | 2 | prd | convert-prd-to-knowledge.md | nestjs | init | PROJECT_KNOWLEDGE.md |
 | 3 | database | database-schema-designer.md | nestjs | prd | Entities, migrations |
 | 4 | backend | (composite skills) | nestjs | database | API endpoints |
@@ -78,11 +78,11 @@ See `workflow_v2/docs/FULLSTACK_ORCHESTRATOR_HISTORY.md` for architectural decis
 
 | Tier | Path | Description |
 |------|------|-------------|
-| base | `.pi/base/skills/fullstack/` | Generic orchestration skills |
-| nestjs | `.pi/nestjs/skills/` | NestJS backend skills |
-| django | `.pi/django/skills/` | Django backend skills |
-| react | `.pi/react/skills/` | React Web frontend skills |
-| react-native | `.pi/react-native/skills/` | React Native mobile skills |
+| base | `.kimi/base/skills/fullstack/` | Generic orchestration skills |
+| nestjs | `.kimi/backend/guides/` | NestJS backend skills |
+| django | `.kimi/backend/guides/` | Django backend skills |
+| react | `.kimi/frontend/guides/` | React Web frontend skills |
+| react-native | `.kimi/mobile/guides/` | React Native mobile skills |
 | stack | Auto-detected from tech_stack config | Framework-specific (resolves to $BACKEND or $FRONTEND) |
 
 **Note:** The tier is determined by the `tech_stack` configuration in PIPELINE_STATUS.md. For mobile projects, `react-native` is used instead of `react` for frontend phases.
@@ -91,7 +91,7 @@ See `workflow_v2/docs/FULLSTACK_ORCHESTRATOR_HISTORY.md` for architectural decis
 
 ## Token Budgets (Per Agent Dispatch)
 
-Each Task() dispatch has a target prompt size. Stay within these budgets to prevent "Prompt is too long" errors.
+Each **Agent tool** dispatch has a target prompt size. Stay within these budgets to prevent "Prompt is too long" errors.
 
 | Phase     | Agent Prompt | Skill File | Prior Context       | **Target Total** |
 |-----------|-------------|------------|---------------------|-----------------|
@@ -142,18 +142,18 @@ IF --path is provided:
   3. ALL file operations below use TARGET_DIR as root (not cwd)
      - Status file:   TARGET_DIR/.project/status/{project}/PIPELINE_STATUS.md
      - PRD:           TARGET_DIR/.project/prd/
-     - Skills/agents: still read from cwd's .pi/ (the source project)
+     - Skills/agents: still read from cwd's .kimi/ (the source project)
      - Code output:   TARGET_DIR/backend/, TARGET_DIR/frontend/, etc.
   4. If --prd path is relative, resolve it from cwd (not TARGET_DIR)
 ELSE:
   TARGET_DIR = cwd (current behavior, no change)
 ```
 
-**Key principle:** `.pi/` (commands, skills, agents) is read from the **source project** (where you run the command). All generated output goes to **TARGET_DIR**.
+**Key principle:** `.kimi/` (commands, skills, agents) is read from the **source project** (where you run the command). All generated output goes to **TARGET_DIR**.
 
 #### Bootstrap .claude in Target Project (Phase 1)
 
-During Phase 1 (init), if `--path` was used and TARGET_DIR has no `.pi/`:
+During Phase 1 (init), if `--path` was used and TARGET_DIR has no `.kimi/`:
 
 ```bash
 cd TARGET_DIR
@@ -169,7 +169,7 @@ This ensures the target project becomes self-sufficient — after the first run,
 Status file path: `.project/status/{project}/PIPELINE_STATUS.md`
 
 **If status file doesn't exist:**
-1. Copy template from `.pi/base/templates/PIPELINE_STATUS.template.md`
+1. Copy template from `.kimi/base/templates/PIPELINE_STATUS.template.md`
 2. Replace `{PROJECT_NAME}` with actual project name
 3. Set all phases to `Pending` status
 
@@ -197,8 +197,8 @@ Set variables:
 
 **For backend:**
 ```bash
-if [ ! -d ".pi/$BACKEND" ]; then
-  echo "ERROR: Missing backend submodule .pi/$BACKEND/"
+if [ ! -d ".kimi/backend" ]; then
+  echo "ERROR: Missing backend submodule .kimi/backend/"
   echo ""
   echo "This submodule is required for backend development. Install with:"
   echo ""
@@ -217,8 +217,8 @@ fi
 **For each frontend in $FRONTENDS:**
 ```bash
 for frontend in "${FRONTENDS[@]}"; do
-  if [ ! -d ".pi/$frontend" ]; then
-    echo "ERROR: Missing frontend submodule .pi/$frontend/"
+  if [ ! -d ".kimi/frontend" ]; then
+    echo "ERROR: Missing frontend submodule .kimi/frontend/"
     echo ""
     echo "This submodule is required for frontend development. Install with:"
     echo ""
@@ -250,9 +250,9 @@ Based on phase tier, resolve the skill path:
 
 | Phase Tier | Skill Base Path |
 |------------|-----------------|
-| base | `.pi/base/skills/fullstack/` |
-| $BACKEND (nestjs/django) | `.pi/$BACKEND/skills/` |
-| $FRONTEND (react/react-native) | `.pi/$FRONTEND/skills/` |
+| base | `.kimi/base/skills/fullstack/` |
+| $BACKEND (nestjs/django) | `.kimi/backend/guides/` |
+| $FRONTEND (react/react-native) | `.kimi/frontend/guides/` |
 | stack | Determined by phase context |
 
 ### Step 3: Action Handler
@@ -438,18 +438,18 @@ Look up the skill path based on the phase-to-tier mapping. Use `$BACKEND` and `$
 ```
 Phase → Tier → Skill Path (with resolved $BACKEND/$FRONTEND)
 ─────────────────────────────────────────────────────────────────
-init      → base      → .pi/base/skills/fullstack/project-init.md
-prd       → $BACKEND  → .pi/$BACKEND/skills/convert-prd-to-knowledge.md
-database  → $BACKEND  → .pi/$BACKEND/skills/database-schema-designer.md
-backend   → $BACKEND  → .pi/$BACKEND/guides/architecture-overview.md + services-and-repositories.md
+init      → base      → .kimi/base/skills/fullstack/project-init.md
+prd       → $BACKEND  → .kimi/backend/guides/convert-prd-to-knowledge.md
+database  → $BACKEND  → .kimi/backend/guides/database-schema-designer.md
+backend   → $BACKEND  → .kimi/backend/guides/ARCHITECTURE-OVERVIEW-GUIDE.md + SERVICES-AND-REPOSITORIES-GUIDE.md
 frontend  → $FRONTEND → (multi-path - see "Frontend Phase: Multi-Path Selection")
                         ├─ design-scratch → /prd-to-design-prompts (command)
-                        ├─ figma         → .pi/$FRONTEND/skills/*figma*.md
-                        └─ html          → .pi/$FRONTEND/skills/*convert-html*.md
-integrate → $FRONTEND → .pi/$FRONTEND/skills/api-integration.md (or guides/)
-test      → $FRONTEND → .pi/$FRONTEND/skills/e2e-test-generator.md
-qa        → $FRONTEND → .pi/$FRONTEND/skills/design-qa-patterns.md (+ /ralph for iteration)
-ship      → base      → .pi/base/skills/fullstack/deployment.md
+                        ├─ figma         → .kimi/frontend/guides/*figma*.md
+                        └─ html          → .kimi/frontend/guides/*convert-html*.md
+integrate → $FRONTEND → .kimi/frontend/guides/api-integration.md (or guides/)
+test      → $FRONTEND → .kimi/frontend/guides/e2e-test-generator.md
+qa        → $FRONTEND → .kimi/frontend/guides/design-qa-patterns.md (+ /ralph for iteration)
+ship      → base      → .kimi/base/skills/fullstack/deployment.md
 ```
 
 **Example resolution for `nestjs + react-native`:**
@@ -457,9 +457,9 @@ ship      → base      → .pi/base/skills/fullstack/deployment.md
 $BACKEND = nestjs
 $FRONTEND = react-native
 
-database → .pi/nestjs/skills/database-schema-designer.md
-frontend → .pi/react-native/skills/frontend-dev-guidelines/resources/convert-html-to-react.md
-test     → .pi/react-native/skills/frontend-dev-guidelines/resources/e2e-test-generator.md
+database → .kimi/backend/guides/database-schema-designer.md
+frontend → .kimi/mobile/guides/frontend-dev-guidelines/resources/convert-html-to-react.md
+test     → .kimi/mobile/guides/frontend-dev-guidelines/resources/e2e-test-generator.md
 ```
 
 **Validate skill path exists before proceeding.** If skill file not found, show the Missing Skill File error and abort.
@@ -488,23 +488,23 @@ Ralph runs are optional per phase in `--run` / `--run-all` mode but automatic in
 
 **4.4 Dispatch or Execute Directly**
 
-Based on the phase, either dispatch to a specialized agent via Task() or execute inline:
+Based on the phase, either dispatch to a specialized agent via **Agent tool** or execute inline:
 
 | Phase | Execution Mode | Agent | Notes |
 |-------|---------------|-------|-------|
 | init | **DIRECT** inline | (none) | Interactive setup, AskUserQuestion for tech stack |
-| prd | Task() dispatch | `documentation-architect` | Uses Agent Dispatch Prompt for prd |
-| database | Task() dispatch | `backend-developer` | Delegates to database-designer |
-| backend | Task() dispatch | `backend-developer` | Composite skills referenced |
-| frontend | Task() dispatch | `frontend-developer` | **Ask path BEFORE dispatch** (see Frontend Phase below) |
-| integrate | Task() dispatch | `frontend-developer` | Includes api-integration-agent audit |
-| test | Task() dispatch | `quality-lead` | E2E test generation |
-| qa | Task() dispatch | `quality-lead` | gap-finder + gap-fixer + Ralph |
+| prd | **Agent** dispatch | `documentation-architect` | Uses Agent Dispatch Prompt for prd |
+| database | **Agent** dispatch | `backend-developer` | Delegates to database-designer |
+| backend | **Agent** dispatch | `backend-developer` | Composite skills referenced |
+| frontend | **Agent** dispatch | `frontend-developer` | **Ask path BEFORE dispatch** (see Frontend Phase below) |
+| integrate | **Agent** dispatch | `frontend-developer` | Includes api-integration-agent audit |
+| test | **Agent** dispatch | `quality-lead` | E2E test generation |
+| qa | **Agent** dispatch | `quality-lead` | gap-finder + gap-fixer + Ralph |
 | ship | **DIRECT** inline | (none) | Infrastructure commands, bash sequences |
 
 **For DIRECT phases:** Read the skill file from its resolved path and follow its instructions inline (existing behavior — no change).
 
-**For Task() dispatch phases:** Use the prompt template from Section "Agent Dispatch Prompts". Pass the resolved skill path, tech stack variables, and PHASE_RESULT from prior phases.
+**For Agent dispatch phases:** Use the prompt template from Section "Agent Dispatch Prompts". Pass the resolved skill path, tech stack variables, and PHASE_RESULT from prior phases. Alternatively, use the dispatcher: `node .kimi/scripts/dispatcher.js run {project} --phase {name}`
 
 **4.5 Process PHASE_RESULT**
 
@@ -533,7 +533,7 @@ In --loop: mark for retry in next generation
 **PHASE_RESULT not found (agent dispatch only):**
 If the agent output does not contain a `PHASE_RESULT:` block, treat the phase as Failed with note: "Agent did not return PHASE_RESULT — retry phase or check agent output."
 
-**4.6 Context Checkpoint (MANDATORY after every Task() dispatch)**
+**4.6 Context Checkpoint (MANDATORY after every Agent dispatch)**
 
 After extracting PHASE_RESULT from the agent output, immediately apply context hygiene:
 
@@ -548,7 +548,7 @@ After extracting PHASE_RESULT from the agent output, immediately apply context h
 ```
 
 > **Why this matters:** The orchestrator runs in a single context across all 9 phases. Every
-> Task() return value, every file read, every display block adds tokens. Without active
+> Agent tool return value, every file read, every display block adds tokens. Without active
 > cleanup, the orchestrator context overflows by phase 6–8. The checkpoint enforces that
 > only compact metadata (not full agent output) survives into the next phase.
 
@@ -588,7 +588,7 @@ PHASE_RESULT: {
 The frontend phase supports three implementation paths.
 
 > **IMPORTANT (v6 orchestration):** The path selection question (Step F1) MUST be asked in the
-> orchestrator context BEFORE dispatching to frontend-developer via Task(). Agents running in
+> orchestrator context BEFORE dispatching to frontend-developer via Agent tool. Agents running in
 > subcontext cannot invoke AskUserQuestion with the outer user. Store the selected path in
 > `PIPELINE_STATUS.md → phase_config.frontend_path` before dispatching.
 >
@@ -624,14 +624,14 @@ Options:
 #### Path B: Convert from Figma
 
 1. Ask for Figma URL(s) or use PROJECT_KNOWLEDGE.md figma links
-2. Load skill: `.pi/react/skills/converters/figma-to-react-converter.md`
+2. Load skill: `.kimi/frontend/guides/converters/figma-to-react-converter.md`
 3. Execute per skill instructions
 4. Update status on completion
 
 #### Path C: Convert from HTML
 
 1. Ask for HTML file path(s)
-2. Load skill: `.pi/react/skills/convert-html-to-react.md`
+2. Load skill: `.kimi/frontend/guides/convert-html-to-react.md`
 3. Execute per skill instructions
 4. Update status on completion
 
@@ -735,7 +735,7 @@ Example from `qa-runner.md`:
 
 ### Missing Skill File
 
-1. Report error: "Skill file not found: .pi/base/skills/fullstack/{phase}.md"
+1. Report error: "Skill file not found: .kimi/base/skills/fullstack/{phase}.md"
 2. Suggest creating the skill or checking path
 
 ### Missing Prerequisites
@@ -824,11 +824,11 @@ If pipeline score doesn't improve for 3 consecutive generations:
 
 Skills are located in their appropriate tier (see Tier Locations above).
 
-**Base tier skills** (in `.pi/base/skills/fullstack/`) are orchestration-specific:
+**Base tier skills** (in `.kimi/base/skills/fullstack/`) are orchestration-specific:
 - `project-init.md` - Generic project initialization
 - `deployment.md` - Generic deployment (Dokploy/AWS)
 
-**Framework tier skills** (in `.pi/{nestjs|react}/skills/`) are comprehensive implementations:
+**Framework tier skills** (in `.kimi/backend/guides/` and `.kimi/frontend/guides/`) are comprehensive implementations:
 - Already exist and are well-maintained
 - Used by both standalone invocation AND /fullstack pipeline
 - Single source of truth for each capability
@@ -950,11 +950,11 @@ For each relevant submodule tier (base, $BACKEND, $FRONTEND):
 
 ```bash
 # Run in orchestrator context before dispatching phase
-current_hash=$(cd .pi/{tier} && git rev-parse HEAD 2>/dev/null)
+current_hash=$(cd .kimi/{tier} && git rev-parse HEAD 2>/dev/null)
 stored_hash=$(read from PIPELINE_STATUS.md change_tracking.submodule_hashes.{tier})
 
 if [ "$current_hash" != "$stored_hash" ] && [ -n "$stored_hash" ]; then
-  CHANGED+=("submodule .pi/{tier}: $stored_hash -> $current_hash")
+  CHANGED+=("submodule .kimi/{tier}: $stored_hash -> $current_hash")
 fi
 ```
 
@@ -1192,7 +1192,7 @@ Coordinator: project-coordinator. Pipeline: fullstack-pipeline. Phase: prd (2/9)
 
 Project: {PROJECT}
 Status file: .project/status/{PROJECT}/PIPELINE_STATUS.md
-Skill to follow: .pi/{BACKEND}/skills/convert-prd-to-knowledge.md
+Skill to follow: .kimi/backend/guides/convert-prd-to-knowledge.md
 
 Read this skill file FIRST and follow its instructions exactly.
 
@@ -1202,7 +1202,7 @@ Context from init phase:
 - All required submodules have been validated
 
 Your task:
-1. Read the skill file at .pi/{BACKEND}/skills/convert-prd-to-knowledge.md
+1. Read the skill file at .kimi/backend/guides/convert-prd-to-knowledge.md
 2. Locate the PRD document in .project/prd/
 3. Follow skill instructions to generate all required knowledge documents
 4. Delegate to prd-converter for the extraction and conversion work
@@ -1243,7 +1243,7 @@ Coordinator: project-coordinator. Pipeline: fullstack-pipeline. Phase: database 
 
 Project: {PROJECT}
 Status file: .project/status/{PROJECT}/PIPELINE_STATUS.md
-Skill to follow: .pi/{BACKEND}/skills/database-schema-designer.md
+Skill to follow: .kimi/backend/guides/database-schema-designer.md
 
 Read this skill file FIRST and follow its instructions exactly.
 
@@ -1300,8 +1300,8 @@ Project: {PROJECT}
 Status file: .project/status/{PROJECT}/PIPELINE_STATUS.md
 
 Skill resources (composite — read ALL):
-- .pi/{BACKEND}/guides/architecture-overview.md
-- .pi/{BACKEND}/guides/services-and-repositories.md
+- .kimi/backend/guides/ARCHITECTURE-OVERVIEW-GUIDE.md
+- .kimi/backend/guides/SERVICES-AND-REPOSITORIES-GUIDE.md
 
 Context from previous phases (compact summary from PIPELINE_STATUS.md ## Agent Results → database):
 {INSERT database next_phase_hints here — max 300 tokens, counts + summary only}
@@ -1357,7 +1357,7 @@ PHASE_RESULT: {
 ### Phase 5: frontend → frontend-developer
 
 **IMPORTANT:** Ask the user for frontend path BEFORE dispatching (AskUserQuestion in orchestrator context).
-Store the choice in `PIPELINE_STATUS.md → phase_config.frontend_path` before running Task().
+Store the choice in `pipeline.json → phase_config.frontend_path` before dispatching via Agent tool.
 
 ```
 # First: check if path already stored from a previous run
@@ -1385,7 +1385,7 @@ Coordinator: project-coordinator. Pipeline: fullstack-pipeline. Phase: frontend 
 Project: {PROJECT}
 Status file: .project/status/{PROJECT}/PIPELINE_STATUS.md
 Frontend implementation path: {FRONTEND_PATH}  ← already selected, do NOT ask user again
-Skill to follow: .pi/{FRONTEND}/skills/{RESOLVED_SKILL_FILE}
+Skill to follow: .kimi/frontend/guides/{RESOLVED_SKILL_FILE}
 
 Read this skill file FIRST and follow its instructions exactly.
 
@@ -1447,7 +1447,7 @@ Coordinator: project-coordinator. Pipeline: fullstack-pipeline. Phase: integrate
 
 Project: {PROJECT}
 Status file: .project/status/{PROJECT}/PIPELINE_STATUS.md
-Skill to follow: .pi/{FRONTEND}/skills/api-integration.md (or guides/ equivalent)
+Skill to follow: .kimi/frontend/guides/api-integration.md (or guides/ equivalent)
 
 Read this skill file FIRST and follow its instructions exactly.
 
@@ -1501,7 +1501,7 @@ Coordinator: project-coordinator. Pipeline: fullstack-pipeline. Phase: test (7/9
 
 Project: {PROJECT}
 Status file: .project/status/{PROJECT}/PIPELINE_STATUS.md
-Skill to follow: .pi/{FRONTEND}/skills/e2e-test-generator.md
+Skill to follow: .kimi/frontend/guides/e2e-test-generator.md
 
 Read this skill file FIRST and follow its instructions exactly.
 
@@ -1551,7 +1551,7 @@ Coordinator: project-coordinator. Pipeline: fullstack-pipeline. Phase: qa (8/9).
 
 Project: {PROJECT}
 Status file: .project/status/{PROJECT}/PIPELINE_STATUS.md
-Skill to follow: .pi/{FRONTEND}/skills/design-qa-patterns.md
+Skill to follow: .kimi/frontend/guides/design-qa-patterns.md
 
 Read this skill file FIRST and follow its instructions exactly.
 

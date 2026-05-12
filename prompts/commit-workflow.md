@@ -48,7 +48,7 @@ From the repo root, discover all registered submodules:
 git submodule status --recursive
 ```
 
-Parse the output to build a list of submodule paths (e.g., `.pi/base`, `.pi/react`, `.pi/django`, `.pi/nestjs`, `.pi/react-native`).
+Parse the output to build a list of submodule paths (e.g., `.kimi/base`, `.kimi/react`, `.kimi/django`, `.kimi/nestjs`, `.kimi/react-native`).
 
 Also check which submodules have changes:
 
@@ -65,11 +65,11 @@ Use **AskUserQuestion** to present the list with multi-select options:
 ```
 Available submodules:
 
-1. .pi/base         [has changes / no changes]
-2. .pi/react        [has changes / no changes]
-3. .pi/django       [has changes / no changes]
-4. .pi/nestjs       [has changes / no changes]
-5. .pi/react-native [has changes / no changes]
+1. .kimi/base         [has changes / no changes]
+2. .kimi/react        [has changes / no changes]
+3. .kimi/django       [has changes / no changes]
+4. .kimi/nestjs       [has changes / no changes]
+5. .kimi/react-native [has changes / no changes]
 
 Selection options:
 - Enter a single number (e.g., "2") to select one submodule
@@ -104,8 +104,8 @@ If more than one submodule is selected, use **AskUserQuestion** to confirm:
 ```
 Will process the following submodules (in order):
 
-1. .pi/react        (branch: <branch>)
-2. .pi/base         (branch: <branch>)
+1. .kimi/react        (branch: <branch>)
+2. .kimi/base         (branch: <branch>)
 
 Each submodule will go through:
   Branch Safety → Commit → Validation → QA → PR → Approval → Merge
@@ -316,7 +316,7 @@ For code-containing submodules, verify the build compiles:
 
 - **React/TypeScript submodules**: `npx tsc --noEmit` (if `tsconfig.json` exists)
 - **Django submodules**: `python manage.py check` (if `manage.py` exists)
-- **Config-only submodules** (`.pi/base`): Check that all referenced files exist
+- **Config-only submodules** (`.kimi/base`): Check that all referenced files exist
 
 ```bash
 cd $SELECTED_SUBMODULE
@@ -340,7 +340,7 @@ Result: **PASS** / **FAIL**
 
 ```bash
 cd $SELECTED_SUBMODULE
-# For config submodules like .pi/base:
+# For config submodules like .kimi/base:
 for jsonfile in $(find . -name "*.json" -not -path "*/node_modules/*" 2>/dev/null); do
   python3 -c "import json; json.load(open('$jsonfile'))" 2>&1 || echo "FAIL: $jsonfile invalid JSON"
 done

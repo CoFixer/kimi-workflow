@@ -150,8 +150,8 @@ Question: "Which memory level should these learnings be saved to?"
 
 | Level | Location | When to Use |
 |-------|----------|-------------|
-| **Personal** | `~/.pi/memory/` | Your individual preferences (follows you everywhere) |
-| **Team** | `.pi/base/docs/` | Team conventions (shared via submodule) |
+| **Personal** | `~/.kimi/memory/` | Your individual preferences (follows you everywhere) |
+| **Team** | `.kimi/base/docs/` | Team conventions (shared via submodule) |
 | **Project** | `.project/memory/` | Project-specific details (default) |
 
 **Guidelines for suggesting level:**
@@ -181,12 +181,12 @@ Options:
 
 1. **Read** the target file based on selected level (create if doesn't exist):
 
-   **Personal level** (`~/.pi/memory/`):
+   **Personal level** (`~/.kimi/memory/`):
    - `LEARNINGS.md` - Personal learnings
    - `PREFERENCES.md` - Personal preferences
    - `CORRECTIONS.md` - Personal corrections
 
-   **Team level** (`.pi/base/docs/`):
+   **Team level** (`.kimi/base/docs/`):
    - `LEARNINGS.md` - Team-wide learnings
    - `PREFERENCES.md` - Team conventions
    - `CORRECTIONS.md` - Team anti-patterns
@@ -263,12 +263,12 @@ If a focus area is provided, filter analysis to that domain:
 
 Memory files exist at three levels (priority: personal < team < project):
 
-### Personal Level (`~/.pi/memory/`)
+### Personal Level (`~/.kimi/memory/`)
 - Follows you across ALL projects
 - Your individual coding preferences
 - Personal communication style
 
-### Team Level (`.pi/base/docs/`)
+### Team Level (`.kimi/base/docs/`)
 - Shared with team via git submodule
 - Team coding conventions
 - Shared library preferences

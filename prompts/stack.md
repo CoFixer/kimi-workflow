@@ -522,7 +522,7 @@ if [ "$CHANGES_MADE" = true ]; then
     BROKEN_LINKS=$(find . -type l ! -exec test -e {} \; -print 2>/dev/null | wc -l)
     if [ "$BROKEN_LINKS" -gt 0 ]; then
         echo "  ⚠️  Warning: Found $BROKEN_LINKS broken symlink(s)"
-        echo "  Run: find .pi/commands -type l ! -exec test -e {} \; -print"
+        echo "  Run: find .kimi/commands -type l ! -exec test -e {} \; -print"
     else
         echo "  ✓ No broken symlinks detected"
     fi

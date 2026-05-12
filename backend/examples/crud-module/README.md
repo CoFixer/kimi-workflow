@@ -26,4 +26,4 @@ Use this as a template when creating new modules:
 
 ## Pattern Reference
 
-See `.pi/backend/guides/` for detailed explanations of each pattern.
+See `.kimi/backend/guides/` for detailed explanations of each pattern.

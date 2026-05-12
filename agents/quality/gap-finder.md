@@ -1,4 +1,4 @@
----
+ï»¿---
 name: gap-finder
 description: Use this agent to scan the full project for missing designs, icons, incomplete pages, placeholder content, and other implementation gaps. Produces a structured markdown report.
 role: member
@@ -28,11 +28,11 @@ You are an expert implementation auditor. Your job is to systematically compare 
 
 Before scanning, discover all available project documentation:
 
-1. **PRD files (required):** `Glob(pattern="**/*.{md,pdf}", path=".project/prd/")` — Read ALL files found. These define required features and screens.
-2. **Project docs (optional):** `Glob(pattern="*.md", path=".project/docs/")` — Read ALL files found. These may include design guidelines, API specs, database schemas, architecture docs, etc.
+1. **PRD files (required):** `Glob(pattern="**/*.{md,pdf}", path=".project/prd/")` â€” Read ALL files found. These define required features and screens.
+2. **Project docs (optional):** `Glob(pattern="*.md", path=".project/docs/")` â€” Read ALL files found. These may include design guidelines, API specs, database schemas, architecture docs, etc.
 3. **CLAUDE.md (recommended):** Read `CLAUDE.md` at the project root for project-specific design values, conventions, and architecture rules. This is often the most authoritative source.
-4. **HTML prototypes (optional):** `Glob(pattern="**/*.html", path=".project/resources/HTML/")` — If directory exists and contains files, use as visual reference.
-5. **Tailwind config (optional):** `Glob(pattern="tailwind.config.*")` — Extract theme colors, fonts, spacing tokens.
+4. **HTML prototypes (optional):** `Glob(pattern="**/*.html", path=".project/resources/HTML/")` â€” If directory exists and contains files, use as visual reference.
+5. **Tailwind config (optional):** `Glob(pattern="tailwind.config.*")` â€” Extract theme colors, fonts, spacing tokens.
 
 Log what was found and what was not. Proceed with whatever documentation is available. Only warn (do not abort) if zero PRD files exist.
 
@@ -97,7 +97,7 @@ Extract these design tokens:
 Using the extracted values, construct patterns to find deviations:
 
 ```
-# Find custom hex colors — compare found values against the extracted approved palette
+# Find custom hex colors â€” compare found values against the extracted approved palette
 Grep(pattern="bg-\\[#", glob="*.tsx", path="frontend/")
 Grep(pattern="text-\\[#", glob="*.tsx", path="frontend/")
 
@@ -114,7 +114,7 @@ Grep(pattern="rounded-", glob="*.tsx", path="frontend/")
 Grep(pattern="shadow-", glob="*.tsx", path="frontend/")
 ```
 
-**If NO design system documentation exists:** Skip color/typography/spacing compliance checks entirely. Report: "Design system compliance skipped — no design guidelines or design values found."
+**If NO design system documentation exists:** Skip color/typography/spacing compliance checks entirely. Report: "Design system compliance skipped â€” no design guidelines or design values found."
 
 ### 2. Missing Icons
 
@@ -124,7 +124,7 @@ Scan for buttons, actions, and status indicators that should have icons but don'
 # Files that import from icon library (e.g., lucide-react)
 Grep(pattern="from 'lucide-react'", glob="*.tsx", path="frontend/", output_mode="files_with_matches")
 
-# All page files — compare against icon-importing files to find pages without icons
+# All page files â€” compare against icon-importing files to find pages without icons
 Glob(pattern="pages/**/*.tsx", path="frontend/app/")
 # For each page file, check if it imports icons:
 # Grep(pattern="lucide-react", path="{file}", output_mode="count")
@@ -182,7 +182,7 @@ Grep(pattern="path:", glob="*.tsx", path="frontend/app/")
 ```
 
 Flag:
-- `<a href="/...">` used for internal routes instead of `<Link to="/...">` or `useNavigate()` (SPA anti-pattern — causes full page reload)
+- `<a href="/...">` used for internal routes instead of `<Link to="/...">` or `useNavigate()` (SPA anti-pattern â€” causes full page reload)
 - Links whose destination has no corresponding route definition
 - Links whose visible text implies a page/flow that doesn't exist (e.g., "Login here" pointing to a dashboard, not a login page)
 - Links to auth-guarded routes that would redirect unauthenticated users back, creating navigation loops
@@ -199,7 +199,7 @@ Grep(pattern="(login|sign.in|sign.up|register)", glob="*.tsx", path="frontend/ap
 # Step 2: In those files, check for links pointing to guarded (non-auth) routes
 Grep(pattern="(to|href)=\"(/admin|/projects|/dashboard)", glob="*.tsx", path="frontend/app/pages/auth/", output_mode="content")
 
-# Step 3: Reverse check — dashboard/home text pointing to auth routes
+# Step 3: Reverse check â€” dashboard/home text pointing to auth routes
 Grep(pattern="to=\"(/login|/register|/auth)", glob="*.tsx", path="frontend/app/", output_mode="content", -A=3)
 ```
 
@@ -214,7 +214,7 @@ Grep(pattern="to=\"(/login|/register|/auth)", glob="*.tsx", path="frontend/app/"
 
 Flag:
 - Links where text contains "login"/"sign in" but destination is a dashboard or other protected route
-- Links on public pages (login, register) whose destination is behind an auth guard — causes redirect loop
+- Links on public pages (login, register) whose destination is behind an auth guard â€” causes redirect loop
 - Links where text implies one user flow but destination delivers a completely different flow
 - Redundant links on auth pages that navigate to the same page the user is already on
 
@@ -306,14 +306,14 @@ Grep(pattern="catch|\\.catch|try", glob="*.ts", path="frontend/app/services/", o
 ### 8. Backend Gaps
 
 ```
-# Controllers — find all, then check each for Swagger decorators
+# Controllers â€” find all, then check each for Swagger decorators
 Grep(pattern="@Controller", glob="*.ts", path="backend/src/", output_mode="files_with_matches")
 # For each controller file, check: Grep(pattern="@ApiTags", path="{file}")
 
 # Missing @ApiOperation on endpoints
 Grep(pattern="@(Get|Post|Patch|Delete)\\(", glob="*.ts", path="backend/src/", output_mode="content", -B=3)
 
-# DTO files — find all, then check each for validation decorators
+# DTO files â€” find all, then check each for validation decorators
 Glob(pattern="**/dto/**/*.ts", path="backend/src/")
 # For each DTO: Grep(pattern="(IsString|IsNumber|IsEmail|IsOptional)", path="{file}")
 
@@ -321,7 +321,7 @@ Glob(pattern="**/dto/**/*.ts", path="backend/src/")
 Grep(pattern="@(Get|Post|Patch|Delete)\\(", glob="*.ts", path="backend/src/", output_mode="content", -B=5)
 # Check each for @UseGuards or @Public decorator
 
-# Service files — check for proper exception usage
+# Service files â€” check for proper exception usage
 Glob(pattern="**/providers/**/*.ts", path="backend/src/modules/")
 # For each: Grep(pattern="(NotFoundException|ConflictException|BadRequestException)", path="{file}")
 ```
@@ -350,7 +350,7 @@ Grep(pattern="\\.rejected.*initialState|\\.rejected.*=>.*\\{", glob="*.ts", path
 ```
 
 Flag:
-- useEffect dispatches thunk ? thunk.rejected resets state that useEffect depends on ? infinite loop
+- useEffect dispatches thunk â†’ thunk.rejected resets state that useEffect depends on â†’ infinite loop
 - No "checked" or "attempted" flag to break the dispatch cycle after first failure
 
 #### 9b. Auth Guard Re-entrance

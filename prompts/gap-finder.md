@@ -105,8 +105,8 @@ For each detected frontend stack, read and execute the matching framework gap-fi
 
 | Stack | Gap-Finder File | SCAN_ROOT | HTML Prototypes |
 |-------|----------------|-----------|----------------|
-| React | `.pi/react/agents/gap-finder.md` | `frontend/` | `resources/HTML/web/` |
-| React Native | `.pi/react-native/agents/gap-finder.md` | `mobile/` | `resources/HTML/mobile/` |
+| React | `.kimi/react/agents/gap-finder.md` | `frontend/` | `resources/HTML/web/` |
+| React Native | `.kimi/react-native/agents/gap-finder.md` | `mobile/` | `resources/HTML/mobile/` |
 
 Read the gap-finder file and follow its instructions, substituting `{SCAN_ROOT}` with the detected directory. Check categories 1-7 and 9 for each page/screen.
 
@@ -121,8 +121,8 @@ Read and execute the matching backend gap-finder:
 
 | Stack | Gap-Finder File | SCAN_ROOT | Categories |
 |-------|----------------|-----------|------------|
-| NestJS | `.pi/nestjs/agents/gap-finder.md` | `backend/` | 5, 8, 10a-b-d |
-| Django | `.pi/django/agents/gap-finder.md` | `backend/` | 5, 7, 8, 10a-b-d |
+| NestJS | `.kimi/nestjs/agents/gap-finder.md` | `backend/` | 5, 8, 10a-b-d |
+| Django | `.kimi/django/agents/gap-finder.md` | `backend/` | 5, 7, 8, 10a-b-d |
 
 Check the listed categories (backend-side) for each module/app.
 

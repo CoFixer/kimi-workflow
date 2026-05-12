@@ -1,0 +1,148 @@
+{
+  "version": "2.0",
+  "project": "{PROJECT_NAME}",
+  "created": "{DATE}",
+  "last_run": null,
+  "tech_stack": {
+    "backend": "nestjs",
+    "frontends": ["react"],
+    "dashboards": []
+  },
+  "phases": [
+    {
+      "name": "init",
+      "skill": "project-init.md",
+      "tier": "base",
+      "status": "pending",
+      "prerequisites": [],
+      "output": null,
+      "notes": null,
+      "agent": null,
+      "agent_result": null,
+      "started_at": null,
+      "completed_at": null,
+      "duration_seconds": null
+    },
+    {
+      "name": "prd",
+      "skill": "convert-prd-to-knowledge.md",
+      "tier": "nestjs",
+      "status": "pending",
+      "prerequisites": ["init"],
+      "output": null,
+      "notes": null,
+      "agent": null,
+      "agent_result": null,
+      "started_at": null,
+      "completed_at": null,
+      "duration_seconds": null
+    },
+    {
+      "name": "database",
+      "skill": "database-schema-designer.md",
+      "tier": "nestjs",
+      "status": "pending",
+      "prerequisites": ["prd"],
+      "output": null,
+      "notes": null,
+      "agent": null,
+      "agent_result": null,
+      "started_at": null,
+      "completed_at": null,
+      "duration_seconds": null
+    },
+    {
+      "name": "backend",
+      "skill": "composite",
+      "tier": "nestjs",
+      "status": "pending",
+      "prerequisites": ["database"],
+      "output": null,
+      "notes": null,
+      "agent": null,
+      "agent_result": null,
+      "started_at": null,
+      "completed_at": null,
+      "duration_seconds": null
+    },
+    {
+      "name": "frontend",
+      "skill": "frontend-dev-guidelines",
+      "tier": "react",
+      "status": "pending",
+      "prerequisites": ["prd"],
+      "output": null,
+      "notes": null,
+      "agent": null,
+      "agent_result": null,
+      "started_at": null,
+      "completed_at": null,
+      "duration_seconds": null
+    },
+    {
+      "name": "integrate",
+      "skill": "api-integration.md",
+      "tier": "react",
+      "status": "pending",
+      "prerequisites": ["backend", "frontend"],
+      "output": null,
+      "notes": null,
+      "agent": null,
+      "agent_result": null,
+      "started_at": null,
+      "completed_at": null,
+      "duration_seconds": null
+    },
+    {
+      "name": "test",
+      "skill": "e2e-test-generator.md",
+      "tier": "stack",
+      "status": "pending",
+      "prerequisites": ["integrate"],
+      "output": null,
+      "notes": null,
+      "agent": null,
+      "agent_result": null,
+      "started_at": null,
+      "completed_at": null,
+      "duration_seconds": null
+    },
+    {
+      "name": "qa",
+      "skill": "design-qa-patterns.md",
+      "tier": "react",
+      "status": "pending",
+      "prerequisites": ["test"],
+      "output": null,
+      "notes": null,
+      "agent": null,
+      "agent_result": null,
+      "started_at": null,
+      "completed_at": null,
+      "duration_seconds": null
+    },
+    {
+      "name": "ship",
+      "skill": "deployment.md",
+      "tier": "base",
+      "status": "pending",
+      "prerequisites": ["qa"],
+      "output": null,
+      "notes": null,
+      "agent": null,
+      "agent_result": null,
+      "started_at": null,
+      "completed_at": null,
+      "duration_seconds": null
+    }
+  ],
+  "execution_log": [],
+  "change_tracking": {
+    "submodule_hashes": {},
+    "skill_checksums": {},
+    "doc_mtimes": {}
+  },
+  "phase_config": {
+    "frontend_path": null
+  }
+}

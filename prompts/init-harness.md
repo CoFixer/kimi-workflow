@@ -14,12 +14,12 @@ This command is safe to run multiple times (idempotent). It only adds missing pi
 Check that the .claude submodule is initialized:
 
 ```bash
-ls .pi/base/hooks/auto-reflect.sh 2>/dev/null && echo "OK" || echo "MISSING"
+ls .kimi/base/hooks/auto-reflect.sh 2>/dev/null && echo "OK" || echo "MISSING"
 ```
 
 If MISSING, stop and report:
 ```
-Error: .pi/base submodule not found.
+Error: .kimi/base submodule not found.
 Run: git submodule update --init --recursive
 ```
 

@@ -1,4 +1,4 @@
----
+﻿---
 name: refactorer
 description: Use this agent to plan and execute code refactoring. Analyzes code structure, identifies smells and improvement opportunities, creates detailed step-by-step plans with risk assessment, then executes the refactoring with dependency tracking, import management, and build verification.
 role: member
@@ -45,9 +45,9 @@ You are an expert in code refactoring, combining architectural analysis with met
 **Documentation References**:
 
 - Check `.project/docs/PROJECT_KNOWLEDGE.md` for architecture overview
-- Consult `.pi/nestjs/guides/` for NestJS patterns
-- Consult `.pi/react/guides/` for React patterns
-- Reference `.pi/react-native/guides/` for React Native patterns
+- Consult `.kimi/nestjs/guides/` for NestJS patterns
+- Consult `.kimi/react/guides/` for React patterns
+- Reference `.kimi/react-native/guides/` for React Native patterns
 
 ---
 
@@ -408,7 +408,7 @@ When completing refactoring tasks, provide:
 5. **Verification Results** - Build status, broken imports check
 6. **Risk Assessment** - Any remaining concerns
 
-Save plans to: `.pi/docs/refactoring/[module-name]-refactor-plan.md`
+Save plans to: `.kimi/docs/refactoring/[module-name]-refactor-plan.md`
 
 ---
 

@@ -8,9 +8,9 @@ You are a Claude Code configuration validator. Your task is to check that the `.
 ## The 3-Tier System
 
 ```
-Tier 3 (Shared Base): .pi/base/       - Generic commands, agents, skills, hooks
-Tier 2 (Framework):   .pi/<tech>/     - Framework-specific (nestjs, react, etc.)
-Tier 1 (Project):     .pi/            - Project-specific config + symlinks
+Tier 3 (Shared Base): .kimi/base/       - Generic commands, agents, skills, hooks
+Tier 2 (Framework):   .kimi/<tech>/     - Framework-specific (nestjs, react, etc.)
+Tier 1 (Project):     .kimi/            - Project-specific config + symlinks
 ```
 
 **Key principles:**
@@ -42,7 +42,7 @@ git submodule update --init --recursive
 ## Step 2: Check .gitmodules Configuration
 
 ```bash
-cat .pi/.gitmodules
+cat .kimi/.gitmodules
 ```
 
 **Expected content:**
@@ -52,7 +52,7 @@ cat .pi/.gitmodules
 
 **Verify URLs match actual remotes:**
 ```bash
-cd .pi/base && git remote -v && cd ../..
+cd .kimi/base && git remote -v && cd ../..
 ```
 
 **If URL mismatch and `--fix` requested:**
@@ -65,7 +65,7 @@ cd .claude && git submodule sync --recursive && cd ..
 ## Step 3: Check Commands Symlink
 
 ```bash
-ls -la .pi/commands
+ls -la .kimi/commands
 ```
 
 **Expected output:**
@@ -75,13 +75,13 @@ commands -> base/commands
 
 **Verify symlink target exists:**
 ```bash
-ls .pi/base/commands/*.md | head -5
+ls .kimi/base/commands/*.md | head -5
 ```
 
 **If broken/missing and `--fix` requested:**
 ```bash
-rm -rf .pi/commands
-ln -s base/commands .pi/commands
+rm -rf .kimi/commands
+ln -s base/commands .kimi/commands
 ```
 
 ---
@@ -89,19 +89,19 @@ ln -s base/commands .pi/commands
 ## Step 4: Validate settings.json
 
 ```bash
-cat .pi/settings.json | python3 -c "import sys,json; json.load(sys.stdin); print('Valid JSON')"
+cat .kimi/settings.json | python3 -c "import sys,json; json.load(sys.stdin); print('Valid JSON')"
 ```
 
 **Check hook paths exist:**
 ```bash
 # Extract hook paths and verify they exist
 # Hooks should use $CLAUDE_PROJECT_DIR variable
-cat .pi/settings.json
+cat .kimi/settings.json
 ```
 
 **Verify each hook file exists and is executable:**
 ```bash
-ls -la .pi/base/hooks/*.sh
+ls -la .kimi/base/hooks/*.sh
 ls -la .project/hooks/*.sh 2>/dev/null || echo "No project hooks"
 ```
 
@@ -111,7 +111,7 @@ ls -la .project/hooks/*.sh 2>/dev/null || echo "No project hooks"
 
 **If not executable and `--fix` requested:**
 ```bash
-chmod +x .pi/base/hooks/*.sh
+chmod +x .kimi/base/hooks/*.sh
 chmod +x .project/hooks/*.sh 2>/dev/null
 ```
 
@@ -120,7 +120,7 @@ chmod +x .project/hooks/*.sh 2>/dev/null
 ## Step 5: Validate skill-rules.json
 
 ```bash
-cat .pi/skills/skill-rules.json | python3 -c "import sys,json; json.load(sys.stdin); print('Valid JSON')"
+cat .kimi/skills/skill-rules.json | python3 -c "import sys,json; json.load(sys.stdin); print('Valid JSON')"
 ```
 
 **Check regex patterns compile:**
@@ -130,7 +130,7 @@ import json
 import re
 import sys
 
-with open('.pi/skills/skill-rules.json') as f:
+with open('.kimi/skills/skill-rules.json') as f:
     rules = json.load(f)
 
 errors = []
@@ -155,24 +155,24 @@ EOF
 
 ## Step 6: Check Directory Structure
 
-**Required directories at project level (.pi/):**
+**Required directories at project level (.kimi/):**
 ```bash
 for dir in agents skills hooks; do
-  if [ -d ".pi/$dir" ]; then
-    echo "OK: .pi/$dir exists"
+  if [ -d ".kimi/$dir" ]; then
+    echo "OK: .kimi/$dir exists"
   else
-    echo "MISSING: .pi/$dir"
+    echo "MISSING: .kimi/$dir"
   fi
 done
 ```
 
-**Required directories in base tier (.pi/base/):**
+**Required directories in base tier (.kimi/base/):**
 ```bash
 for dir in commands agents skills hooks templates; do
-  if [ -d ".pi/base/$dir" ]; then
-    echo "OK: .pi/base/$dir exists"
+  if [ -d ".kimi/base/$dir" ]; then
+    echo "OK: .kimi/base/$dir exists"
   else
-    echo "MISSING: .pi/base/$dir"
+    echo "MISSING: .kimi/base/$dir"
   fi
 done
 ```
@@ -180,10 +180,10 @@ done
 **Check framework tiers (if present):**
 ```bash
 for framework in nestjs react; do
-  if [ -d ".pi/$framework" ]; then
-    echo "=== .pi/$framework ==="
+  if [ -d ".kimi/$framework" ]; then
+    echo "=== .kimi/$framework ==="
     for dir in agents skills guides hooks; do
-      if [ -d ".pi/$framework/$dir" ]; then
+      if [ -d ".kimi/$framework/$dir" ]; then
         echo "  OK: $dir"
       else
         echo "  MISSING: $dir"
@@ -224,21 +224,21 @@ find .claude -name "*.md" -type f -exec chmod +r {} \;
 **List all commands available:**
 ```bash
 echo "=== Available Commands ==="
-ls .pi/commands/*.md 2>/dev/null | xargs -I{} basename {} .md | sort
+ls .kimi/commands/*.md 2>/dev/null | xargs -I{} basename {} .md | sort
 ```
 
 **List all agents at each tier:**
 ```bash
 echo "=== Project Agents ==="
-ls .pi/agents/*.md 2>/dev/null | xargs -I{} basename {} .md | sort
+ls .kimi/agents/*.md 2>/dev/null | xargs -I{} basename {} .md | sort
 
 echo "=== Base Agents ==="
-ls .pi/base/agents/*.md 2>/dev/null | xargs -I{} basename {} .md | sort
+ls .kimi/base/agents/*.md 2>/dev/null | xargs -I{} basename {} .md | sort
 
 for framework in nestjs react; do
-  if [ -d ".pi/$framework/agents" ]; then
+  if [ -d ".kimi/$framework/agents" ]; then
     echo "=== $framework Agents ==="
-    ls .pi/$framework/agents/*.md 2>/dev/null | xargs -I{} basename {} .md | sort
+    ls .kimi/$framework/agents/*.md 2>/dev/null | xargs -I{} basename {} .md | sort
   fi
 done
 ```
@@ -246,7 +246,7 @@ done
 **Check for duplicate agents (same name at multiple tiers):**
 ```bash
 echo "=== Checking for Duplicates ==="
-(ls .pi/agents/*.md 2>/dev/null; ls .pi/base/agents/*.md 2>/dev/null) | xargs -I{} basename {} .md | sort | uniq -d
+(ls .kimi/agents/*.md 2>/dev/null; ls .kimi/base/agents/*.md 2>/dev/null) | xargs -I{} basename {} .md | sort | uniq -d
 ```
 
 ---
@@ -276,11 +276,11 @@ Skills:
   [ ] All regex patterns compile
 
 Directories:
-  [ ] .pi/agents
-  [ ] .pi/skills
-  [ ] .pi/hooks
-  [ ] .pi/base/commands
-  [ ] .pi/base/templates
+  [ ] .kimi/agents
+  [ ] .kimi/skills
+  [ ] .kimi/hooks
+  [ ] .kimi/base/commands
+  [ ] .kimi/base/templates
 
 Permissions:
   [ ] All .sh files executable
@@ -304,8 +304,8 @@ If `$ARGUMENTS` contains `--fix`, attempt these automatic fixes:
 |-------|-------------|
 | Uninitialized submodules | `git submodule update --init --recursive` |
 | URL mismatch | `git submodule sync --recursive` |
-| Broken commands symlink | `ln -s base/commands .pi/commands` |
-| Scripts not executable | `chmod +x .pi/**/*.sh` |
+| Broken commands symlink | `ln -s base/commands .kimi/commands` |
+| Scripts not executable | `chmod +x .kimi/**/*.sh` |
 | Detached HEAD in submodule | `cd submodule && git checkout main` |
 
 **Note:** Auto-fix will NOT:
@@ -329,9 +329,9 @@ If `$ARGUMENTS` contains `--verbose`, include additional details:
 
 | Issue | Symptom | Solution |
 |-------|---------|----------|
-| Commands not found | `/command` fails | Check symlink: `ls -la .pi/commands` |
+| Commands not found | `/command` fails | Check symlink: `ls -la .kimi/commands` |
 | Hook not running | No skill suggestions | Verify settings.json hook paths |
 | Submodule empty | Directory exists but empty | `git submodule update --init --recursive` |
-| Permission denied | Hook fails to execute | `chmod +x .pi/**/*.sh` |
+| Permission denied | Hook fails to execute | `chmod +x .kimi/**/*.sh` |
 | Invalid skill-rules | JSON parse error | Check for trailing commas, missing quotes |
-| Wrong branch | Features missing | `cd .pi/base && git checkout main` |
+| Wrong branch | Features missing | `cd .kimi/base && git checkout main` |

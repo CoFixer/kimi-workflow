@@ -45,7 +45,7 @@ Options:
      Description: "Create new project with boilerplate code, .claude config, and documentation"
 
   2. Documentation Only
-     Description: "Set up documentation for existing project (requires .pi/ submodule)"
+     Description: "Set up documentation for existing project (requires .kimi/ submodule)"
 ```
 
 Store result:
@@ -284,7 +284,7 @@ Extract from PRD Part 1:
 
 Extract API structure from PRD System Modules and Page Architecture.
 
-**BEFORE POPULATING API DOCS**: Read `.pi/templates/examples/new-project-prd-example.md` Section "Example API Endpoints" for the expected output format.
+**BEFORE POPULATING API DOCS**: Read `.kimi/templates/examples/new-project-prd-example.md` Section "Example API Endpoints" for the expected output format.
 
 Generate endpoint tables following the example format, organized by resource group (Auth, Dashboards, Alerts, Data Sources, Reports, Query Editor, Data Models, Operations, Admin, Billing). Each table has columns: Method | Endpoint | Description | Auth.
 
@@ -337,7 +337,7 @@ Extract from PRD:
 
 Before populating API integration documentation, cross-reference HTML files with PRD screens.
 
-**BEFORE CROSS-CHECKING**: Read `.pi/templates/examples/new-project-prd-example.md` Section "Example HTML-PRD Cross-Check" for the expected format.
+**BEFORE CROSS-CHECKING**: Read `.kimi/templates/examples/new-project-prd-example.md` Section "Example HTML-PRD Cross-Check" for the expected format.
 
 **Cross-Check Process:**
 
@@ -357,7 +357,7 @@ Generate cross-check table and apply reconciliation actions (Matched, Extra Scre
 
 Map HTML screens to API endpoints with frontend project and role access information.
 
-**BEFORE POPULATING API INTEGRATION**: Read `.pi/templates/examples/new-project-prd-example.md` Section "Example Frontend Pages to API Mapping" for the expected output format.
+**BEFORE POPULATING API INTEGRATION**: Read `.kimi/templates/examples/new-project-prd-example.md` Section "Example Frontend Pages to API Mapping" for the expected output format.
 
 Generate mapping tables organized by user role/page group. Each table maps: HTML File | Route | Frontend | API Endpoints | Status. Admin dashboard tables include an additional Role Access column. Include routing strategy notes and single-codebase benefits for consolidated dashboards.
 
@@ -372,7 +372,7 @@ After completing Step 0.5 (resource detection and migration), the command branch
 1. **Verify Prerequisites:**
    ```bash
    if [ ! -d ".claude" ]; then
-     echo "ERROR: Cannot use --docs-only without .pi/ submodule."
+     echo "ERROR: Cannot use --docs-only without .kimi/ submodule."
      echo "Run without --docs-only flag for full setup."
      exit 1
    fi
@@ -673,7 +673,7 @@ After cloning boilerplate, synchronize backend `.env.example` (and `.env.dummy`)
 
 ```bash
 # Sync CORS origins, PORT, and FRONTEND_URL in backend env files
-node .pi/base/scripts/sync-env-ports.js
+node .kimi/base/scripts/sync-env-ports.js
 
 # Also copy .env.example to .env for immediate local development
 if [ -f "backend/.env.example" ] && [ ! -f "backend/.env" ]; then
@@ -742,12 +742,12 @@ networks:
 
 This step can be run standalone with `--docs-only` flag for existing projects.
 
-### 7.1 Check for existing .project
+### 7.1 Check for existing .claude-project
 
 ```bash
-if [ -d ".project" ]; then
+if [ -d ".claude-project" ]; then
   # Ask user: Overwrite, Merge, or Skip?
-  # - Overwrite: rm -rf .project && continue
+  # - Overwrite: rm -rf .claude-project && continue
   # - Merge: continue (will skip existing files)
   # - Skip: exit step 7
 fi
@@ -756,18 +756,18 @@ fi
 ### 7.2 Copy templates
 
 ```bash
-# Create .project directory
-mkdir -p .project
+# Create .claude-project directory
+mkdir -p .claude-project
 
-# Copy all templates from .pi/templates
-cp -r .pi/templates/claude-project/* .project/
+# Copy all templates from .kimi/templates
+cp -r .kimi/templates/claude-project/* .project/
 ```
 
 ### 7.3 Rename template files (remove .template suffix)
 
 ```bash
 # Find all .template.md files recursively and rename them
-find .project -name "*.template.md" | while read f; do
+find .claude-project -name "*.template.md" | while read f; do
   mv "$f" "${f%.template.md}.md"
 done
 ```
@@ -778,17 +778,17 @@ Templates use `{PLACEHOLDER}` format (curly braces).
 
 ```bash
 # Replace {PROJECT_NAME} placeholder
-find .project -name "*.md" -exec sed -i '' "s/{PROJECT_NAME}/$PROJECT_NAME/g" {} \;
+find .claude-project -name "*.md" -exec sed -i '' "s/{PROJECT_NAME}/$PROJECT_NAME/g" {} \;
 
 # Replace {BACKEND} placeholder
-find .project -name "*.md" -exec sed -i '' "s/{BACKEND}/$BACKEND/g" {} \;
+find .claude-project -name "*.md" -exec sed -i '' "s/{BACKEND}/$BACKEND/g" {} \;
 
 # Replace {FRONTENDS} placeholder (join array with comma)
 FRONTENDS_STR=$(IFS=', '; echo "${FRONTENDS[*]}")
-find .project -name "*.md" -exec sed -i '' "s/{FRONTENDS}/$FRONTENDS_STR/g" {} \;
+find .claude-project -name "*.md" -exec sed -i '' "s/{FRONTENDS}/$FRONTENDS_STR/g" {} \;
 
 # Replace {DATE} placeholder
-find .project -name "*.md" -exec sed -i '' "s/{DATE}/$(date +%Y-%m-%d)/g" {} \;
+find .claude-project -name "*.md" -exec sed -i '' "s/{DATE}/$(date +%Y-%m-%d)/g" {} \;
 ```
 
 ### 7.4.5 Filter Framework-Specific Sections Based on Tech Stack
@@ -917,7 +917,7 @@ After templates are copied and placeholders replaced, add PRD-specific content e
 
 **Note:** Generic ERD was already removed in Step 7.4.6 if PRD exists. This step generates the replacement schema.
 
-**BEFORE GENERATING SCHEMA**: Read `.pi/templates/examples/new-project-database-example.md` for the complete ERD diagram format and all table definition structures.
+**BEFORE GENERATING SCHEMA**: Read `.kimi/templates/examples/new-project-database-example.md` for the complete ERD diagram format and all table definition structures.
 
 ```bash
 if [ -f ".project/prd/prd.pdf" ]; then
@@ -942,7 +942,7 @@ fi
 
 If HTML prototypes exist, extract comprehensive design guidelines from all HTML files.
 
-**BEFORE EXTRACTING DESIGN**: Read `.pi/templates/guides/design-extraction-guide.md` for the complete extraction script.
+**BEFORE EXTRACTING DESIGN**: Read `.kimi/templates/guides/design-extraction-guide.md` for the complete extraction script.
 
 Execute the design extraction script which: copies the design guidelines template, extracts Tailwind configs and CSS classes from all HTML files, identifies color system (primary/dark/light), typography (font family), spacing patterns, border radius, shadows, transitions, and populates PROJECT_DESIGN_GUIDELINES.md.
 
@@ -954,7 +954,7 @@ Create consolidated context file in root for token-efficient Claude interactions
 
 ```bash
 # Copy template to root
-cp .pi/templates/CLAUDE.template.md CLAUDE.md
+cp .kimi/templates/CLAUDE.template.md CLAUDE.md
 
 # Replace placeholders
 sed -i '' "s/{PROJECT_NAME}/$PROJECT_NAME/g" CLAUDE.md
@@ -1004,7 +1004,7 @@ fi
 
 ```bash
 # Copy template to root
-cp .pi/templates/README.template.md README.md
+cp .kimi/templates/README.template.md README.md
 
 # Extract project description from PROJECT_KNOWLEDGE.md
 if [ -f ".project/docs/PROJECT_KNOWLEDGE.md" ]; then
@@ -1102,7 +1102,7 @@ git add -A
 git commit -m "$(cat <<'EOF'
 feat: Initial $PROJECT_NAME project setup
 
-- .pi/ submodule using shared claude-workflow
+- .kimi/ submodule using shared claude-workflow
 - Backend: $BACKEND
 - Frontend: $FRONTENDS
 - Docker orchestration configured
@@ -1153,7 +1153,7 @@ git checkout main
 === Project Setup Complete ===
 
 $PROJECT_NAME/
-├── .pi/              # Shared claude-workflow (base, nestjs, django, react, react-native)
+├── .kimi/              # Shared claude-workflow (base, nestjs, django, react, react-native)
 ├── .project/      # Project docs (docs/, memory/, prd/, resources/, status/)
 ├── backend/              # $BACKEND boilerplate
 ├── frontend/             # React Web (if selected)
@@ -1193,7 +1193,7 @@ If setup fails midway:
 
 ```bash
 # Clean up local
-rm -rf backend frontend frontend-dashboard mobile .claude .project docker-compose.yml
+rm -rf backend frontend frontend-dashboard mobile .claude .claude-project docker-compose.yml
 
 # Clean up GitHub (if repo was created)
 gh repo delete potentialInc/$PROJECT_NAME --yes

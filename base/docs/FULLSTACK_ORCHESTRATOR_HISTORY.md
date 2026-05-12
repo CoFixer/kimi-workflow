@@ -199,18 +199,18 @@ Ralph is perfect for many items, but 9 phases don't need autonomous loops.
 
 ```
 Base tier (unique to /fullstack):
-├── .pi/base/commands/fullstack.md           # Orchestrator
-├── .pi/base/templates/PIPELINE_STATUS.template.md
-└── .pi/base/skills/dev/run-fullstack/
+├── .kimi/prompts/fullstack.md              # Orchestrator prompt
+├── .kimi/base/templates/pipeline-status.json      # Structured status template
+└── .kimi/skills/run-fullstack/
     ├── project-init.md                          # Unique
     └── deployment.md                            # Unique
 
 Referenced from existing tiers:
-├── .pi/nestjs/skills/
+├── .kimi/backend/guides/
 │   ├── prd-to-knowledge.md                      # prd phase
 │   ├── design-database.md                       # database phase
 │   └── e2e-test-generator.md                    # test phase (backend)
-└── .pi/react/
+└── .kimi/frontend/
     ├── skills/
     │   ├── figma-to-react.md                    # frontend phase
     │   ├── design-qa.md                         # qa phase

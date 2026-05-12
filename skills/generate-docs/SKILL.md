@@ -1,4 +1,4 @@
----
+﻿---
 name: generate-docs
 description: Generate and update project documentation (PROJECT_KNOWLEDGE, PROJECT_DATABASE, PROJECT_API, CLAUDE.md)
 ---
@@ -94,17 +94,17 @@ Extract key sections:
 
 ```
 .project/
-+-- prd/                    # Source: PRD files
-�   +-- [ProjectName]_PRD.pdf
-+-- docs/                   # Target: Generated docs
-�   +-- PROJECT_KNOWLEDGE.md
-�   +-- PROJECT_DATABASE.md
-�   +-- PROJECT_API.md
-+-- plans/                  # Target: Strategic plans
-�   +-- [feature]_PLAN.md
-+-- memory/                 # Target: Updates
-    +-- DECISIONS.md
-    +-- LEARNINGS.md
+├── prd/                    # Source: PRD files
+│   └── [ProjectName]_PRD.pdf
+├── docs/                   # Target: Generated docs
+│   ├── PROJECT_KNOWLEDGE.md
+│   ├── PROJECT_DATABASE.md
+│   └── PROJECT_API.md
+├── plans/                  # Target: Strategic plans
+│   └── [feature]_PLAN.md
+└── memory/                 # Target: Updates
+    ├── DECISIONS.md
+    └── LEARNINGS.md
 ```
 
 ---
@@ -134,8 +134,8 @@ Extract key sections:
 **Source PRD Sections**:
 
 - Data entities mentioned in features
-- User types ? User entity
-- Features ? Related entities
+- User types → User entity
+- Features → Related entities
 
 **Generated Sections**:
 
@@ -150,9 +150,9 @@ Extract key sections:
 
 **Source PRD Sections**:
 
-- Page features ? API endpoints
-- User permissions ? Auth requirements
-- Data operations ? CRUD endpoints
+- Page features → API endpoints
+- User permissions → Auth requirements
+- Data operations → CRUD endpoints
 
 **Generated Sections**:
 
@@ -178,7 +178,7 @@ Extract key sections:
 | User Roles | PROJECT_KNOWLEDGE.md |
 | Core Enums | PROJECT_DATABASE.md |
 | API Base URLs | PROJECT_API.md |
-| Commands | Scan .pi/commands/ |
+| Commands | Scan .kimi/commands/ |
 | MCP Servers | .mcp.json config |
 
 **Generated Sections**:
@@ -289,10 +289,10 @@ Proceed with full update? [Y/n]
 User: Y
 
 Generating documentation...
-? PROJECT_KNOWLEDGE.md (320 lines)
-? PROJECT_DATABASE.md (280 lines)
-? PROJECT_API.md (450 lines)
-? claude.md (180 lines)
+✓ PROJECT_KNOWLEDGE.md (320 lines)
+✓ PROJECT_DATABASE.md (280 lines)
+✓ PROJECT_API.md (450 lines)
+✓ claude.md (180 lines)
 
 Files updated:
 - .project/docs/ (3 files)
@@ -317,7 +317,7 @@ After generation, the skill validates:
 - [ ] Project structure matches actual filesystem
 - [ ] Tech stack matches package.json dependencies
 - [ ] Enums match PROJECT_DATABASE.md
-- [ ] Commands listed exist in .pi/commands/
+- [ ] Commands listed exist in .kimi/commands/
 - [ ] Total length under 250 lines
 
 ---
@@ -326,7 +326,7 @@ After generation, the skill validates:
 
 - **generate-prd**: Create PRD from client input
 - **pdf-to-prd**: Convert PDF PRD to markdown format
-- **init-workspace**: Initialize .project folder structure
+- **init-workspace**: Initialize .pi-project folder structure
 
 ---
 
@@ -343,7 +343,7 @@ For detailed instructions, see:
 
 ### Document Templates (shared)
 
-Templates are located in `.pi/base/templates/`:
+Templates are located in `.kimi/base/templates/`:
 
 - `claude-project/docs/PROJECT_KNOWLEDGE.template.md`
 - `claude-project/docs/PROJECT_DATABASE.template.md`

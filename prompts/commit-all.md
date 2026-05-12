@@ -7,7 +7,7 @@ You are a git workflow assistant. Your task is to commit and push changes on the
 
 **Workflow summary:**
 1. Validate branch (if on `dev`, `main`, or `master`, ask user for a new branch name and create it)
-2. Push deepest nested submodules first (`.pi/nestjs`, `.pi/react`, etc.), each on its own branch, create PR to `dev`
+2. Push deepest nested submodules first (`.kimi/nestjs`, `.kimi/react`, etc.), each on its own branch, create PR to `dev`
 3. Push `.claude` itself **without nested submodule pointer changes**, create PR to `dev`
 4. Sync parent repo with dev (conflict prevention)
 5. Push the parent repo **without `.claude` pointer changes**, create PR to `dev`
@@ -551,8 +551,8 @@ The workflow is ONLY successful if ALL of these are true:
 ✓ Workflow Complete
 
 Nested Submodule PRs (pushed individually):
-1. .pi/<submodule> → <PR URL>
-2. .pi/<submodule> → <PR URL>
+1. .kimi/<submodule> → <PR URL>
+2. .kimi/<submodule> → <PR URL>
 
 .claude PR (no nested submodule pointers):
 <PR URL> (or "Skipped - no .claude-specific changes")

@@ -42,7 +42,7 @@ Run all checks before proceeding:
 | Check | Command | On Failure |
 |-------|---------|------------|
 | Git repo | `git rev-parse --git-dir` | `❌ ERROR: Not in a git repository. Run 'git init' or navigate to your project.` |
-| Directory | `pwd && basename "$(pwd)"` | If in project root with `.pi/` subdirectory: `cd .claude`. If neither `.pi/` dir: `⚠️ Navigate to your project's .claude directory first.` |
+| Directory | `pwd && basename "$(pwd)"` | If in project root with `.kimi/` subdirectory: `cd .claude`. If neither `.kimi/` dir: `⚠️ Navigate to your project's .claude directory first.` |
 | Network | `git ls-remote https://github.com/CoFixer/claude-django.git HEAD` | `⚠️ Cannot access GitHub repos (network/auth issue). Continue anyway?` — ask user to confirm. |
 
 #### 0.2 — Working Directory Safety Check
@@ -86,7 +86,7 @@ If user selects No: exit with `ℹ️ Aborted. Create a feature branch first: gi
 
 ### Step 1: Detect Installed Submodules
 
-Detect which framework submodules are currently installed under `.pi/`:
+Detect which framework submodules are currently installed under `.kimi/`:
 
 ```bash
 # Method 1: Check .git/config for registered submodule URLs
@@ -479,7 +479,7 @@ for FRAMEWORK in "${TO_REMOVE[@]}"; do
 done
 ```
 
-> **Scope enforcement**: This sequence only runs on paths within `.pi/`. Paths containing `../` or starting with `/` are rejected before execution.
+> **Scope enforcement**: This sequence only runs on paths within `.kimi/`. Paths containing `../` or starting with `/` are rejected before execution.
 
 ---
 
@@ -562,7 +562,7 @@ Use `grep -qF` to skip existing patterns, append missing ones.
 
 ### Step 8: Symlink Validation and Repair
 
-After all removals, scan `.pi/` for broken symlinks:
+After all removals, scan `.kimi/` for broken symlinks:
 
 ```bash
 echo ""
@@ -798,7 +798,7 @@ Failed Removals ({count}):
 | Removal on `main`/`dev` affects shared state | Medium | Medium | Branch safety check with explicit user approval |
 | Network failure during additions | Medium | Low | Per-framework error isolation + cleanup of partial adds |
 | `.gitmodules` consistency drift | Low | Low | Step 9 validation compares file vs filesystem |
-| Non-`.pi/` submodule accidentally removed | Very Low | Critical | Scope guard: only paths in known framework list are processed |
+| Non-`.kimi/` submodule accidentally removed | Very Low | Critical | Scope guard: only paths in known framework list are processed |
 
 ---
 
@@ -855,7 +855,7 @@ grep -v "^$FRAMEWORK$" .git/info/exclude > .git/info/exclude.tmp && mv .git/info
 |-------|-------|----------|
 | `Working directory has uncommitted changes` | Dirty repo | `git stash` or `git commit -am` |
 | `Not a git repository` | Outside git repo | `git init` or navigate to repo |
-| `Not in .claude directory` | Wrong location | `cd .pi/` |
+| `Not in .claude directory` | Wrong location | `cd .kimi/` |
 | Network timeout | No internet / GitHub down | Retry later |
 | Permission denied | No GitHub access | `gh auth login` or check SSH keys |
 | Submodule already exists | Previously added | Skipped automatically |
@@ -897,7 +897,7 @@ git submodule update --init --recursive <name>
 
 1. Run `/setup-claude` (nothing installed)
 2. Backend: ✓ NestJS | Frontend: ✓ React | Departments: ✓ None
-3. Result: `.pi/nestjs/` and `.pi/react/` added
+3. Result: `.kimi/nestjs/` and `.kimi/react/` added
 
 ### Example 2: Remove a Framework
 
@@ -928,7 +928,7 @@ git submodule update --init --recursive <name>
 
 1. Run `/setup-claude`
 2. Backend: ✓ Skip | Frontend: ✓ Skip | Departments: ✓ Marketing, ✓ Content
-3. Result: `.pi/marketing/` and `.pi/content/` added
+3. Result: `.kimi/marketing/` and `.kimi/content/` added
 
 ### Example 6: Auto-detect from CLAUDE.md
 
@@ -950,6 +950,6 @@ git submodule update --init --recursive <name>
 
 ---
 
-**Best Practices**: Run in `.pi/` dir → validate with `/submodule-check` → update periodically with `git submodule update --remote`
+**Best Practices**: Run in `.kimi/` dir → validate with `/submodule-check` → update periodically with `git submodule update --remote`
 
 **See Also**: `/migrate-submodules` | `/init-claude-config` | `/submodule-check`

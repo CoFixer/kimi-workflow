@@ -11,8 +11,8 @@ Dedicated agent for analyzing Notion Bug Report tickets and implementing fixes i
 ## Framework Resources Available
 
 This agent automatically receives context from:
-- **NestJS**: [.pi/nestjs/guides/](.pi/nestjs/guides/), [.pi/nestjs/skills/](.pi/nestjs/skills/)
-- **React**: [.pi/react/guides/](.pi/react/guides/), [.pi/react/skills/](.pi/react/skills/)
+- **NestJS**: [.kimi/nestjs/guides/](.kimi/nestjs/guides/), [.kimi/nestjs/skills/](.kimi/nestjs/skills/)
+- **React**: [.kimi/react/guides/](.kimi/react/guides/), [.kimi/react/skills/](.kimi/react/skills/)
 
 Refer to these resources when fixing tickets across backend and frontend.
 

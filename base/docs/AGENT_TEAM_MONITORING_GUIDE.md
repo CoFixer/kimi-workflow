@@ -1,6 +1,6 @@
 # Agent & Team Monitoring Guide
 
-How to monitor individual agents and agent teams while they work in Claude Code.
+How to monitor individual agents and agent teams while they work in Kimi Code CLI.
 
 ---
 
@@ -10,10 +10,7 @@ How to monitor individual agents and agent teams while they work in Claude Code.
 - [Monitoring Individual Agents](#monitoring-individual-agents)
 - [Monitoring Agent Teams](#monitoring-agent-teams)
 - [Task List Monitoring](#task-list-monitoring)
-- [Idle Notifications](#idle-notifications)
-- [Team Discovery](#team-discovery)
-- [Hooks for Automated Monitoring](#hooks-for-automated-monitoring)
-- [Persistent Task Lists](#persistent-task-lists)
+- [Dispatcher Monitoring](#dispatcher-monitoring)
 - [Troubleshooting](#troubleshooting)
 
 ---
@@ -24,20 +21,14 @@ How to monitor individual agents and agent teams while they work in Claude Code.
 
 | Shortcut | Action |
 |----------|--------|
-| **Ctrl+T** | Toggle task list display (up to 10 tasks) |
+| **Ctrl+T** | Toggle task list display |
 | **Ctrl+B** | Move running task to background |
-| **Ctrl+O** | Toggle verbose output (see all tool calls) |
-| **Shift+Up/Down** | Cycle through teammates (in-process mode) |
-| **Enter** | Open selected teammate's full session |
-| **Escape** | Interrupt teammate / return to lead |
 
 ### Slash Commands
 
 | Command | What It Does |
 |---------|-------------|
-| `/tasks` | List all background tasks with IDs and status |
-| `/cost` | Show token usage per agent and total costs |
-| `/context` | See context window usage as a colored grid |
+| `/task` | List all background tasks with IDs and status |
 
 ---
 
@@ -57,35 +48,27 @@ How to monitor individual agents and agent teams while they work in Claude Code.
 
 ### Running Agents in Background
 
-Ask Claude to run something in the background:
+Ask Kimi to run something in the background:
 ```
 Run the test suite in the background and report only failing tests
 ```
 
-Or press **Ctrl+B** to background a running task (tmux users: press Ctrl+B twice).
+Or use the Shell tool with `run_in_background=true`.
 
 ### Checking Background Agent Progress
 
 **Non-blocking check** (returns immediately with whatever output is available):
-```
-TaskOutput(task_id="bg-task-123", block=false)
-```
+Use `TaskOutput` tool with `block=false`.
 
 **Blocking wait** (waits for agent to finish):
-```
-TaskOutput(task_id="bg-task-123", block=true)
-```
+Use `TaskOutput` tool with `block=true`.
 
 **Read the output file directly:**
-Use the Read tool on the output file path, or `tail` via Bash to see recent output.
+Use the ReadFile tool on the output file path, or `tail` via Shell to see recent output.
 
 ### Listing Background Tasks
 
-```
-/tasks
-```
-
-Shows all running background tasks with their IDs and status.
+Use the `TaskList` tool to enumerate active background tasks.
 
 ### Resuming Failed Background Agents
 
@@ -100,44 +83,25 @@ Resumed agents retain their full conversation history and pick up exactly where 
 
 ## Monitoring Agent Teams
 
-Agent teams have a **lead** (your main session) and multiple **teammates** (separate Claude instances).
+Agent teams have a **lead** (your main session) and multiple **teammates** (separate subagent instances invoked via the `Agent` tool).
 
-### Display Modes
+### How Team Mode Works in Kimi
 
-Set in `settings.json`:
+Unlike Claude Code's `TeamCreate`/`SendMessage` tools, Kimi Code CLI uses the **`Agent` tool** for subagent dispatch:
 
-**In-process mode** (any terminal):
-```json
-{ "teammateMode": "in-process" }
 ```
-- All teammates run inside your terminal
-- **Shift+Up/Down** to navigate between them
-- Type to send messages, **Enter** to view session, **Escape** to interrupt
-
-**Split-pane mode** (requires tmux or iTerm2):
-```json
-{ "teammateMode": "tmux" }
-```
-- Each teammate gets its own pane
-- See everyone's output simultaneously
-- Click into a pane to interact directly
-
-Or use CLI flag:
-```bash
-claude --teammate-mode tmux
+Lead (you) → Agent tool → Subagent instance
+                ↓
+         Subagent works with its own context
+                ↓
+         Returns result to lead
 ```
 
-### Interacting with Teammates
-
-**In-process mode:**
-1. **Shift+Up/Down** - cycle through teammates
-2. **Type** - send a direct message to selected teammate
-3. **Enter** - open that teammate's full session
-4. **Escape** - return to lead / interrupt current work
-
-**Split-pane mode:**
-1. Click into any teammate's pane
-2. Interact with their session directly
+Key differences from Claude Code:
+- No `TeamCreate` — use multiple `Agent` calls
+- No `SendMessage` — subagents return results directly
+- No `TodoWrite` — use `SetTodoList` tool instead
+- No persistent team sessions — each `Agent` call is independent
 
 ### Example: Spawning and Monitoring a Team
 
@@ -149,10 +113,19 @@ Create an agent team to review PR #142. Spawn three reviewers:
 Have them each review and report findings.
 ```
 
-Then monitor by:
-- Cycling through reviewers with **Shift+Up/Down**
-- Sending targeted messages for updates
-- Watching task list with **Ctrl+T**
+Implementation via Agent tool:
+1. First `Agent` call with `subagent_type="explore"` for security review
+2. Second `Agent` call with `subagent_type="explore"` for performance review
+3. Third `Agent` call with `subagent_type="explore"` for test coverage review
+4. Collect all three results in the main context
+
+### Monitoring Parallel Agents
+
+Since Kimi doesn't have `Shift+Up/Down` teammate cycling:
+- Launch parallel agents with `run_in_background=true`
+- Use `TaskList` to check which are still running
+- Use `TaskOutput` to check progress on each
+- Subagent conversations are stored in the session log
 
 ---
 
@@ -160,12 +133,17 @@ Then monitor by:
 
 Teams use a shared task list to coordinate work.
 
-### Toggle Task List Display
+### Using SetTodoList
 
-Press **Ctrl+T** to show/hide the task list in your terminal. Shows:
-- Task names and descriptions
-- Status indicators (completed, in progress, pending)
-- Dependencies and current assignee
+Use the `SetTodoList` tool to create and update tasks:
+
+```
+SetTodoList with:
+- Task 1: Design database schema (In progress)
+- Task 2: Implement backend API (Pending)
+- Task 3: Build frontend UI (Pending)
+- Task 4: Run QA checks (Pending)
+```
 
 ### Task States
 
@@ -173,145 +151,53 @@ Press **Ctrl+T** to show/hide the task list in your terminal. Shows:
 |-------|---------|
 | **Pending** | Awaiting assignment |
 | **In progress** | Currently being worked on |
-| **Completed** | Finished |
-
-Tasks can have dependencies - a pending task with unresolved dependencies can't be claimed until those dependencies are completed.
+| **Done** | Finished |
 
 ### Managing Tasks
 
 ```
-Show me all tasks
-Clear all tasks
-Assign task #3 to the architect teammate
-Mark task #3 as completed
-```
-
-### Task Storage
-
-Tasks are stored at:
-```
-~/.pi/tasks/{team-name}/
+Update the todo list: mark database schema as done, backend API as in_progress
+Show me the current todo list
 ```
 
 ---
 
-## Idle Notifications
+## Dispatcher Monitoring
 
-Teammates **automatically go idle** after every turn. This is normal behavior.
+When using the executable dispatcher (`node .kimi/scripts/dispatcher.js`):
 
-Key points:
-- **Idle does NOT mean done** - they're waiting for input
-- Sending a message to an idle teammate **wakes them up**
-- The system automatically notifies the lead when a teammate goes idle
-- **Peer DM summaries** are included in idle notifications for visibility
-- You do NOT need to react to idle notifications unless you want to assign new work
-
----
-
-## Team Discovery
-
-### Reading Team Config
-
-Team member info is stored at:
-```
-~/.pi/teams/{team-name}/config.json
-```
-
-Contains:
-```json
-{
-  "members": [
-    {
-      "name": "architect",
-      "agentId": "agent-uuid-1",
-      "agentType": "specialized-architect"
-    },
-    {
-      "name": "security-reviewer",
-      "agentId": "agent-uuid-2",
-      "agentType": "security-specialist"
-    }
-  ]
-}
-```
-
-Always refer to teammates by **name** (not agentId) for messaging and task assignment.
-
----
-
-## Hooks for Automated Monitoring
-
-### TeammateIdle Hook
-
-Triggers when a teammate stops working:
-
-```json
-{
-  "hooks": {
-    "TeammateIdle": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "./scripts/on-idle.sh"
-          }
-        ]
-      }
-    ]
-  }
-}
-```
-
-**Exit codes:**
-- `0` = Allow idle (normal)
-- `2` = Send feedback and keep the teammate working
-
-### TaskCompleted Hook
-
-Triggers when a task is marked done - use for quality gates:
-
-```json
-{
-  "hooks": {
-    "TaskCompleted": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "./scripts/verify-task.sh"
-          }
-        ]
-      }
-    ]
-  }
-}
-```
-
-**Exit codes:**
-- `0` = Allow completion
-- `2` = Prevent completion and send feedback for revision
-
-### Example Hook Script
+### Check Pipeline Status
 
 ```bash
-#!/bin/bash
-INPUT=$(cat)
-TEAMMATE_NAME=$(echo "$INPUT" | jq -r '.agent_name // empty')
-echo "Teammate $TEAMMATE_NAME has finished and is going idle"
-exit 0
+node .kimi/scripts/dispatcher.js status my-project
 ```
 
----
+Shows:
+- Phase statuses (pending, in_progress, complete, failed)
+- Assigned agents
+- Outputs and notes
+- Next eligible phase
 
-## Persistent Task Lists
-
-Share a task list across sessions with an environment variable:
+### Monitor Phase Execution
 
 ```bash
-CLAUDE_CODE_TASK_LIST_ID=my-project claude
+# See what's next
+node .kimi/scripts/dispatcher.js next my-project
+
+# Run a phase (generates dispatch prompt)
+node .kimi/scripts/dispatcher.js run my-project --phase backend
+
+# After agent finishes, complete the phase
+node .kimi/scripts/dispatcher.js complete my-project --phase backend --result result.json
 ```
 
-This uses `~/.pi/tasks/my-project/` for all sessions, letting you pick up where you left off.
+### Pipeline Status Files
+
+| File | Purpose |
+|------|---------|
+| `.project/status/{project}/pipeline.json` | Structured status (machine-readable) |
+| `.project/status/{project}/PIPELINE_STATUS.md` | Human-readable markdown table |
+| `.project/status/{project}/{phase}-dispatch-prompt.md` | Generated agent prompt |
 
 ---
 
@@ -320,58 +206,60 @@ This uses `~/.pi/tasks/my-project/` for all sessions, letting you pick up where 
 | Command / Shortcut | Purpose |
 |--------------------|---------|
 | **Ctrl+O** | Toggle verbose output - shows all tool calls and decisions |
-| `/cost` | Token usage per agent (costs scale linearly with team size) |
-| `/context` | Context window usage grid |
-| `/debug` | Session debug log (spawn events, state changes, errors) |
+| `/task` | Background task status |
 
-### Subagent Transcripts
+### Subagent Context
 
-Subagent conversations are stored at:
-```
-~/.pi/projects/{project}/{sessionId}/subagents/agent-{agentId}.jsonl
-```
-
-Read these to understand what an agent did after it completes.
+Subagent conversations are part of the main session. To understand what an agent did:
+1. Review the subagent's returned output
+2. Check files the agent created/modified
+3. Use `TaskOutput` for background agents
 
 ---
 
 ## Troubleshooting
 
-### Teammates Not Appearing
-- Press **Shift+Down** to cycle - they may already be running
-- For split panes, verify tmux is installed: `which tmux`
-- For iTerm2, ensure `it2` CLI is installed and Python API is enabled
+### Agents Not Appearing
+
+- Check if background tasks are still running with `TaskList`
+- For foreground agents, the conversation output appears inline
+- Subagent results are returned in the main conversation
 
 ### Too Many Permission Prompts
-Pre-approve common operations in `settings.json`:
-```json
-{
-  "permissions": {
-    "allow": ["Bash(npm test:*)", "Bash(git status:*)"]
-  }
-}
-```
+
+Pre-approve common operations when launching agents:
+- Background agents launched with `run_in_background=true` have permissions pre-approved
+- Foreground agents will prompt for each tool use
 
 ### Task Status Appears Stuck
-Check if work is actually done and update manually:
+
+Update manually with `SetTodoList`:
 ```
-Mark task #3 as completed
+Update todo list: mark "backend API" as done
 ```
 
-### Orphaned tmux Sessions
+### Dispatcher Errors
+
 ```bash
-tmux ls
-tmux kill-session -t <session-name>
+# Pipeline file not found
+node .kimi/scripts/dispatcher.js init my-project --backend nestjs --frontend react
+
+# Phase prerequisites not met
+node .kimi/scripts/dispatcher.js status my-project
+# Check which prerequisites are incomplete
+
+# PHASE_RESULT validation failed
+node .kimi/scripts/dispatcher.js validate-phase-result result.json
+# Fix the JSON and retry
 ```
 
 ---
 
 ## Practical Workflow
 
-1. **Start team** with your preferred display mode
-2. **Ctrl+T** to keep the task list visible
-3. **Ctrl+O** for verbose output to see detailed tool usage
-4. **Shift+Up/Down** to cycle through teammates and check on them
-5. **Type a message** to redirect any teammate that's stuck
-6. **/cost** periodically to track token usage
-7. **/tasks** to check on any background tasks
+1. **Start pipeline** with dispatcher
+2. **Use `SetTodoList`** to keep the task list visible
+3. **Launch agents** via `Agent` tool with `run_in_background=true` for parallel work
+4. **Check `TaskList`** periodically for background agent status
+5. **Use dispatcher** to track phase completion and validate results
+6. **Review `pipeline.json`** for overall project health

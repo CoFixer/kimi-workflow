@@ -46,7 +46,7 @@ $ARGUMENTS
 - Figma MCP is available
 
 **Source of truth:** Figma designs via MCP tools
-**Skill:** `.pi/react/skills/qa/design-qa-figma.md`
+**Skill:** `.kimi/frontend/guides/qa/design-qa-figma.md`
 **Delegates to:** `/ralph design-qa {project} --incremental`
 
 #### Variant B: HTML-based (`design-qa-html`)
@@ -56,7 +56,7 @@ $ARGUMENTS
 - No Figma node IDs in status file, OR HTML prototypes directory detected
 
 **Source of truth:** Static HTML files
-**Skill:** `.pi/react/skills/qa/design-qa-html.md`
+**Skill:** `.kimi/frontend/guides/qa/design-qa-html.md`
 
 #### Detection Logic
 
@@ -100,9 +100,9 @@ No QA scopes available.
 
 ### If both scopes requested (default)
 
-Run in parallel using TeamCreate:
+Run in parallel using Agent tool with run_in_background=true:
 
-1. `TeamCreate("qa-run")`
+1. Dispatch multiple subagents for parallel QA tasks
 2. Spawn agents simultaneously in a single message:
    - **Design agent**: Runs design QA (Figma or HTML variant)
    - **Acceptance agent**: Runs `/ui-review`

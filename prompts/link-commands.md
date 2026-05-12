@@ -5,7 +5,7 @@ argument-hint: no arguments
 
 # Link Commands
 
-Creates symlinks to make all submodule commands accessible from the central `.pi/commands/` hub.
+Creates symlinks to make all submodule commands accessible from the central `.kimi/prompts/` hub.
 
 ---
 
@@ -15,7 +15,7 @@ This command sets up the symlink structure that allows all commands from:
 - **Base commands** (`design`, `dev`, `git`, `operation`, `utility`)
 - **Tech stack commands** (`react-native`, `nestjs`, `react`)
 
-...to be accessible from a single location: `.pi/commands/`
+...to be accessible from a single location: `.kimi/prompts/`
 
 ---
 
@@ -24,12 +24,12 @@ This command sets up the symlink structure that allows all commands from:
 Verify the `.claude` directory exists and contains the expected structure:
 
 ```bash
-ls -d .pi/base/commands 2>/dev/null || echo "NOT_FOUND"
+ls -d .kimi/base/commands 2>/dev/null || echo "NOT_FOUND"
 ```
 
 **If NOT_FOUND:**
 ```
-Error: .pi/base/commands directory not found.
+Error: .kimi/base/commands directory not found.
 Please ensure submodules are initialized:
   git submodule update --init --recursive
 ```
@@ -41,7 +41,7 @@ Please ensure submodules are initialized:
 Create the central commands directory if it doesn't exist:
 
 ```bash
-mkdir -p .pi/commands
+mkdir -p .kimi/commands
 ```
 
 ---
@@ -93,7 +93,7 @@ cd ..
 Show the final state of the commands hub:
 
 ```bash
-ls -la .pi/commands/
+ls -la .kimi/prompts/
 ```
 
 **Report format:**
@@ -109,7 +109,7 @@ ls -la .pi/commands/
 | utility | ../base/commands/utility |
 | react-native | ../react-native/commands |
 
-All commands are now accessible from `.pi/commands/`
+All commands are now accessible from `.kimi/prompts/`
 ```
 
 ---
@@ -118,7 +118,7 @@ All commands are now accessible from `.pi/commands/`
 
 **Submodules not initialized:**
 ```
-Error: .pi/base/commands not found.
+Error: .kimi/base/commands not found.
 
 The base submodule may not be initialized. Run:
   git submodule update --init --recursive
@@ -128,10 +128,10 @@ Then try /link-commands again.
 
 **Permission denied:**
 ```
-Error: Cannot create symlinks in .pi/commands/
+Error: Cannot create symlinks in .kimi/prompts/
 
 Check directory permissions:
-  ls -la .pi/
+  ls -la .kimi/
 ```
 
 **Broken symlinks:**
@@ -162,7 +162,7 @@ Linked: react-native -> ../react-native/commands
 | utility | ../base/commands/utility |
 | react-native | ../react-native/commands |
 
-All commands are now accessible from `.pi/commands/`
+All commands are now accessible from `.kimi/prompts/`
 ```
 
 ---

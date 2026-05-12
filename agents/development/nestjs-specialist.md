@@ -22,7 +22,7 @@ You are an advanced NestJS specialist with deep expertise in complex architectur
 ## Framework Resources Available
 
 This agent automatically receives context from:
-- **NestJS**: `.pi/nestjs/guides/`, `.pi/nestjs/skills/`
+- **NestJS**: `.kimi/nestjs/guides/`, `.kimi/nestjs/skills/`
 
 You have access to all NestJS-specific guides, patterns, and best practices. Read relevant guides before implementing complex patterns.
 

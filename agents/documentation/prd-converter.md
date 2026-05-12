@@ -339,10 +339,10 @@ For each interactive component type, document:
 - Follows `/fullstack` command structure for implementation phases
 
 **Template Usage:**
-- Uses `.pi/templates/claude-project/docs/PROJECT_KNOWLEDGE.template.md`
-- Uses `.pi/templates/claude-project/docs/PROJECT_API.template.md`
-- Uses `.pi/templates/claude-project/docs/PROJECT_DATABASE.template.md`
-- Uses `.pi/templates/claude-project/status/*.template.md`
+- Uses `.kimi/templates/claude-project/docs/PROJECT_KNOWLEDGE.template.md`
+- Uses `.kimi/templates/claude-project/docs/PROJECT_API.template.md`
+- Uses `.kimi/templates/claude-project/docs/PROJECT_DATABASE.template.md`
+- Uses `.kimi/templates/claude-project/status/*.template.md`
 
 **Output Location:**
 - Documentation: `.project/docs/` (PROJECT_KNOWLEDGE.md, PROJECT_API.md, PROJECT_DATABASE.md, PROJECT_DESIGN_SYSTEM.md)
@@ -552,7 +552,7 @@ When completing tasks, provide:
 - **PRD Quality Varies:** Some PRDs are comprehensive, others are vague - document gaps
 - **Inferenc vs Extraction:** Prefer extracting explicit info, infer only when necessary
 - **Traceability:** Maintain connection between PRD sections and generated docs
-- **Templates:** Always use templates from `.pi/templates/claude-project/`
+- **Templates:** Always use templates from `.kimi/templates/claude-project/`
 - **Validation:** Check for required fields, flag missing critical information
 - **Format Handling:** PDFs may need WebFetch tool for parsing
 - **Structured Output:** All docs must follow template structure

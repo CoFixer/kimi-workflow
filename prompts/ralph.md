@@ -183,15 +183,15 @@ workflows:
 ### Step 3: Resolve Paths
 
 ```
-skill_path = .pi/{stack}/skills/{skill}
+skill_path = .kimi/skills/{skill}
 
 # Special case: when stack = "all", resolve to root-level skills
 if stack == "all":
-    skill_path = .pi/skills/{skill}
+    skill_path = .kimi/skills/{skill}
 
 # Special case: fix-tickets uses nested skill path
 if workflow == "fix-tickets":
-    skill_path = .pi/skills/notion-ticket-reviewer/prompts/batch-fix.md
+    skill_path = .kimi/skills/notion-ticket-reviewer/prompts/batch-fix.md
     status_path = .project/status/tickets/TICKET_STATUS.md
 
 status_path = .project/status/{project}/{status_file}
@@ -204,7 +204,7 @@ Read the skill file to get workflow instructions.
 ### Step 5: Check/Create Status File
 
 If status file doesn't exist:
-1. Create from template at `.pi/base/templates/ralph/status-file.template.md`
+1. Create from template at `.kimi/base/templates/ralph/status-file.template.md`
 2. Populate with discovered items for the workflow
 
 ### Step 6: Build Ralph Loop Prompt
@@ -216,7 +216,7 @@ Generate the prompt for `/ralph-loop`:
 
 ## Context
 - Project: {PROJECT}
-- Skill: .pi/{STACK}/skills/{SKILL}
+- Skill: .kimi/{STACK}/skills/{SKILL}
 - Status File: .project/status/{PROJECT}/{STATUS_FILE}
 
 ## Instructions
@@ -281,7 +281,7 @@ Workflow: {workflow}
 Project: {project}
 Stack: {stack}
 
-Skill Path: .pi/{stack}/skills/{skill}
+Skill Path: .kimi/skills/{skill}
 Status File: .project/status/{project}/{status_file}
 
 Completion Promise: {completion_promise}
@@ -411,9 +411,9 @@ To cancel an active Ralph loop:
 ## Related
 
 - [Ralph Wiggum Plugin - GitHub](https://github.com/anthropics/claude-code/tree/main/plugins/ralph-wiggum)
-- Design QA Skill: `.pi/react/skills/design-qa-patterns.md`
-- E2E Test Generator: `.pi/react/skills/e2e-test-generator.md`
-- Backend E2E Tests: `.pi/nestjs/skills/e2e-test-generator.md`
-- Gap Finder Skill: `.pi/skills/gap-finder.md`
-- Fix Gaps Skill: `.pi/skills/fix-gaps.md`
-- Fix Tickets Skill: `.pi/skills/notion-ticket-reviewer/prompts/batch-fix.md`
+- Design QA Skill: `.kimi/frontend/guides/design-qa-patterns.md`
+- E2E Test Generator: `.kimi/frontend/guides/e2e-test-generator.md`
+- Backend E2E Tests: `.kimi/backend/guides/e2e-test-generator.md`
+- Gap Finder Skill: `.kimi/skills/gap-finder.md`
+- Fix Gaps Skill: `.kimi/skills/fix-gaps.md`
+- Fix Tickets Skill: `.kimi/skills/notion-ticket-reviewer/prompts/batch-fix.md`

@@ -1,5 +1,5 @@
 ---
-description: Initialize .project folder with documentation templates
+description: Initialize .claude-project folder with documentation templates
 argument-hint: Optional project name (will auto-detect if not provided)
 ---
 
@@ -7,10 +7,10 @@ You are a project documentation initialization assistant. Your task is to create
 
 ## Step 0: Check Prerequisites
 
-### Check for existing .project folder
+### Check for existing .claude-project folder
 
 ```bash
-ls -la .project 2>/dev/null
+ls -la .claude-project 2>/dev/null
 ```
 
 If `.project/` already exists, use **AskUserQuestion** to ask:
@@ -25,12 +25,12 @@ Store the choice as `$OVERWRITE_MODE`.
 ### Verify templates exist
 
 ```bash
-ls .pi/base/templates/claude-project/
+ls .kimi/base/templates/claude-project/
 ```
 
 If templates don't exist, report error and stop:
 ```
-Error: Template directory not found at .pi/base/templates/claude-project/
+Error: Template directory not found at .kimi/base/templates/claude-project/
 Please ensure the claude-base submodule is properly initialized.
 ```
 
@@ -95,7 +95,7 @@ Only prompt if auto-detection failed or user wants to change values.
 
 Based on `$OVERWRITE_MODE`:
 - **Skip**: Exit with message "Keeping existing .project/ folder"
-- **Overwrite**: `rm -rf .project`
+- **Overwrite**: `rm -rf .claude-project`
 - **Merge**: Continue (will skip existing files)
 
 Create the folder structure:
@@ -125,7 +125,7 @@ touch .project/secrets/.gitkeep
 
 ## Step 4: Process and Copy Templates
 
-For each template file in `.pi/base/templates/claude-project/`:
+For each template file in `.kimi/base/templates/claude-project/`:
 
 1. Read the template content
 2. Replace placeholders:
@@ -158,7 +158,7 @@ If `$HAS_DASHBOARD` is true, also copy:
 
 ## Step 5: Update .gitignore
 
-Check if `.gitignore` contains `.project` entries:
+Check if `.gitignore` contains `.claude-project` entries:
 
 ```bash
 grep -q "claude-project/secrets" .gitignore 2>/dev/null

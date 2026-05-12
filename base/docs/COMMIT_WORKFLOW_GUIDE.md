@@ -141,7 +141,7 @@ Our project uses nested submodules:
 
 ```
 project/                    (Parent repo)
-├── .pi/                (Submodule)
+├── .kimi/                (Kimi workflow submodule)
 │   ├── base/               (Nested submodule)
 │   ├── nestjs/             (Nested submodule)
 │   └── react/              (Nested submodule)
@@ -149,14 +149,14 @@ project/                    (Parent repo)
 
 ### What Claude Does Automatically
 
-1. **Detects submodule changes** - If you modified files in `.pi/base/` or other submodules
+1. **Detects submodule changes** - If you modified files in `.kimi/base/` or other submodules
 2. **Commits deepest first** - Starts with nested submodules, then `.claude`, then parent
 3. **Uses current branch in each** - Each submodule commits to its own current branch
 4. **Creates PRs for each level** - Every repo gets a PR targeting `dev`
 
 ### Example with Submodule Changes
 
-If you edited files in `.pi/base/`:
+If you edited files in `.kimi/base/`:
 
 ```
 PRs Created:

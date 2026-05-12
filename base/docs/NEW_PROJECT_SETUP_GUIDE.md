@@ -12,8 +12,8 @@ Setting up a new project involves **two separate concerns**:
 
 | Command | Purpose | What it creates |
 |---------|---------|-----------------|
-| `/new-project` | **One-command setup** (recommended) | Everything: `.pi/`, boilerplate, docker-compose |
-| `/initialize-claude` | Claude Code configuration only | `.pi/` submodule with AI context |
+| `/new-project` | **One-command setup** (recommended) | Everything: `.kimi/`, boilerplate, docker-compose |
+| `/init-workspace` | Kimi Code CLI configuration only | `.kimi/` submodule with AI context |
 | `/create-mono-repo` | Boilerplate code only | `backend/`, `frontend/`, etc. |
 
 ---
@@ -28,7 +28,7 @@ mkdir monkey && cd monkey
 This single command will:
 1. Ask for your tech stack (backend + frontend choices)
 2. Create `CoFixer/monkey-claude` repo on GitHub
-3. Set up `.pi/` submodule with framework patterns
+3. Set up `.kimi/` submodule with framework patterns
 4. Clone selected boilerplate repos
 5. Generate `docker-compose.yml`
 6. Create `.project/` documentation structure
@@ -128,7 +128,7 @@ After both commands, "Monkey" project looks like:
 
 ```
 monkey-project/
-├── .pi/                    ← Claude Code config (from /initialize)
+├── .kimi/                  ← Kimi Code CLI config (from /init-workspace)
 │   ├── base/                   → claude-base submodule
 │   ├── nestjs/                 → claude-nestjs submodule
 │   ├── react/                  → claude-react submodule

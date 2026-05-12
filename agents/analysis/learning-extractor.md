@@ -1,4 +1,4 @@
----
+﻿---
 name: learning-extractor
 description: Extract learnings, mistakes, and discoveries from session in TIL format
 role: specialist
@@ -141,8 +141,8 @@ Look for these patterns:
 
 ## Memory Level Guidelines
 
-- **Personal** (`~/.pi/memory/`): "I prefer..." (individual preference)
-- **Team** (`.pi/base/memory/`): "We always...", "Our team..."
+- **Personal** (`~/.kimi/memory/`): "I prefer..." (individual preference)
+- **Team** (`.kimi/base/memory/`): "We always...", "Our team..."
 - **Project** (`.project/memory/`): "In this project...", "This codebase..."
 
 When unclear, default to **Project** level.

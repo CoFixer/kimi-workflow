@@ -72,7 +72,7 @@ mkdir -p "$RUN_DIR"
 ### 2.1 Create Team
 
 ```
-TeamCreate("ui-review")
+Agent tool dispatch for ui-review subagent
 ```
 
 ### 2.2 Spawn Agents
@@ -88,7 +88,7 @@ Task(
   team_name: "ui-review",
   prompt: """
     You are a playwright-qa-agent. Read the agent instructions at:
-    .pi/base/agents/playwright-qa-agent.md
+    .kimi/base/agents/playwright-qa-agent.md
 
     Execute this user story:
 

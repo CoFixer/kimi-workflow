@@ -38,7 +38,7 @@ Before running any command phase, verify:
 2. **Project documentation exists (optional but recommended):**
    - `.project/docs/PROJECT_KNOWLEDGE.md` - Architecture and frontend definitions
    - `.project/docs/PROJECT_API.md` - API endpoints
-   - `.pi/react/skills/converters/html-to-react-converter.md` - Conversion patterns
+   - `.kimi/frontend/guides/converters/html-to-react-converter.md` - Conversion patterns
 
 3. **Frontend directories exist:**
    ```bash
@@ -664,7 +664,7 @@ Generate token-optimized conversion prompt files for each discovered frontend, o
 ```bash
 Read: .project/resources/prompts/html-to-react/mapping.json
 Read: .project/resources/prompts/html-to-react/analysis.md
-Read: .pi/react/skills/converters/html-to-react-converter.md
+Read: .kimi/frontend/guides/converters/html-to-react-converter.md
 
 # Optional: Read project docs if available
 if [ -f .project/docs/PROJECT_KNOWLEDGE.md ]; then
@@ -754,7 +754,7 @@ Converting [count] HTML screens to React components for [frontend-name].
 - Styling: Tailwind CSS
 
 **Reference:**
-- Conversion: `.pi/react/skills/converters/html-to-react-converter.md`
+- Conversion: `.kimi/frontend/guides/converters/html-to-react-converter.md`
 [If PROJECT_API.md exists:]
 - API: `.project/docs/PROJECT_API.md`
 [If PROJECT_KNOWLEDGE.md exists:]
@@ -1010,8 +1010,8 @@ Next Actions:
 ## Related Resources
 
 **Skills:**
-- `.pi/react/skills/converters/html-to-react-converter.md` - Conversion patterns
-- `.pi/react/skills/design-qa-html.md` - Visual QA tool (if available)
+- `.kimi/frontend/guides/converters/html-to-react-converter.md` - Conversion patterns
+- `.kimi/frontend/guides/design-qa-html.md` - Visual QA tool (if available)
 
 **Project Docs (if available):**
 - `.project/docs/PROJECT_KNOWLEDGE.md` - Architecture

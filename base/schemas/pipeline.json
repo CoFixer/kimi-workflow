@@ -1,0 +1,190 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "StorePilot Pipeline Status",
+  "description": "Structured pipeline status for Kimi orchestration. Replaces/adjunct to PIPELINE_STATUS.md.",
+  "type": "object",
+  "required": ["version", "project", "phases", "tech_stack"],
+  "properties": {
+    "version": {
+      "type": "string",
+      "const": "2.0"
+    },
+    "project": {
+      "type": "string",
+      "description": "Project name slug"
+    },
+    "created": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "last_run": {
+      "type": ["string", "null"],
+      "format": "date-time"
+    },
+    "tech_stack": {
+      "type": "object",
+      "required": ["backend", "frontends"],
+      "properties": {
+        "backend": {
+          "type": "string",
+          "enum": ["nestjs", "django"]
+        },
+        "frontends": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": ["react", "react-native"]
+          }
+        },
+        "dashboards": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "phases": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/phase"
+      }
+    },
+    "execution_log": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/logEntry"
+      },
+      "maxItems": 20
+    },
+    "change_tracking": {
+      "type": "object",
+      "properties": {
+        "submodule_hashes": {
+          "type": "object",
+          "additionalProperties": { "type": "string" }
+        },
+        "skill_checksums": {
+          "type": "object",
+          "additionalProperties": { "type": "string" }
+        },
+        "doc_mtimes": {
+          "type": "object",
+          "additionalProperties": { "type": "integer" }
+        }
+      }
+    },
+    "phase_config": {
+      "type": "object",
+      "properties": {
+        "frontend_path": {
+          "type": ["string", "null"],
+          "enum": ["design-scratch", "figma", "html", null]
+        }
+      }
+    }
+  },
+  "definitions": {
+    "phase": {
+      "type": "object",
+      "required": ["name", "skill", "tier", "status", "prerequisites"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "enum": ["init", "prd", "database", "backend", "frontend", "integrate", "test", "qa", "ship"]
+        },
+        "skill": {
+          "type": "string",
+          "description": "Skill filename or composite identifier"
+        },
+        "tier": {
+          "type": "string",
+          "enum": ["base", "nestjs", "django", "react", "react-native", "stack"]
+        },
+        "status": {
+          "type": "string",
+          "enum": ["pending", "in_progress", "complete", "failed", "blocked"]
+        },
+        "prerequisites": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "output": {
+          "type": ["string", "null"]
+        },
+        "notes": {
+          "type": ["string", "null"]
+        },
+        "agent": {
+          "type": ["string", "null"],
+          "description": "Agent that executed or is executing this phase"
+        },
+        "agent_result": {
+          "$ref": "#/definitions/agentResult"
+        },
+        "started_at": {
+          "type": ["string", "null"],
+          "format": "date-time"
+        },
+        "completed_at": {
+          "type": ["string", "null"],
+          "format": "date-time"
+        },
+        "duration_seconds": {
+          "type": ["integer", "null"]
+        }
+      }
+    },
+    "agentResult": {
+      "type": ["object", "null"],
+      "required": ["phase", "status", "summary", "counts"],
+      "properties": {
+        "phase": { "type": "string" },
+        "status": {
+          "type": "string",
+          "enum": ["complete", "failed", "partial"]
+        },
+        "summary": {
+          "type": "string",
+          "maxLength": 200
+        },
+        "counts": {
+          "type": "object",
+          "properties": {
+            "files_created": { "type": "integer" },
+            "endpoints_implemented": { "type": "integer" },
+            "entities_created": { "type": "integer" },
+            "tests_generated": { "type": "integer" },
+            "gaps_found": { "type": "integer" }
+          }
+        },
+        "top_issues": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "maxLength": 100
+          },
+          "maxItems": 3
+        },
+        "artifact_paths": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "next_phase_hints": {
+          "type": "string",
+          "maxLength": 300
+        }
+      }
+    },
+    "logEntry": {
+      "type": "object",
+      "required": ["date", "phase", "agent", "result"],
+      "properties": {
+        "date": { "type": "string", "format": "date-time" },
+        "phase": { "type": "string" },
+        "duration_seconds": { "type": "integer" },
+        "agent": { "type": "string" },
+        "result": { "type": "string", "enum": ["success", "failure"] },
+        "notes": { "type": "string" }
+      }
+    }
+  }
+}

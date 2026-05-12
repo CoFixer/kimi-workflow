@@ -10,7 +10,7 @@ You are a git submodule health check assistant. Your task is to verify all submo
 This project uses **local-only submodules** — they exist on your machine but are never pushed to remote:
 
 ```
-.pi/
+.kimi/
 ├── <tech-stack>/       # Local-only submodule(s) → nestjs, react, etc.
 ├── agents/             # Project-specific (tracked)
 ├── skills/             # Project-specific (tracked)
@@ -99,7 +99,7 @@ cd ..
 cd .claude
 for dir in */; do
   if [ -e "$dir/.git" ] && [ ! -L "$dir" ]; then
-    echo "=== .pi/$dir ==="
+    echo "=== .kimi/$dir ==="
     cd "$dir"
     git status --short
     cd ..

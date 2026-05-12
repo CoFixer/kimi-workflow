@@ -56,9 +56,9 @@ Create the dynamic service discovery config at project root:
 const fs = require('fs');
 const path = require('path');
 
-// Port configuration — resolved from .pi/base/port-map.json
+// Port configuration — resolved from .kimi/base/port-map.json
 // Fallback: PORT_BASE env var, then deterministic hash for unregistered projects
-const { resolvePorts } = require('./.pi/base/scripts/resolve-ports');
+const { resolvePorts } = require('./.kimi/base/scripts/resolve-ports');
 const PORTS = resolvePorts(__dirname);
 
 // Auto-detect services from folder structure
@@ -200,7 +200,7 @@ Add these scripts:
 After creating ecosystem.config.js, synchronize the backend's `.env` files so CORS origins match the assigned ports. Without this step, the backend will reject requests from frontends on the new ports.
 
 ```bash
-node .pi/base/scripts/sync-env-ports.js
+node .kimi/base/scripts/sync-env-ports.js
 ```
 
 This updates `PORT`, `FRONTEND_URL`, `ALLOW_ORIGINS`, `CORS_ALLOWED_ORIGINS`, and `CSRF_TRUSTED_ORIGINS` in all backend env files (`.env`, `.env.example`, `.env.dummy`).
@@ -231,7 +231,7 @@ Detected services:
 - frontend → port [base+1]
 - [dashboard names] → port [base+2]+
 
-Port source: .pi/base/port-map.json
+Port source: .kimi/base/port-map.json
 Override: PORT_BASE=XXXX pm2 start ecosystem.config.js
 
 Quick Start:
@@ -243,19 +243,19 @@ Individual control:
   pm2 restart backend  # Restart one server
   pm2 logs frontend    # View one server's logs
 
-Documentation: See .pi/base/docs/pm2-setup.md
+Documentation: See .kimi/base/docs/pm2-setup.md
 ```
 
 ## Error Handling
 
 - **No backend/frontend found**: Warn user but allow them to proceed
 - **PM2 install fails**: Check node/npm installation, suggest manual install
-- **Port conflicts**: Run `.pi/base/hooks/check-ports.sh --kill` or set `PORT_BASE=XXXX` env var to override
+- **Port conflicts**: Run `.kimi/base/hooks/check-ports.sh --kill` or set `PORT_BASE=XXXX` env var to override
 - **Existing config**: Always ask before overwriting
 
 ## Port Reference
 
-Ports are assigned per-project via `.pi/base/port-map.json`. Each project gets a block of 10 ports:
+Ports are assigned per-project via `.kimi/base/port-map.json`. Each project gets a block of 10 ports:
 
 | Offset | Service |
 |--------|---------|
@@ -263,7 +263,7 @@ Ports are assigned per-project via `.pi/base/port-map.json`. Each project gets a
 | +1 | Frontend |
 | +2+ | Dashboards / auxiliary services |
 
-See `.pi/base/port-map.json` for the full project-to-port mapping.
+See `.kimi/base/port-map.json` for the full project-to-port mapping.
 To add a new project, append an entry with the next available base port (increments of 10).
 
 ## Related

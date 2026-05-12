@@ -67,7 +67,7 @@ Agents are specialized roles for complex tasks:
    - feature-dev → gap-finder → gap-fixer → code-review → commit-workflow
 
 4. **Reference guides**
-   - Backend patterns → `.pi/backend/guides/`
+   - Backend patterns → `.kimi/backend/guides/`
    - Project specs → `.project/docs/`
    - Kimi workflows → `.kimi/guides/`
 

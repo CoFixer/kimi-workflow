@@ -20,7 +20,7 @@ This project uses nested submodules:
 
 ```
 project/                    # Parent repo (pull dev → current branch)
-├── .pi/                # Submodule → project-claude (pull dev → current branch)
+├── .kimi/                # Submodule → project-claude (pull dev → current branch)
 │   ├── base/               # Submodule → claude-base (pull dev → current branch)
 │   ├── <tech-stack>/       # Submodules → claude-nestjs, claude-react, etc.
 │   └── commands -> base/commands
@@ -85,12 +85,12 @@ for submodule in */; do
     continue
   fi
 
-  echo "Pulling dev into .pi/$submodule_name..."
+  echo "Pulling dev into .kimi/$submodule_name..."
   cd "$submodule_name"
 
   NESTED_BRANCH=$(git branch --show-current)
   if [ -z "$NESTED_BRANCH" ]; then
-    echo "⚠️ .pi/$submodule_name is in detached HEAD, skipping pull"
+    echo "⚠️ .kimi/$submodule_name is in detached HEAD, skipping pull"
   else
     echo "  Current branch: $NESTED_BRANCH"
     echo "  Pulling from: dev"
@@ -173,13 +173,13 @@ After pulling submodule updates, verify commands are properly linked:
 
 ```bash
 # Check if commands symlink exists and points to base/commands
-if [ -L .pi/commands ]; then
-  echo "Commands symlink OK: $(readlink .pi/commands)"
+if [ -L .kimi/commands ]; then
+  echo "Commands symlink OK: $(readlink .kimi/commands)"
 else
-  echo "Warning: .pi/commands is not a symlink"
+  echo "Warning: .kimi/commands is not a symlink"
   # Recreate symlink if needed
-  rm -rf .pi/commands
-  ln -s base/commands .pi/commands
+  rm -rf .kimi/commands
+  ln -s base/commands .kimi/commands
   echo "Recreated commands symlink"
 fi
 ```
@@ -201,8 +201,8 @@ Parent repo:
   - Status: <updated/already up to date/conflicts>
 
 Submodules updated:
-  - .pi/base: <current-branch> ← dev
-  - .pi/<other>: <current-branch> ← dev
+  - .kimi/base: <current-branch> ← dev
+  - .kimi/<other>: <current-branch> ← dev
   - .claude: <current-branch> ← dev
 
 Commands: <symlink status>
@@ -229,7 +229,7 @@ Any issues: <warnings if any>
 ## Quick Reference
 
 Pull order (deepest first):
-1. `.pi/<all-nested-submodules>` ← dev
+1. `.kimi/<all-nested-submodules>` ← dev
 2. `.claude` ← dev
 3. Parent repo ← dev
 

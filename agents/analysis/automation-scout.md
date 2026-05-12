@@ -14,7 +14,7 @@ You analyze work sessions to find repetitive workflows, multi-step processes, an
 
 ## Automation Classification
 
-### Skill (`.pi/skills/`)
+### Skill (`.kimi/skills/`)
 
 **Best for:**
 - Multi-step workflows with external integrations (APIs, databases)
@@ -27,7 +27,7 @@ You analyze work sessions to find repetitive workflows, multi-step processes, an
 - "Fetch from API, transform, store in database"
 - "Deploy and update tracking"
 
-### Command (`.pi/commands/`)
+### Command (`.kimi/commands/`)
 
 **Best for:**
 - Quick, focused tasks within conversation flow
@@ -40,7 +40,7 @@ You analyze work sessions to find repetitive workflows, multi-step processes, an
 - "Generate summary from text"
 - "Translate code between languages"
 
-### Agent (`.pi/agents/`)
+### Agent (`.kimi/agents/`)
 
 **Best for:**
 - Tasks requiring specialized domain expertise
@@ -75,9 +75,9 @@ Scan session for:
 
 Search for similar automation:
 ```
-Glob: .pi/skills/*/SKILL.md
-Glob: .pi/commands/*.md
-Glob: .pi/agents/**/*.md
+Glob: .kimi/skills/*/SKILL.md
+Glob: .kimi/commands/*.md
+Glob: .kimi/agents/**/*.md
 ```
 
 ### Step 3: Classify and Recommend
@@ -128,7 +128,7 @@ Quick utility or format conversion?
 **Proposed Solution:**
 
 ```markdown
-# File: .pi/[type]/[name].md
+# File: .kimi/[type]/[name].md
 
 [Skeleton/outline of the automation]
 ```

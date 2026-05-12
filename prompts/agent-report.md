@@ -33,10 +33,10 @@ Task(
   subagent_type='agent-monitor',
   description='Generate [report-type] monitoring report',
   prompt='Generate a [report-type] report by reading data from:
-    - .pi/monitoring/logs/*.jsonl (raw activity logs)
-    - .pi/monitoring/AGENT_MONITOR_DASHBOARD.md (current dashboard)
-    - .pi/monitoring/AGENT_ERROR_LOG.md (error patterns)
-    - .pi/agents/agent-registry.json (agent definitions and teams)
+    - .kimi/monitoring/logs/*.jsonl (raw activity logs)
+    - .kimi/monitoring/AGENT_MONITOR_DASHBOARD.md (current dashboard)
+    - .kimi/monitoring/AGENT_ERROR_LOG.md (error patterns)
+    - .kimi/agents/agent-registry.json (agent definitions and teams)
 
     Report type: [report-type]
     Output the report as formatted markdown.'
@@ -57,8 +57,8 @@ Task(
 
 ## Data Sources
 
-- `.pi/monitoring/logs/*.jsonl` - JSONL activity logs per session
-- `.pi/monitoring/AGENT_MONITOR_DASHBOARD.md` - Auto-updated dashboard
-- `.pi/monitoring/AGENT_ACTIVITY_HISTORY.md` - Rolling 7-day summary
-- `.pi/monitoring/AGENT_ERROR_LOG.md` - Error pattern tracking
-- `.pi/agents/agent-registry.json` - Agent team structure and roles
+- `.kimi/monitoring/logs/*.jsonl` - JSONL activity logs per session
+- `.kimi/monitoring/AGENT_MONITOR_DASHBOARD.md` - Auto-updated dashboard
+- `.kimi/monitoring/AGENT_ACTIVITY_HISTORY.md` - Rolling 7-day summary
+- `.kimi/monitoring/AGENT_ERROR_LOG.md` - Error pattern tracking
+- `.kimi/agents/agent-registry.json` - Agent team structure and roles

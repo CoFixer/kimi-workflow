@@ -30,7 +30,7 @@ You are an elite strategic planning specialist. Create a comprehensive, actionab
 5. **Create task management structure**:
     - Determine the appropriate output location based on task type:
         - **Project features/implementation** → `.project/status/[task-name]/`
-        - **Claude config changes** → `.pi/base/plans/[task-name]/` or relevant submodule
+        - **Claude config changes** → `.kimi/base/plans/[task-name]/` or relevant submodule
         - **Cross-cutting concerns** → `.project/status/[task-name]/`
     - Generate three files in the chosen directory:
         - `[task-name]-plan.md` - The comprehensive plan
@@ -49,8 +49,8 @@ You are an elite strategic planning specialist. Create a comprehensive, actionab
 ## Context References
 
 - Check `.project/docs/PROJECT_KNOWLEDGE.md` for architecture overview (if exists)
-- Consult `.pi/docs/BEST_PRACTICES.md` for coding standards (if exists)
-- Reference `.pi/docs/TROUBLESHOOTING.md` for common issues to avoid (if exists)
+- Consult `.kimi/docs/BEST_PRACTICES.md` for coding standards (if exists)
+- Reference `.kimi/docs/TROUBLESHOOTING.md` for common issues to avoid (if exists)
 - Review `.project/memory/DECISIONS.md` for past architecture decisions (if exists)
 
 **Note**: This command is ideal to use AFTER exiting plan mode when you have a clear vision of what needs to be done. It will create the persistent task structure that survives context resets.

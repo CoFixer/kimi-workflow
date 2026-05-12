@@ -10,21 +10,21 @@ Display all available skills, commands, and their magic keywords from the .claud
 ## Instructions
 
 ### Step 1: Read configuration
-Read `.pi/stack-config.json` to determine which stacks are enabled.
+Read `.kimi/stack-config.json` to determine which stacks are enabled.
 
 ### Step 2: Collect skills from skill-rules.json
 Read and merge all `skill-rules.json` files from enabled stacks:
-- `.pi/skills/skill-rules.json` (project overrides)
-- `.pi/base/skills/skill-rules.json`
-- `.pi/{stack}/skills/skill-rules.json` for each enabled stack (nestjs, react, marketing, etc.)
+- `.kimi/skills/skill-rules.json` (project overrides)
+- `.kimi/base/skills/skill-rules.json`
+- `.kimi/skills/skill-rules.json` for each enabled stack (nestjs, react, marketing, etc.)
 
 Collect all skills with their `magicKeyword`, `category`, and `description` fields.
 
 ### Step 3: Scan ALL command directories for slash commands
 **This is critical.** Glob for command files across all enabled sources:
-- `.pi/commands/**/*.md` (project-level command overrides)
-- `.pi/base/commands/**/*.md` (base commands — always included)
-- `.pi/{stack}/commands/**/*.md` for each enabled stack
+- `.kimi/prompts/**/*.md` (project-level command overrides)
+- `.kimi/base/commands/**/*.md` (base commands — always included)
+- `.kimi/{stack}/commands/**/*.md` for each enabled stack
 
 For each command file found:
 - The command name is `{folder}:{filename}` (e.g., `dev/start.md` → `dev:start`)

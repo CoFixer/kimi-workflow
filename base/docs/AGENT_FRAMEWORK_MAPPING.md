@@ -72,25 +72,25 @@ This system automatically provides agents with framework-specific resources (gui
 
 For each framework assigned to an agent type, the system discovers:
 
-**1. Guides** ([.pi/{framework}/guides/](.pi/{framework}/guides/))
+**1. Guides** (`.kimi/{framework}/guides/`)
 - Comprehensive patterns and best practices
 - Architecture overviews
 - Step-by-step tutorials
-- Examples: `architecture-overview.md`, `routing-and-controllers.md`, `database-integration.md`
+- Examples: `AUTHENTICATION-GUIDE.md`, `ROUTING-AND-CONTROLLERS-GUIDE.md`, `DATABASE-PATTERNS-GUIDE.md`
 
-**2. Skills** ([.pi/{framework}/skills/](.pi/{framework}/skills/))
-- Specialized framework skills
+**2. Skills** (`.kimi/skills/`)
+- Specialized framework-agnostic and framework-specific skills
 - Task automation
-- Examples: `database-schema-designer`, `api-docs-generator`, `e2e-test-generator`
+- Examples: `crud-module-generator`, `swagger-doc-generator`, `e2e-test-generator`
 
-**3. Agents** ([.pi/{framework}/agents/](.pi/{framework}/agents/))
+**3. Agents** (`.kimi/{framework}/agents/`)
 - Framework-specific subagents
 - Deep expertise agents
-- Examples: `nestjs-expert`, `auth-route-debugger`
+- Examples: `auth-route-debugger`, `module-scaffolder`
 
-**4. Commands** ([.pi/{framework}/commands/](.pi/{framework}/commands/))
-- Framework-specific slash commands
-- Examples: `/nestjs-scaffold`, `/db-migrate`
+**4. Examples** (`.kimi/{framework}/examples/`)
+- Copy-paste code templates
+- Examples: `crud-module/`
 
 ### Discovery Process
 
@@ -99,7 +99,7 @@ For each framework assigned to an agent type, the system discovers:
 2. System loads agent-registry.json
 3. Resolves frameworks for agent type (backend → nestjs)
 4. Scans each framework directory for resources
-5. Builds formatted context string
+5. Builds formatted context string (top 5 guides only to save tokens)
 6. Prepends context to agent's system prompt
 ```
 
@@ -116,24 +116,20 @@ When an agent receives framework context, it's formatted like this:
 
 Assigned Frameworks: nestjs
 
-📚 NESTJS RESOURCES:
+📚 NESTJS RESOURCES (28 guides, showing top 5):
+  → AUTHENTICATION-GUIDE.md - JWT guards and decorators
+  → DATABASE-PATTERNS-GUIDE.md - TypeORM setup and patterns
+  → ROUTING-AND-CONTROLLERS-GUIDE.md - Route handling and decorators
+  → SERVICES-AND-REPOSITORIES-GUIDE.md - Service patterns and data access
+  → RESPONSE-LAYOUT-GUIDE.md - Standard response wrappers
+  (+ 23 more guides)
 
-Guides (.pi/nestjs/guides/):
-  → architecture-overview.md - NestJS four-layer architecture
-  → routing-and-controllers.md - Route handling and decorators
-  → services-and-repositories.md - Service patterns and data access
-  → database-integration.md - TypeORM setup and patterns
-  → authentication-authorization.md - JWT guards and decorators
-  (+ 7 more guides)
-
-Skills (.pi/nestjs/skills/):
-  → database-schema-designer - Design TypeORM entities
-  → api-docs-generator - Generate Swagger documentation
-  → e2e-test-generator - Create E2E tests
-
-Agents (.pi/nestjs/agents/):
-  → nestjs-expert - Deep NestJS expertise
+Agents (.kimi/backend/agents/):
   → auth-route-debugger - Authentication debugging
+  → module-scaffolder - NestJS module scaffolding
+
+Examples (.kimi/backend/examples/):
+  → crud-module/ - Complete CRUD module template
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 IMPORTANT: Use these resources when implementing features.
@@ -141,32 +137,33 @@ Reference guides for patterns, invoke skills for specialized tasks.
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 
+**Token budget:** Framework context is capped at ~500 tokens per framework.
+
 ---
 
 ## Configuration
 
 ### agent-registry.json
 
-Central registry at [.pi/agents/agent-registry.json](.pi/agents/agent-registry.json):
+Central registry at `.kimi/agents/agent-registry.json`:
 
 ```json
 {
-  "version": "1.0",
-  "agentTypes": {
-    "backend": {
-      "description": "Backend development agents",
-      "frameworks": ["nestjs"]
-    },
-    "frontend": {
-      "description": "Frontend web development agents",
-      "frameworks": ["react"]
-    }
-  },
+  "version": "2.0",
   "agents": {
-    "backend-developer": {
-      "type": "backend",
-      "description": "NestJS backend implementation",
-      "frameworkOverrides": null
+    "development": {
+      "backend-developer": {
+        "name": "Backend Developer",
+        "stack": "nestjs",
+        "file": "development/backend-developer.md",
+        "tags": ["backend", "nestjs", "api", "typeorm"]
+      },
+      "frontend-developer": {
+        "name": "Frontend Developer",
+        "stack": "react",
+        "file": "development/frontend-developer.md",
+        "tags": ["frontend", "react", "ui", "tailwind"]
+      }
     }
   }
 }
@@ -179,14 +176,12 @@ Each agent markdown file includes metadata:
 ```yaml
 ---
 name: backend-developer
-agent-type: backend
-frameworks: ["nestjs"]
-description: ...
-model: opus
-color: green
-tools: Read, Write, Edit, MultiEdit, Bash, Glob, Grep
+description: NestJS backend specialist...
+role: backend_developer
 ---
 ```
+
+The `stack` field is resolved from `agent-registry.json`, not frontmatter.
 
 ---
 
@@ -197,7 +192,7 @@ tools: Read, Write, Edit, MultiEdit, Bash, Glob, Grep
 When implementing features, agents reference framework guides:
 
 ```typescript
-// Agent reads .pi/nestjs/guides/routing-and-controllers.md
+// Agent reads .kimi/backend/guides/ROUTING-AND-CONTROLLERS-GUIDE.md
 // Then implements following the patterns:
 @Controller('users')
 export class UsersController extends BaseController<UsersService> {
@@ -209,25 +204,58 @@ export class UsersController extends BaseController<UsersService> {
 
 ### 2. Invoke Skills for Specialized Tasks
 
-Agents can invoke framework-specific skills:
+Agents can invoke skills via the skill trigger patterns:
 
 ```
 Backend-developer implementing new module:
-1. Reads .pi/nestjs/guides/architecture-overview.md
-2. Invokes database-schema-designer skill to create entities
+1. Reads .kimi/backend/guides/ARCHITECTURE-OVERVIEW-GUIDE.md
+2. Invokes crud-module-generator skill to create entities
 3. Implements service layer following guide patterns
-4. Invokes api-docs-generator skill to create Swagger docs
+4. Invokes swagger-doc-generator skill to create Swagger docs
 ```
 
 ### 3. Delegate to Framework Agents
 
-Agents can call framework-specific subagents:
+Agents can call framework-specific subagents using the Agent tool:
 
 ```
 Backend-developer encounters auth issue:
-→ Delegates to nestjs/agents/auth-route-debugger
+→ Delegates to .kimi/backend/agents/debugging/auth-route-debugger
 → Auth debugger uses NestJS-specific knowledge to fix
 ```
+
+---
+
+## Executable Orchestration
+
+Instead of relying on prompt-based orchestration, use the **dispatcher script**:
+
+```bash
+# Initialize a pipeline
+node .kimi/scripts/dispatcher.js init my-project --backend nestjs --frontend react
+
+# Check status
+node .kimi/scripts/dispatcher.js status my-project
+
+# See next phase
+node .kimi/scripts/dispatcher.js next my-project
+
+# Run a phase (builds agent prompt, updates pipeline.json)
+node .kimi/scripts/dispatcher.js run my-project --phase backend
+
+# Complete a phase with validated PHASE_RESULT
+node .kimi/scripts/dispatcher.js complete my-project --phase backend --result result.json
+
+# Validate any PHASE_RESULT file
+node .kimi/scripts/dispatcher.js validate-phase-result result.json
+```
+
+The dispatcher:
+- Reads/writes `.project/status/{project}/pipeline.json` (structured)
+- Syncs to `.project/status/{project}/PIPELINE_STATUS.md` (human-readable)
+- Validates PHASE_RESULT against `.kimi/base/schemas/phase-result.json`
+- Builds agent prompts with framework context injection
+- Tracks execution history (max 20 entries)
 
 ---
 
@@ -235,17 +263,13 @@ Backend-developer encounters auth issue:
 
 ### Step 1: Create Agent Markdown File
 
-Create `.pi/agents/your-agent.md`:
+Create `.kimi/agents/your-agent.md`:
 
 ```markdown
 ---
 name: your-agent
-agent-type: backend  # or frontend, mobile, cross-stack, generic
-frameworks: ["nestjs"]
 description: ...
-model: opus
-color: green
-tools: Read, Write, Edit, Bash, Glob, Grep
+role: backend_developer
 ---
 
 # Your Agent
@@ -253,7 +277,7 @@ tools: Read, Write, Edit, Bash, Glob, Grep
 ## Framework Resources Available
 
 This agent automatically receives context from:
-- **NestJS**: .pi/nestjs/guides/, .pi/nestjs/skills/
+- **NestJS**: .kimi/backend/guides/
 
 Refer to these resources when implementing features.
 
@@ -263,120 +287,81 @@ Refer to these resources when implementing features.
 
 ### Step 2: Register in agent-registry.json
 
-Add to `.pi/agents/agent-registry.json`:
+Add to `.kimi/agents/agent-registry.json`:
 
 ```json
 {
   "agents": {
-    "your-agent": {
-      "type": "backend",
-      "description": "Your agent description",
-      "frameworkOverrides": null
+    "development": {
+      "your-agent": {
+        "name": "Your Agent",
+        "stack": "nestjs",
+        "file": "development/your-agent.md",
+        "tags": ["backend", "custom"]
+      }
     }
   }
 }
-```
-
-### Step 3: Document in agent-registry.json
-
-Add entry to [.pi/agents/agent-registry.json](.pi/agents/agent-registry.json):
-
-```json
-{
-  "name": "your-agent",
-  "specialty": "...",
-  "bestFor": "...",
-  "typicalCallers": ["..."]
-}
-**Invocation pattern:** ...
-**Output:** ...
 ```
 
 ---
 
 ## Adding New Frameworks
 
-### Step 1: Add Framework Submodule
-
-```bash
-cd .claude
-git submodule add https://github.com/yourorg/claude-yourframework.git yourframework
-git submodule update --init --recursive
-```
-
-### Step 2: Organize Framework Resources
-
-Create structure in submodule:
+### Step 1: Create Framework Directory
 
 ```
-yourframework/
+.kimi/yourframework/
 ├── guides/
 │   ├── architecture-overview.md
 │   ├── routing.md
 │   └── ...
-├── skills/
-│   ├── your-skill/
-│   │   └── SKILL.md
-│   └── skill-rules.json
 ├── agents/
 │   └── framework-expert.md
-└── commands/
-    └── your-command.md
+└── examples/
+    └── starter-template/
 ```
 
-### Step 3: Update Agent Registry
+### Step 2: Update Agent Registry
 
-Add to `.pi/agents/agent-registry.json`:
-
-```json
-{
-  "agentTypes": {
-    "your-type": {
-      "description": "Your framework agents",
-      "frameworks": ["yourframework"]
-    }
-  }
-}
-```
-
-### Step 4: Map Agents to Framework
-
-Update existing agents or create new ones:
+Add agents that use the new framework:
 
 ```json
 {
   "agents": {
-    "your-agent": {
-      "type": "your-type",
-      "frameworkOverrides": ["yourframework"]
+    "development": {
+      "your-agent": {
+        "stack": "yourframework",
+        "file": "development/your-agent.md"
+      }
     }
   }
 }
 ```
+
+No additional configuration needed — the dispatcher discovers resources automatically.
 
 ---
 
 ## Implementation Details
 
-### Framework Context Builder
+### Dispatcher Script
 
-Located at [.pi/hooks/lib/framework-context-builder.ts](.pi/hooks/lib/framework-context-builder.ts):
-
-**Key Functions:**
-- `discoverFrameworks(claudeDir)` - Lists available framework directories
-- `scanFrameworkResources(framework)` - Discovers resources in framework
-- `buildContextString(frameworks)` - Formats context for injection
-- `getFrameworkContext(claudeDir, frameworks)` - Main entry point
-
-### Agent Context Injector
-
-Located at [.pi/hooks/lib/agent-context-injector.ts](.pi/hooks/lib/agent-context-injector.ts):
+Located at `.kimi/scripts/dispatcher.js`:
 
 **Key Functions:**
-- `loadAgentRegistry()` - Loads agent-registry.json
-- `resolveFrameworks(agentName)` - Gets frameworks for agent
-- `injectContext(agentName, prompt)` - Prepends context to prompt
-- `getAgentMetadata(agentName)` - Gets agent type and frameworks
+- `loadPipeline(project)` — Reads pipeline.json
+- `findNextPhase(pipeline)` — Finds first pending phase with met prerequisites
+- `buildAgentPrompt(project, phase, pipeline)` — Builds dispatch prompt with framework context
+- `validatePhaseResult(data)` — Validates against phase-result.json schema
+- `syncMarkdown(project, pipeline)` — Keeps PIPELINE_STATUS.md in sync
+
+### Resource Discovery
+
+The dispatcher performs lazy resource discovery:
+- Only scans framework directories when an agent is dispatched
+- Caches framework listings in memory for the session
+- Limits guide listings to top 5 + count to stay within token budgets
 
 ---
 
@@ -387,64 +372,33 @@ Located at [.pi/hooks/lib/agent-context-injector.ts](.pi/hooks/lib/agent-context
 **Symptoms:** Agent doesn't reference framework guides or patterns
 
 **Solutions:**
-1. Check agent frontmatter has correct `agent-type` and `frameworks`
-2. Verify agent is in [agent-registry.json](agent-registry.json)
-3. Ensure framework submodules are initialized:
-   ```bash
-   git submodule update --init --recursive
-   ```
-4. Verify framework directory exists in `.pi/`
+1. Check agent is in `agent-registry.json` with correct `stack`
+2. Verify framework directory exists in `.kimi/` (e.g., `.kimi/backend/guides/`)
+3. Ensure dispatcher script can read the directory
 
 ### Framework Not Discovered
 
 **Symptoms:** Context shows no resources from a framework
 
 **Solutions:**
-1. Check framework directory exists: `.pi/nestjs/`, `.pi/react/`, etc.
+1. Check framework directory exists: `.kimi/backend/guides/`, `.kimi/frontend/guides/`, etc.
 2. Verify framework has correct structure:
    ```
-   nestjs/
+   backend/
    ├── guides/
-   ├── skills/
    ├── agents/
-   └── commands/
+   └── examples/
    ```
 3. Check file permissions (must be readable)
 
-### Wrong Frameworks Assigned
+### Context Injection Too Large
 
-**Symptoms:** Agent receives context from incorrect frameworks
-
-**Solutions:**
-1. Check `agent-registry.json` has correct type mapping
-2. Verify agent frontmatter `frameworks` array
-3. Use `frameworkOverrides` if custom mapping needed:
-   ```json
-   {
-     "your-agent": {
-       "type": "backend",
-       "frameworkOverrides": ["nestjs"]
-     }
-   }
-   ```
-
-### Context Injection Not Working
-
-**Symptoms:** No framework context appears in agent prompts
+**Symptoms:** "Prompt is too long" errors
 
 **Solutions:**
-1. Verify TypeScript hooks are compiled:
-   ```bash
-   cd .pi/hooks
-   npm install
-   npx tsc
-   ```
-2. Check [.pi/hooks/package.json](.pi/hooks/package.json) has dependencies
-3. Test resource discovery manually:
-   ```typescript
-   import { getFrameworkContext } from './lib/framework-context-builder';
-   console.log(getFrameworkContext('.claude', ['nestjs']));
-   ```
+1. The dispatcher already caps guide listings at top 5
+2. Reduce guide file sizes
+3. Use `artifact_paths` in PHASE_RESULT to store detail externally
 
 ---
 
@@ -452,7 +406,7 @@ Located at [.pi/hooks/lib/agent-context-injector.ts](.pi/hooks/lib/agent-context
 
 ### For Agent Creators
 
-1. **Choose the Right Type**
+1. **Choose the Right Stack**
    - Use `backend` for API/database work
    - Use `frontend` for UI components
    - Use `mobile` for React Native
@@ -463,10 +417,10 @@ Located at [.pi/hooks/lib/agent-context-injector.ts](.pi/hooks/lib/agent-context
    - Reference specific guides in agent instructions
    - Show examples of using framework patterns
 
-3. **Test with Frameworks**
-   - Verify agent receives correct context
-   - Test with and without framework submodules
-   - Ensure graceful degradation if frameworks missing
+3. **Use the Dispatcher**
+   - Don't manually copy-paste agent prompts
+   - Use `node dispatcher.js run ...` to generate prompts
+   - Validate PHASE_RESULT before marking complete
 
 ### For Framework Maintainers
 
@@ -485,23 +439,6 @@ Located at [.pi/hooks/lib/agent-context-injector.ts](.pi/hooks/lib/agent-context
    - Examples of when to use
    - Integration with guides
 
-### For Project Teams
-
-1. **Add Frameworks as Needed**
-   - Start with core frameworks (backend, frontend)
-   - Add mobile/marketing/operations when needed
-   - Keep framework submodules updated
-
-2. **Customize Agent Mappings**
-   - Override frameworks for project-specific agents
-   - Create custom agent types if needed
-   - Document custom mappings
-
-3. **Maintain Registry**
-   - Keep agent-registry.json up-to-date
-   - Document agent types and purposes
-   - Review and update mappings as project evolves
-
 ---
 
 ## Examples
@@ -515,7 +452,7 @@ System invokes: backend-developer
 Framework context injected: nestjs guides
 
 Agent process:
-1. Reads .pi/nestjs/guides/architecture-overview.md
+1. Reads .kimi/backend/guides/ROUTING-AND-CONTROLLERS-GUIDE.md
 2. Follows four-layer architecture pattern
 3. Creates:
    - products.entity.ts (Entity layer)
@@ -536,31 +473,14 @@ System invokes: frontend-developer
 Framework context injected: react guides
 
 Agent process:
-1. Reads .pi/react/guides/component-patterns.md
+1. Reads .kimi/frontend/guides/component-patterns.md
 2. Analyzes HTML structure
 3. Creates React components:
    - LandingPage.tsx (main page)
    - Hero.tsx (hero section)
    - Features.tsx (features section)
-4. Applies TailwindCSS from .pi/react/guides/styling-guide.md
+4. Applies TailwindCSS from .kimi/frontend/guides/styling-guide.md
 5. Sets up routing with React Router v7
-```
-
-### Example 3: Mobile Agent Using Framework Context
-
-```markdown
-User: "Build a user profile screen for mobile"
-
-System invokes: mobile-developer
-Framework context injected: react-native guides
-
-Agent process:
-1. Reads .pi/react-native/guides/component-patterns.md
-2. Creates ProfileScreen.tsx
-3. Implements NativeWind styling from guides
-4. Adds navigation from .pi/react-native/guides/navigation.md
-5. Handles platform-specific code (iOS/Android)
-6. Integrates native APIs (camera, image picker)
 ```
 
 ---
@@ -576,9 +496,8 @@ Agent process:
 ### Context Size Management
 
 - Shows up to 5 guides per framework
-- Lists all skills (typically < 10 per framework)
-- Summarizes commands count if many
-- Keeps context under 2KB per framework
+- Lists agent and example counts (not full paths)
+- Keeps framework context under ~500 tokens per framework
 
 ### Lazy Loading
 
@@ -597,11 +516,11 @@ Agent process:
    - User can override frameworks for specific tasks
 
 2. **Skill Auto-Invocation**
-   - Agents automatically invoke relevant framework skills
+   - Agents automatically invoke relevant skills
    - Smart suggestions based on task context
 
 3. **Framework Versioning**
-   - Track framework submodule versions
+   - Track framework guide versions
    - Include version in context
    - Handle breaking changes
 
@@ -610,19 +529,15 @@ Agent process:
    - Show only applicable skills
    - Prioritize frequently used resources
 
-5. **Cross-Framework Patterns**
-   - Identify similar patterns across frameworks
-   - Suggest framework-agnostic solutions
-   - Enable easier framework migration
-
 ---
 
 ## Related Documentation
 
-- [agent-registry.json](../agents/agent-registry.json) - Complete agent catalog
-- [agent-registry.json](../agents/agent-registry.json) - Agent-to-framework mappings
-- [setup-claude.md](../commands/dev/setup-claude.md) - Adding framework submodules
-- [PROJECT_KNOWLEDGE.md](./PROJECT_KNOWLEDGE.md) - Project-specific patterns
+- [agent-registry.json](../../agents/agent-registry.json) - Complete agent catalog
+- [dispatcher.js](../../scripts/dispatcher.js) - Executable orchestration
+- [pipeline.json schema](../schemas/pipeline.json) - Structured status schema
+- [phase-result.json schema](../schemas/phase-result.json) - PHASE_RESULT contract
+- [PROJECT_KNOWLEDGE.md](../../../../.project/docs/PROJECT_KNOWLEDGE.md) - Project-specific patterns
 
 ---
 
@@ -630,6 +545,6 @@ Agent process:
 
 For issues or questions:
 1. Check this guide's [Troubleshooting](#troubleshooting) section
-2. Review [agent-registry.json](../agents/agent-registry.json) configuration
-3. Verify framework submodules are initialized
-4. Test with simplified agent/framework setup
+2. Review [agent-registry.json](../../agents/agent-registry.json) configuration
+3. Verify framework directories exist in `.kimi/`
+4. Test dispatcher: `node .kimi/scripts/dispatcher.js status <project>`

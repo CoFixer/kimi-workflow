@@ -17,7 +17,7 @@ Help me implement a feature from a specification.
 
 2. **Explore existing code**
    - Find similar features
-   - Check patterns in `.pi/backend/guides/`
+   - Check patterns in `.kimi/backend/guides/`
    - Review entity relationships
 
 3. **Plan implementation**
@@ -61,6 +61,6 @@ For each step, produce:
 ## Notes
 
 - Follow existing patterns in the codebase
-- Use base controller/response patterns from `.pi/backend/guides/`
+- Use base controller/response patterns from `.kimi/backend/guides/`
 - Ensure i18n compatibility for user-facing strings
 - Respect the two-user-system (customers vs users)

@@ -204,7 +204,7 @@ git commit -m "chore: Add framework .gitignore patterns"
 
 ### NestJS + React Web
 ```
-.pi/
+.kimi/
 ├── nestjs/         # NestJS backend (local-only submodule)
 ├── react/          # React frontend (local-only submodule)
 ├── agents/         # Project-specific overrides
@@ -214,7 +214,7 @@ git commit -m "chore: Add framework .gitignore patterns"
 
 ### NestJS + React Native
 ```
-.pi/
+.kimi/
 ├── nestjs/         # NestJS backend (local-only submodule)
 ├── react-native/   # React Native (local-only submodule)
 ├── agents/         # Project-specific
@@ -223,7 +223,7 @@ git commit -m "chore: Add framework .gitignore patterns"
 
 ### Django + React Web
 ```
-.pi/
+.kimi/
 ├── django/         # Django backend (local-only submodule)
 ├── react/          # React frontend (local-only submodule)
 ├── agents/         # Project-specific

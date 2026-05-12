@@ -5,7 +5,7 @@ argument-hint: "[--fix] [--focus <dimension>] [--tier <name>] [--json]"
 
 # Claude System Audit
 
-Launch a 2-agent team to perform a comprehensive audit of the `.pi/` configuration system. Detects overlaps, configuration drift, trigger conflicts, architecture violations, and completeness gaps. Produces a severity-ranked report with actionable recommendations.
+Launch a 2-agent team to perform a comprehensive audit of the `.kimi/` configuration system. Detects overlaps, configuration drift, trigger conflicts, architecture violations, and completeness gaps. Produces a severity-ranked report with actionable recommendations.
 
 ## Quick Start
 
@@ -113,7 +113,7 @@ mkdir -p ${report_dir}
 
 Copy and populate the report template:
 ```
-.pi/base/templates/audit/AUDIT_REPORT.template.md → ${report_file}
+.kimi/base/templates/audit/AUDIT_REPORT.template.md → ${report_file}
 Replace {TIMESTAMP} with current timestamp
 Replace {SCOPE} with "full" or focused dimension name
 Replace {TIER} with "all" or specific tier name
@@ -123,7 +123,7 @@ Replace {MODE} with "report" or "fix"
 ### Step 5: Create Team
 
 ```
-TeamCreate:
+Agent dispatch (parallel subagents):
   team_name: "${team_name}"
   description: "Claude system configuration audit"
 ```
@@ -151,10 +151,10 @@ Task:
 You are the **Coordinator** of a 2-agent system audit team.
 
 ## Your Team
-- **analyst** - Performs deep read-only analysis of the .pi/ configuration system per dimension
+- **analyst** - Performs deep read-only analysis of the .kimi/ configuration system per dimension
 
 ## Your Mission
-Orchestrate a comprehensive audit of the .pi/ configuration system across 5 dimensions:
+Orchestrate a comprehensive audit of the .kimi/ configuration system across 5 dimensions:
 1. **Overlaps** - Duplicate content across tiers
 2. **Config Drift** - Registered entries vs actual filesystem
 3. **Trigger Conflicts** - Overlapping skill activation keywords
@@ -293,7 +293,7 @@ After writing the report, message the user (output text) with a summary:
 Then initiate team shutdown.
 
 ## Communication Rules
-- ALWAYS use SendMessage to talk to the analyst.
+- The analyst is a subagent invoked via the Agent tool. Its result is returned directly.
 - Wait for analyst to complete ALL dimensions before writing the report.
 - If analyst seems stuck on a dimension, send a follow-up.
 ```
@@ -320,7 +320,7 @@ You are the **Analyst** on a 2-agent system audit team.
 - **coordinator** - Orchestrates the audit, aggregates your findings into the final report
 
 ## Your Mission
-Perform deep, read-only analysis of the .pi/ configuration system. The coordinator will send you one or more audit dimensions. For each, scan the relevant files and report structured findings.
+Perform deep, read-only analysis of the .kimi/ configuration system. The coordinator will send you one or more audit dimensions. For each, scan the relevant files and report structured findings.
 
 ## Project Context
 - **Working directory**: ${CWD}
@@ -482,11 +482,11 @@ Finding ID prefixes:
    a. Read ALL relevant files listed above
    b. Perform every check specified for that dimension
    c. Compile findings in the exact format specified
-   d. Send findings back to coordinator via SendMessage
+   d. Return findings to the coordinator in your response
 3. If coordinator asks for clarification or re-check, comply promptly
 
 ## Communication Rules
-- ALWAYS use SendMessage to communicate with coordinator.
+- Return results directly in your subagent response.
 - Be thorough -- check EVERY file, not just a sample.
 - Include exact file paths in every finding.
 - When comparing files, state both file sizes for evidence.
@@ -500,7 +500,7 @@ Finding ID prefixes:
 After both agents are spawned, send the initial message to coordinator:
 
 ```
-SendMessage:
+Subagent response format:
   type: "message"
   recipient: "coordinator"
   content: "Audit team initialized.
@@ -551,16 +551,16 @@ TeamDelete
 
 ## Error Handling
 
-### No .pi/ Directory
-If `.pi/` doesn't exist: "Error: No .pi/ directory found. This command must be run from a project with Claude Code configuration."
+### No .kimi/ Directory
+If `.kimi/` doesn't exist: "Error: No .kimi/ directory found. This command must be run from a project with Claude Code configuration."
 
 ### Missing stack-config.json
 Fall back to detecting stacks from existing directories:
 ```
 enabled_stacks = ["base"]
-if exists .pi/nestjs/: enabled_stacks += "nestjs"
-if exists .pi/react/: enabled_stacks += "react"
-if exists .pi/react-native/: enabled_stacks += "react-native"
+if exists .kimi/nestjs/: enabled_stacks += "nestjs"
+if exists .kimi/react/: enabled_stacks += "react"
+if exists .kimi/react-native/: enabled_stacks += "react-native"
 ```
 
 ### Agent Communication Failure

@@ -22,11 +22,11 @@ You are a read-only monitoring agent that analyzes agent orchestration health, g
 ## Data Sources
 
 Read monitoring data from these locations:
-- `.pi/monitoring/logs/*.jsonl` - Raw activity logs (JSONL format, one JSON object per line)
-- `.pi/monitoring/AGENT_MONITOR_DASHBOARD.md` - Current dashboard state
-- `.pi/monitoring/AGENT_ACTIVITY_HISTORY.md` - Rolling 7-day history
-- `.pi/monitoring/AGENT_ERROR_LOG.md` - Error pattern tracking
-- `.pi/agents/agent-registry.json` - Agent definitions, teams, and roles
+- `.kimi/monitoring/logs/*.jsonl` - Raw activity logs (JSONL format, one JSON object per line)
+- `.kimi/monitoring/AGENT_MONITOR_DASHBOARD.md` - Current dashboard state
+- `.kimi/monitoring/AGENT_ACTIVITY_HISTORY.md` - Rolling 7-day history
+- `.kimi/monitoring/AGENT_ERROR_LOG.md` - Error pattern tracking
+- `.kimi/agents/agent-registry.json` - Agent definitions, teams, and roles
 
 ## JSONL Log Format
 

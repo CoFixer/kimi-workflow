@@ -36,4 +36,4 @@ src/
 
 See `../examples/crud-module/` for a complete CRUD module example.
 
-See `.pi/backend/guides/` for detailed pattern documentation.
+See `.kimi/backend/guides/` for detailed pattern documentation.

@@ -333,7 +333,7 @@ After sending the Slack report, write the data to Google Sheets for historical t
 - **Spreadsheet ID**: `1ru88-pKjJ8NbdG6uBAWpo7SAfWUagc6gq-92pRcK0tU`
 - **Spreadsheet Name**: AI Proficiency Evaluation
 - **Structure**: Each team member has their own sheet (tab)
-- **Credentials**: `.pi/config/google-service-account.json`
+- **Credentials**: `.kimi/config/google-service-account.json`
 
 ### 7.2 Sheet Columns
 

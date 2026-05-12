@@ -390,7 +390,7 @@ This file tracks ticket processing across runs. It follows the Ralph status file
 
 workflow: fix-tickets
 project: activitycoaching
-skill: .pi/skills/notion-ticket-reviewer/prompts/batch-fix.md
+skill: .kimi/skills/notion-ticket-reviewer/prompts/batch-fix.md
 database_id: <NOTION_DATABASE_ID>
 project_id: <NOTION_PROJECT_ID>
 created: <DATE>

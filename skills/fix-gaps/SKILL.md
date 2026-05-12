@@ -1,4 +1,4 @@
----
+﻿---
 name: fix-gaps
 description: Fix implementation gaps found by find-gaps, syncing results to dev/STATUS.md
 ---
@@ -7,16 +7,16 @@ description: Fix implementation gaps found by find-gaps, syncing results to dev/
 
 Systematic methodology for fixing implementation gaps discovered by `/dev:gap-finder`.
 Reads the latest gap-analysis report, syncs `dev/STATUS.md`, then implements fixes
-in **file-based batches** � delegating to backend-developer or frontend-developer as appropriate.
+in **file-based batches** — delegating to backend-developer or frontend-developer as appropriate.
 
 ---
 
 ## Quick Start
 
 ```
-/dev:fix-gaps               # Auto-cascade: count all tiers, fix Critical?High?Medium?Low automatically
-/dev:fix-gaps all            # Same as no args � full auto-cascade
-/dev:fix-gaps remaining      # Same as no args � full auto-cascade
+/dev:fix-gaps               # Auto-cascade: count all tiers, fix Critical→High→Medium→Low automatically
+/dev:fix-gaps all            # Same as no args — full auto-cascade
+/dev:fix-gaps remaining      # Same as no args — full auto-cascade
 /dev:fix-gaps critical       # Fix only Critical gaps
 /dev:fix-gaps high           # Fix only High gaps
 /dev:fix-gaps medium         # Fix only Medium gaps
@@ -48,7 +48,7 @@ All state lives in `dev/STATUS.md`. The fix-gaps system owns this file during a 
 | Low      | L      | L1, L4 |
 
 IDs are assigned sequentially, continuing from the highest existing number in each tier.
-Once assigned, an ID **never changes** � even if a gap is later marked N/A or SKIPPED.
+Once assigned, an ID **never changes** — even if a gap is later marked N/A or SKIPPED.
 
 ### Status Values
 
@@ -69,16 +69,16 @@ The key to fixing ALL gaps efficiently is **file-based batching**:
 ### How It Works
 
 1. **Group by file**: Gaps sharing the same `File(s)` value go into one batch
-   - Example: H12, H13, H14, H15 all target `projects.service.ts` ? 1 batch, 1 sub-agent call
-   - Example: H31, H32, H33, H34, M37, M38 all target `AdminDashboard.tsx` ? 1 batch
+   - Example: H12, H13, H14, H15 all target `projects.service.ts` → 1 batch, 1 sub-agent call
+   - Example: H31, H32, H33, H34, M37, M38 all target `AdminDashboard.tsx` → 1 batch
 
 2. **Max batch size**: 8 gaps per sub-agent call. Split larger groups.
 
 3. **Straggler consolidation**: Single-gap files merge into a "misc" batch per stack (up to 8)
 
 4. **Stack classification**:
-   - `backend/` files or Backend/Swagger/Infrastructure categories ? backend-developer
-   - `frontend/` files or Design System/UI States/Feature Parity categories ? frontend-developer
+   - `backend/` files or Backend/Swagger/Infrastructure categories → backend-developer
+   - `frontend/` files or Design System/UI States/Feature Parity categories → frontend-developer
 
 ### Why Batching Works
 
@@ -115,8 +115,8 @@ When syncing the gap-analysis report into STATUS.md:
 5. Write updated STATUS.md (full file, atomically)
 ```
 
-**Similarity check**: A gap is "already present" if its description shares =70% of key tokens
-(nouns, verbs, identifiers) with an existing STATUS row. When in doubt, add as new � duplicates
+**Similarity check**: A gap is "already present" if its description shares ≥70% of key tokens
+(nouns, verbs, identifiers) with an existing STATUS row. When in doubt, add as new — duplicates
 are safer than missed gaps.
 
 ---
@@ -125,34 +125,34 @@ are safer than missed gaps.
 
 ```
 Batch selected
-  �
-  +-- All File(s) under backend/ ?
-  �     +-- Delegate entire batch to backend-developer
-  �
-  +-- All File(s) under frontend/ ?
-  �     +-- Delegate entire batch to frontend-developer
-  �
-  +-- Files in BOTH backend/ and frontend/ ?
-  �     +-- Fix backend portion first, then frontend portion
-  �
-  +-- Category-based fallback:
-        +-- Data Binding / Backend / Auth / Infrastructure / Swagger / Audit
-        �     +-- backend-developer
-        +-- Design System / Missing UI States / Feature Parity / Accessibility
-              +-- frontend-developer
+  │
+  ├── All File(s) under backend/ ?
+  │     └── Delegate entire batch to backend-developer
+  │
+  ├── All File(s) under frontend/ ?
+  │     └── Delegate entire batch to frontend-developer
+  │
+  ├── Files in BOTH backend/ and frontend/ ?
+  │     └── Fix backend portion first, then frontend portion
+  │
+  └── Category-based fallback:
+        ├── Data Binding / Backend / Auth / Infrastructure / Swagger / Audit
+        │     └── backend-developer
+        └── Design System / Missing UI States / Feature Parity / Accessibility
+              └── frontend-developer
 ```
 
 ---
 
 ## Delegation Protocol
 
-### Backend Batch ? backend-developer
+### Backend Batch → backend-developer
 
 ```
 Fix these {N} gaps:
 
 {for each gap:}
-{n}. Gap {ID} ({Severity}) � {Category}: {Description}
+{n}. Gap {ID} ({Severity}) — {Category}: {Description}
    File(s): {File(s)}
 {end for}
 
@@ -163,18 +163,18 @@ Report context:
 
 IMPORTANT:
 - Fix ALL {N} gaps listed above
-- Follow NestJS four-layer architecture from .pi/nestjs/guides/
-- Do NOT run TypeScript checks � gap-fixer will verify
+- Follow NestJS four-layer architecture from .kimi/nestjs/guides/
+- Do NOT run TypeScript checks — gap-fixer will verify
 - Return: complete list of ALL files you modified
 ```
 
-### Frontend Batch ? frontend-developer
+### Frontend Batch → frontend-developer
 
 ```
 Fix these {N} gaps:
 
 {for each gap:}
-{n}. Gap {ID} ({Severity}) � {Category}: {Description}
+{n}. Gap {ID} ({Severity}) — {Category}: {Description}
    File(s): {File(s)}
 {end for}
 
@@ -187,12 +187,12 @@ Report context:
 
 IMPORTANT:
 - Fix ALL {N} gaps listed above
-- Follow React patterns from .pi/react/guides/
-- Do NOT run TypeScript checks � gap-fixer will verify
+- Follow React patterns from .kimi/react/guides/
+- Do NOT run TypeScript checks — gap-fixer will verify
 - Return: complete list of ALL files you modified
 ```
 
-### TSC Error Recovery ? auto-error-resolver
+### TSC Error Recovery → auto-error-resolver
 
 ```
 TypeScript errors after fixing gaps [{IDs}]. Resolve without reverting the intended fixes.
@@ -209,7 +209,7 @@ TSC output:
 
 ## TypeScript Verification
 
-**Mandatory** before marking any batch `DONE` � run **once per batch**, not per gap:
+**Mandatory** before marking any batch `DONE` — run **once per batch**, not per gap:
 
 ```bash
 # Backend check
@@ -222,7 +222,7 @@ cd frontend && npx tsc --noEmit 2>&1 | head -60
 Both must return zero errors for the affected workspace. If either fails:
 1. Delegate to `auto-error-resolver` with TSC output + modified files
 2. Re-run TSC
-3. If still failing after 2 passes ? mark failing gaps `SKIPPED (TSC errors persist)`, mark clean gaps `DONE`
+3. If still failing after 2 passes → mark failing gaps `SKIPPED (TSC errors persist)`, mark clean gaps `DONE`
 
 ---
 

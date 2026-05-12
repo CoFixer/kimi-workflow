@@ -466,7 +466,7 @@ const exercises = await exerciseRepository
 
 ### 9.3 Document the Design
 
-Create a `PROJECT_DATABASE.md` file in `.pi/docs/` to document your database design:
+Create a `PROJECT_DATABASE.md` file in `.kimi/docs/` to document your database design:
 
 ```bash
 # Create the documentation file

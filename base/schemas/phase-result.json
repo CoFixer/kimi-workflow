@@ -1,0 +1,63 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "PHASE_RESULT Contract",
+  "description": "All agents dispatched by the Kimi orchestrator MUST return PHASE_RESULT matching this schema. Size limit: ≤ 500 tokens total.",
+  "type": "object",
+  "required": ["phase", "status", "summary", "counts"],
+  "additionalProperties": false,
+  "properties": {
+    "phase": {
+      "type": "string",
+      "enum": ["init", "prd", "database", "backend", "frontend", "integrate", "test", "qa", "ship"],
+      "description": "Must match the phase name from pipeline.json"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["complete", "failed", "partial"],
+      "description": "complete = all deliverables met; failed = blocked/critical error; partial = some deliverables, needs follow-up"
+    },
+    "summary": {
+      "type": "string",
+      "minLength": 10,
+      "maxLength": 200,
+      "description": "Single sentence describing what was done. No markdown."
+    },
+    "counts": {
+      "type": "object",
+      "description": "Use counts instead of lists to stay within token budget",
+      "properties": {
+        "files_created": { "type": "integer", "minimum": 0 },
+        "files_modified": { "type": "integer", "minimum": 0 },
+        "endpoints_implemented": { "type": "integer", "minimum": 0 },
+        "entities_created": { "type": "integer", "minimum": 0 },
+        "tests_generated": { "type": "integer", "minimum": 0 },
+        "tests_passed": { "type": "integer", "minimum": 0 },
+        "tests_failed": { "type": "integer", "minimum": 0 },
+        "screens_implemented": { "type": "integer", "minimum": 0 },
+        "gaps_found": { "type": "integer", "minimum": 0 },
+        "gaps_fixed": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "top_issues": {
+      "type": "array",
+      "maxItems": 3,
+      "description": "Only blockers or critical failures. Empty array if none.",
+      "items": {
+        "type": "string",
+        "maxLength": 100
+      }
+    },
+    "artifact_paths": {
+      "type": "array",
+      "description": "Paths to files or status docs containing full detail. Store detail here, not in summary.",
+      "items": {
+        "type": "string"
+      }
+    },
+    "next_phase_hints": {
+      "type": "string",
+      "maxLength": 300,
+      "description": "Only context the immediately next phase strictly needs. File paths preferred over descriptions."
+    }
+  }
+}
