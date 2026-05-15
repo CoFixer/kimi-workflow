@@ -5,7 +5,7 @@ description: Fix implementation gaps found by find-gaps, syncing results to dev/
 
 # Fix Gaps
 
-Systematic methodology for fixing implementation gaps discovered by `/dev:gap-finder`.
+Systematic methodology for fixing implementation gaps discovered by `/gap-finder`.
 Reads the latest gap-analysis report, syncs `dev/STATUS.md`, then implements fixes
 in **file-based batches** — delegating to backend-developer or frontend-developer as appropriate.
 
@@ -14,17 +14,17 @@ in **file-based batches** — delegating to backend-developer or frontend-develo
 ## Quick Start
 
 ```
-/dev:fix-gaps               # Auto-cascade: count all tiers, fix Critical→High→Medium→Low automatically
-/dev:fix-gaps all            # Same as no args — full auto-cascade
-/dev:fix-gaps remaining      # Same as no args — full auto-cascade
-/dev:fix-gaps critical       # Fix only Critical gaps
-/dev:fix-gaps high           # Fix only High gaps
-/dev:fix-gaps medium         # Fix only Medium gaps
-/dev:fix-gaps low            # Fix only Low gaps
-/dev:fix-gaps C5             # Fix a single gap by ID
+/fix-gaps               # Auto-cascade: count all tiers, fix Critical→High→Medium→Low automatically
+/fix-gaps all            # Same as no args — full auto-cascade
+/fix-gaps remaining      # Same as no args — full auto-cascade
+/fix-gaps critical       # Fix only Critical gaps
+/fix-gaps high           # Fix only High gaps
+/fix-gaps medium         # Fix only Medium gaps
+/fix-gaps low            # Fix only Low gaps
+/fix-gaps C5             # Fix a single gap by ID
 ```
 
-**Continuation**: Re-running `/dev:fix-gaps` (no args) resumes auto-cascade from the first tier that still has PENDING gaps. Any `IN PROGRESS` gaps from an interrupted run are reset to PENDING and included in scope.
+**Continuation**: Re-running `/fix-gaps` (no args) resumes auto-cascade from the first tier that still has PENDING gaps. Any `IN PROGRESS` gaps from an interrupted run are reset to PENDING and included in scope.
 
 ---
 
@@ -276,9 +276,9 @@ Update the `PRD Coverage` header in STATUS.md.
 
 ## Related
 
-- **Command**: [/dev:fix-gaps](../../../commands/dev/fix-gaps.md)
+- **Command**: [/fix-gaps](../../../prompts/dev/fix-gaps.md)
 - **Agent**: [gap-fixer](../../../agents/analysis/gap-fixer.md)
 - **Reports**: `./dev/reports/gap-analysis-*.md`
 - **State file**: `dev/STATUS.md`
-- **Gap finder**: [/dev:gap-finder](../../../commands/dev/gap-finder.md)
+- **Gap finder**: [/gap-finder](../../../prompts/dev/gap-finder.md)
 - **Skill methodology**: [find-gaps SKILL](../find-gaps/SKILL.md)

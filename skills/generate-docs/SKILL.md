@@ -178,7 +178,7 @@ Extract key sections:
 | User Roles | PROJECT_KNOWLEDGE.md |
 | Core Enums | PROJECT_DATABASE.md |
 | API Base URLs | PROJECT_API.md |
-| Commands | Scan .kimi/commands/ |
+| Commands | Scan .kimi/prompts/ |
 | MCP Servers | .mcp.json config |
 
 **Generated Sections**:
@@ -317,7 +317,7 @@ After generation, the skill validates:
 - [ ] Project structure matches actual filesystem
 - [ ] Tech stack matches package.json dependencies
 - [ ] Enums match PROJECT_DATABASE.md
-- [ ] Commands listed exist in .kimi/commands/
+- [ ] Commands listed exist in .kimi/prompts/
 - [ ] Total length under 250 lines
 
 ---
@@ -334,12 +334,9 @@ After generation, the skill validates:
 
 For detailed instructions, see:
 
-- [prompts/analyze-prd.md](prompts/analyze-prd.md) - PRD parsing rules
-- [prompts/generate-knowledge.md](prompts/generate-knowledge.md) - Knowledge doc generation
-- [prompts/generate-database.md](prompts/generate-database.md) - Database doc generation
-- [prompts/generate-api.md](prompts/generate-api.md) - API doc generation
-- [prompts/generate-claude.md](prompts/generate-claude.md) - claude.md generation rules
-- [prompts/update-incremental.md](prompts/update-incremental.md) - Incremental update flow
+- [/generate-prd](../../prompts/design/generate-prd.md) - PRD generation from client input
+- [/pdf-to-prd](../../prompts/design/pdf-to-prd.md) - PDF to PRD conversion
+- [/new-project](../../prompts/project/new-project.md) - Project setup with docs
 
 ### Document Templates (shared)
 
@@ -354,4 +351,4 @@ Templates are located in `.kimi/base/templates/`:
 
 **Skill Status**: COMPLETE
 **Line Count**: ~300 (following 500-line rule)
-**Progressive Disclosure**: Details in prompts/ and templates/ folders
+**Progressive Disclosure**: Details in `.kimi/prompts/` and `.kimi/base/templates/` folders

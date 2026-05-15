@@ -359,12 +359,8 @@ curl -s -X GET "https://api.notion.com/v1/users/me" \
 ## Related Files
 
 - `databases/example-config.json` - Database configuration
-- `prompts/review-tickets.md` - Review tickets via curl
-- `prompts/update-ticket.md` - Update ticket status via curl
-- `prompts/fix-single.md` - Fix single ticket prompt
-- `prompts/fix-all-by-status.md` - Fix all tickets by status
-- `prompts/filter-by-app.md` - Filter by app prompt
-- `prompts/filter-by-project.md` - Filter by project prompt
+- [/fix-ticket](../../prompts/qa/fix-ticket.md) - Fix Notion tickets command
+- [/ralph](../../prompts/agent/ralph.md) - Autonomous agent workflow
 
 ---
 

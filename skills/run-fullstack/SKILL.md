@@ -21,19 +21,19 @@ Automatically activates when you mention:
 
 ```bash
 # Show pipeline status
-/dev:fullstack my-project
+/fullstack my-project
 
 # Run next pending phase
-/dev:fullstack my-project --run
+/fullstack my-project --run
 
 # Run specific phase
-/dev:fullstack my-project --phase backend
+/fullstack my-project --phase backend
 
 # Run all remaining phases
-/dev:fullstack my-project --run-all
+/fullstack my-project --run-all
 
 # Reset a phase to pending
-/dev:fullstack my-project --reset database
+/fullstack my-project --reset database
 ```
 
 ## Pipeline Phases
@@ -52,5 +52,5 @@ Automatically activates when you mention:
 
 ## Related
 
-- **Command:** [/dev:fullstack](../../commands/dev/fullstack.md) — Full execution instructions
+- **Command:** [/fullstack](../../prompts/dev/fullstack.md) — Full execution instructions
 - **Sub-skills:** [project-init.md](project-init.md), [deployment.md](deployment.md), [iteration-manager.md](iteration-manager.md)

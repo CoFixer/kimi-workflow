@@ -1,6 +1,6 @@
 ---
 name: find-gaps
-description: Methodology and checklists for finding implementation gaps across the full stack
+description: Gap analysis workflow for StorePilot. Methodology and checklists for finding implementation gaps across the full stack by comparing code against PRD, design docs, and API specs. Covers design system compliance, missing pages/features, UI states, accessibility, API integration, backend gaps, and auth issues.
 ---
 
 # Gap Finder Skill
@@ -10,9 +10,9 @@ Systematic gap detection comparing the current implementation against PRD, desig
 ## Quick Start
 
 ```
-/dev:gap-finder                  # Full scan (frontend + backend)
-/dev:gap-finder frontend         # Frontend only
-/dev:gap-finder backend          # Backend only
+/gap-finder                  # Full scan (frontend + backend)
+/gap-finder frontend         # Frontend only
+/gap-finder backend          # Backend only
 ```
 
 ## Reference Documents
@@ -394,5 +394,5 @@ See the [gap-finder agent](../../agents/quality/gap-finder.md) for the full repo
 ## Related
 
 - **Agent:** [gap-finder](../../agents/quality/gap-finder.md) — Executes the scan
-- **Command:** [/dev:gap-finder](../../commands/dev/gap-finder.md) — Invocation entry point
+- **Command:** [/gap-finder](../../prompts/dev/gap-finder.md) — Invocation entry point
 - **Related agents:** [reviewer](../../agents/quality/reviewer.md), [api-integration-agent](../../agents/development/api-integration-agent.md)

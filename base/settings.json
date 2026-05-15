@@ -22,7 +22,16 @@
     "defaultAgent": "project-coordinator"
   },
   "prompts": {
-    "directory": "../prompts",
+    "directories": [
+      "../prompts",
+      "../prompts/dev",
+      "../prompts/git",
+      "../prompts/project",
+      "../prompts/design",
+      "../prompts/qa",
+      "../prompts/agent",
+      "../prompts/utils"
+    ],
     "defaultPrompt": "feature-spec"
   },
   "guides": {
