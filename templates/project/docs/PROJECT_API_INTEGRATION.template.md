@@ -4,41 +4,32 @@
 
 ---
 
-## Routing Strategy
-
-- Single consolidated dashboard with role-based routing (`/admin/*`, `/ops/*`, `/organizer/*`)
-- Shared components, unified navigation, single auth context
-
----
-
 ## Screen-to-API Mapping
 
 ### Auth Screens
 
-| HTML File | Route | Frontend | API Endpoints | Status |
-|-----------|-------|----------|---------------|--------|
-| login.html | /login | frontend | POST /api/v1/auth/login | ⬜ |
-| signup.html | /signup | frontend | POST /api/v1/auth/register | ⬜ |
-| forgot-password.html | /forgot-password | frontend | POST /api/v1/auth/forgot-password | ⬜ |
+| Route | Frontend | API Endpoints | Status |
+|-------|----------|---------------|--------|
+| /login | frontend | POST /api/auth/login | ⬜ |
+| /forgot-password | frontend | POST /api/auth/forgot-password | ⬜ |
 
 ### User Screens
 
-| HTML File | Route | Frontend | API Endpoints | Status |
-|-----------|-------|----------|---------------|--------|
-| profile.html | /profile | frontend | GET /api/v1/users/me, PATCH /api/v1/users/me | ⬜ |
+| Route | Frontend | API Endpoints | Status |
+|-------|----------|---------------|--------|
+| /profile | frontend | GET /api/users/me, PATCH /api/users/me | ⬜ |
 
-### Dashboard Screens
+### [Feature] Screens
 
-| HTML File | Route | Frontend | API Endpoints | Role Access | Status |
-|-----------|-------|----------|---------------|-------------|--------|
-| admin-dashboard.html | /admin/dashboard | dashboard | TBD | admin | ⬜ |
+| Route | Frontend | API Endpoints | Status |
+|-------|----------|---------------|--------|
+| /[feature] | frontend | GET /api/[feature] | ⬜ |
 
 ---
 
-## Integration Checklist
+## Checklist
 
 - [ ] All screens mapped to API endpoints
 - [ ] Loading states handled
 - [ ] Error states handled
 - [ ] Auth guards in place
-- [ ] Role-based access enforced

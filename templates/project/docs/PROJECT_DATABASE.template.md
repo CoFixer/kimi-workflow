@@ -17,16 +17,11 @@
 └─────────────┘       └─────────────┘       └─────────────┘
 ```
 
----
-
-## Entity Relationships
+## Relationships
 
 | Relationship | Cardinality | Description |
 |--------------|-------------|-------------|
 | users → [entity] | 1:N | One user has many [entities] |
-| [entity] → [entity2] | N:1 | Many [entities] belong to one [entity2] |
-
----
 
 ## Tables
 
@@ -34,36 +29,28 @@
 
 | Column | Type | Nullable | Default | Description |
 |--------|------|----------|---------|-------------|
-| id | uuid | No | gen_random_uuid() | Primary key |
-| email | varchar(255) | No | - | Unique email |
-| password | varchar(255) | No | - | Hashed password |
-| role | enum | No | 'user' | user, admin, etc. |
-| is_active | boolean | No | true | Account status |
-| created_at | timestamp | No | now() | Creation time |
-| updated_at | timestamp | No | now() | Last update |
+| id | uuid | No | gen_random_uuid() | PK |
+| email | varchar(255) | No | - | Unique |
+| password | varchar(255) | No | - | Hashed |
+| role | enum | No | 'user' | user, admin |
+| created_at | timestamp | No | now() | Creation |
+| updated_at | timestamp | No | now() | Update |
 
-**Constraints:**
-- UNIQUE (email)
+**Constraints:** UNIQUE (email)
 
----
-
-### [entity_name_from_PRD]
+### [entity_name]
 
 | Column | Type | Nullable | Default | Description |
 |--------|------|----------|---------|-------------|
-| id | uuid | No | gen_random_uuid() | Primary key |
-| [column] | [type] | [Yes/No] | [default] | [description from PRD] |
-| created_at | timestamp | No | now() | Creation time |
-| updated_at | timestamp | No | now() | Last update |
+| id | uuid | No | gen_random_uuid() | PK |
+| [column] | [type] | [Yes/No] | [default] | [desc] |
+| created_at | timestamp | No | now() | Creation |
+| updated_at | timestamp | No | now() | Update |
 
-**Constraints:**
-- FOREIGN KEY [column] REFERENCES [table](id) ON DELETE [CASCADE/SET NULL]
-
----
+**Constraints:** FOREIGN KEY [column] REFERENCES [table](id) ON DELETE [CASCADE/SET NULL]
 
 ## Indexes
 
 | Table | Columns | Type | Purpose |
 |-------|---------|------|---------|
-| users | email | UNIQUE | Fast lookup |
-| users | role, is_active | BTREE | Filter queries |
+| users | email | UNIQUE | Lookup |

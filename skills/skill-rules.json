@@ -1,5 +1,5 @@
 {
-  "version": "1.0",
+  "version": "2.0",
   "rules": [
     {
       "name": "new-project",
@@ -22,11 +22,6 @@
       "description": "Fix implementation gaps"
     },
     {
-      "name": "review",
-      "trigger": "/skill:review",
-      "description": "Code review checklist"
-    },
-    {
       "name": "create-dev-pr",
       "trigger": "/skill:create-dev-pr",
       "description": "Create a PR to the dev branch with validation"
@@ -47,24 +42,19 @@
       "description": "Generate API, database, and knowledge docs"
     },
     {
-      "name": "review-tickets",
-      "trigger": "/skill:review-tickets",
-      "description": "Review and fix Notion tickets"
-    },
-    {
-      "name": "run-fullstack",
-      "trigger": "/skill:run-fullstack",
-      "description": "Run the full-stack development pipeline"
-    },
-    {
       "name": "crud-module-generator",
       "trigger": "/skill:crud-module-generator",
       "description": "Generate a complete NestJS CRUD module"
     },
     {
-      "name": "e2e-test-generator",
-      "trigger": "/skill:e2e-test-generator",
-      "description": "Generate E2E tests for backend or frontend"
+      "name": "response-dto-factory",
+      "trigger": "/skill:response-dto-factory",
+      "description": "Generate standardized response DTOs"
+    },
+    {
+      "name": "guard-decorator-builder",
+      "trigger": "/skill:guard-decorator-builder",
+      "description": "Build custom NestJS guard decorators"
     },
     {
       "name": "swagger-doc-generator",
@@ -77,29 +67,34 @@
       "description": "Check code quality and suggest improvements"
     },
     {
-      "name": "guard-decorator-builder",
-      "trigger": "/skill:guard-decorator-builder",
-      "description": "Build custom NestJS guard decorators"
+      "name": "api-contract-designer",
+      "trigger": "/skill:api-contract-designer",
+      "description": "Design API contracts (DTOs, endpoints) before implementation"
     },
     {
-      "name": "response-dto-factory",
-      "trigger": "/skill:response-dto-factory",
-      "description": "Generate standardized response DTOs"
+      "name": "migration-verifier",
+      "trigger": "/skill:migration-verifier",
+      "description": "Validate database migrations for safety and performance"
     },
     {
-      "name": "run-playwright",
-      "trigger": "/skill:run-playwright",
-      "description": "Run Playwright E2E tests"
+      "name": "security-checklist",
+      "trigger": "/skill:security-checklist",
+      "description": "Run OWASP-style security review checklist"
     },
     {
-      "name": "frontend-e2e-testing",
-      "trigger": "/skill:frontend-e2e-testing",
-      "description": "Generate and run frontend E2E tests"
+      "name": "performance-audit",
+      "trigger": "/skill:performance-audit",
+      "description": "Audit backend queries, frontend rendering, and bundle size"
     },
     {
-      "name": "mobile-e2e-testing",
-      "trigger": "/skill:mobile-e2e-testing",
-      "description": "Generate and run mobile E2E tests"
+      "name": "component-scaffolder",
+      "trigger": "/skill:component-scaffolder",
+      "description": "Generate React components following project patterns"
+    },
+    {
+      "name": "error-pattern-library",
+      "trigger": "/skill:error-pattern-library",
+      "description": "Reference catalog of common errors and their fixes"
     }
   ]
 }

@@ -1,115 +1,86 @@
 # {PROJECT_NAME} — Agent Context
 
-> Project: {PROJECT_NAME} | Stack: {BACKEND} + {FRONTENDS} | Updated: {DATE}
+> Stack: {BACKEND} + {FRONTENDS} | Updated: {DATE}
 
 ---
 
-## Quick Stack Reference
+## Quick Reference
 
 | Layer | Tech | Port |
 |-------|------|------|
 | Backend | {BACKEND} | {BACKEND_PORT} |
-| Frontend | React | 5173 |
-| Dashboard | React | 5174 |
-| Mobile | React Native | Metro 8081 |
+| Frontend | React 19 | 5173 |
 | Database | PostgreSQL | 5432 |
+| Cache | Redis | 6379 |
 
 ---
 
-## Project Structure
+## Structure
 
 ```
 {PROJECT_NAME}/
-├── backend/              # {BACKEND} API
-├── frontend/             # React web app
-├── dashboard/            # Admin/ops dashboard
-├── mobile/               # React Native app
-├── .kimi/                # Kimi Code CLI config
-├── .project/             # Project docs & status
-│   ├── docs/
-│   ├── memory/
-│   ├── plans/
-│   ├── prd/
-│   ├── resources/
-│   └── status/
-├── docker-compose.yml
-├── AGENTS.md             # This file
-└── README.md
+├── backend/          # {BACKEND} API
+├── frontend/         # React 19 web app
+├── .kimi/            # Kimi CLI config (generic)
+├── .project/         # Project docs & state
+└── docker-compose.yml
 ```
 
 ---
 
-## Essential Commands
+## Commands
 
 ```bash
-# Start all services
-docker-compose up -d
+# Start infra
+docker-compose up -d postgres redis
 
-# Start backend only
+# Start backend
 cd backend && npm run start:dev
 
-# Start frontend only
+# Start frontend
 cd frontend && npm run dev
-
-# Run tests
-cd backend && npm test
-cd frontend && npm test
 ```
 
 ---
 
-## Architecture Patterns
+## Patterns
 
-### Backend — {BACKEND}
-
-- Modular architecture
-- DTO validation
-- JWT auth guards
-- Swagger documentation
-- Repository pattern
-
-### Frontend — React
-
-- Functional components + hooks
-- TanStack Query for data fetching
-- shadcn/ui + TailwindCSS
-- React Router v6
-
-### Mobile — React Native
-
-- NativeWind for styling
-- React Navigation
-- Shared API layer with web
+- **Backend**: Modular architecture, DTO validation, JWT auth guards, Swagger docs, Repository pattern
+- **Frontend**: React Router 7 loaders (SSR), TanStack Query, Zustand, Tailwind + shadcn/ui
+- **Auth**: AES-256-GCM encrypted JWT in httpOnly cookies + CSRF Double-Submit Cookie
 
 ---
 
 ## Conventions
 
-- **Commits**: Conventional commits (`feat:`, `fix:`, `docs:`, `refactor:`)
-- **Branches**: `main` (production), `dev` (active), `feature/*`, `fix/*`
-- **Code style**: ESLint + Prettier (enforced)
-- **API responses**: `{ success, data, message }` or `{ success, error }`
+- Commits: `feat:`, `fix:`, `docs:`, `refactor:`
+- Branches: `main`, `dev`, `feature/*`, `fix/*`
+- API responses: `{ success, data, message }` or `{ success, error }`
 
 ---
 
-## Key Documentation
+## Key Docs
 
 | File | Purpose |
 |------|---------|
-| `.project/docs/PROJECT_KNOWLEDGE.md` | Architecture, features, tech stack |
+| `.project/docs/PROJECT_KNOWLEDGE.md` | Architecture, features, stack |
 | `.project/docs/PROJECT_API.md` | API endpoints |
 | `.project/docs/PROJECT_DATABASE.md` | DB schema & ERD |
-| `.project/docs/PROJECT_API_INTEGRATION.md` | Screen-to-API mapping |
+| `.project/PROJECT_FACTS.md` | Verified project structure |
 
 ---
 
-## Kimi Skills
+## Skills
 
 | Command | Purpose |
 |---------|---------|
-| `/skill:feature` | Implement a new feature |
+| `/skill:feature` | Feature development |
 | `/skill:commit` | Git commit workflow |
-| `/skill:gap` | Find implementation gaps |
-| `/skill:fix` | Fix gaps or bugs |
-| `/skill:review` | Code review checklist |
-| `/skill:docs` | Generate/update docs |
+| `/skill:find-gaps` | Find implementation gaps |
+| `/skill:fix-gaps` | Fix gaps |
+| `/skill:review` | Code review |
+| `/skill:generate-docs` | Generate docs |
+| `/skill:crud-module-generator` | Generate NestJS CRUD |
+| `/skill:api-contract-designer` | Design API contracts |
+| `/skill:security-checklist` | Security audit |
+| `/skill:performance-audit` | Performance review |

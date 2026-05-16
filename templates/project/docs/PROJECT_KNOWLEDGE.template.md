@@ -8,15 +8,11 @@
 
 [Project description from PRD]
 
----
+## Goals
 
-### Goals
-
-1. [Goal 1 from PRD]
-2. [Goal 2 from PRD]
-3. [Goal 3 from PRD]
-
----
+1. [Goal 1]
+2. [Goal 2]
+3. [Goal 3]
 
 ## Tech Stack
 
@@ -25,80 +21,49 @@
 | Backend | {BACKEND} |
 | Frontend | {FRONTENDS} |
 | Database | PostgreSQL |
-| ORM | TypeORM (NestJS) / Django ORM |
+| ORM | TypeORM |
 | Auth | JWT + Refresh Tokens |
-| API Docs | Swagger (NestJS) / drf-spectacular (Django) |
-
----
+| API Docs | Swagger |
 
 ## Architecture
 
-### Backend — {BACKEND}
+### Backend
 
 ```
-backend/
-├── src/
-│   ├── modules/           # Feature modules
-│   ├── common/            # Shared utilities, guards, interceptors
-│   ├── config/            # Configuration files
-│   └── main.ts            # Application entry
-├── test/                  # E2E tests
-└── package.json
+backend/src/
+├── modules/          # Feature modules
+├── core/             # Base classes, decorators, guards, filters
+├── shared/           # Constants, enums, DTOs, interfaces
+├── config/           # Configuration
+└── main.ts
 ```
 
-### Frontend — React Web
+### Frontend
 
 ```
-frontend/
-├── src/
-│   ├── components/        # Reusable UI components
-│   ├── pages/             # Route-level pages
-│   ├── hooks/             # Custom React hooks
-│   ├── services/          # API integration
-│   └── App.tsx
-└── package.json
+frontend/app/
+├── components/       # Reusable UI
+├── pages/            # Route-level pages
+├── redux/            # State management
+├── services/         # API integration
+├── types/            # TypeScript types
+└── utils/            # Helpers
 ```
-
-### Mobile — React Native
-
-```
-mobile/
-├── src/
-│   ├── components/
-│   ├── screens/
-│   ├── navigation/
-│   └── App.tsx
-└── package.json
-```
-
----
 
 ## User Types
 
 | Role | Permissions |
 |------|-------------|
-| [Role from PRD] | [Permissions from PRD] |
-
----
+| [Role] | [Permissions] |
 
 ## Terminology
 
 | Term | Definition |
 |------|------------|
-| [Term from PRD] | [Definition from PRD] |
-
----
-
-## External Services
-
-| Service | Purpose | Documentation |
-|---------|---------|---------------|
-| [Service from PRD] | [Purpose from PRD] | [Link from PRD] |
-
----
+| [Term] | [Definition] |
 
 ## Key Features
 
-- [Feature 1 from PRD]
-- [Feature 2 from PRD]
-- [Feature 3 from PRD]
+- [Feature 1]
+- [Feature 2]
+- [Feature 3]

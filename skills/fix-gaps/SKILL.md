@@ -163,7 +163,7 @@ Report context:
 
 IMPORTANT:
 - Fix ALL {N} gaps listed above
-- Follow NestJS four-layer architecture from .kimi/nestjs/guides/
+- Follow NestJS four-layer architecture from .kimi/backend/guides/
 - Do NOT run TypeScript checks — gap-fixer will verify
 - Return: complete list of ALL files you modified
 ```
@@ -187,7 +187,7 @@ Report context:
 
 IMPORTANT:
 - Fix ALL {N} gaps listed above
-- Follow React patterns from .kimi/react/guides/
+- Follow React patterns from .kimi/frontend/guides/
 - Do NOT run TypeScript checks — gap-fixer will verify
 - Return: complete list of ALL files you modified
 ```

@@ -1,48 +1,35 @@
 # Example: PRD-to-Doc Extraction Format
 
-## Example API Endpoints
+## API Endpoints
 
-### Auth Module
-
-| Method | Endpoint | Description | Auth |
-|--------|----------|-------------|------|
-| POST | `/api/v1/auth/register` | Register | No |
-| POST | `/api/v1/auth/login` | Login | No |
-
-### Resource Module
+### Auth
 
 | Method | Endpoint | Description | Auth |
 |--------|----------|-------------|------|
-| GET | `/api/v1/resources` | List | Yes |
-| POST | `/api/v1/resources` | Create | Yes |
-| GET | `/api/v1/resources/:id` | Get | Yes |
-| PATCH | `/api/v1/resources/:id` | Update | Yes |
-| DELETE | `/api/v1/resources/:id` | Delete | Yes |
+| POST | `/api/auth/register` | Register | No |
+| POST | `/api/auth/login` | Login | No |
 
----
+### Resources
 
-## Example HTML-PRD Cross-Check
+| Method | Endpoint | Description | Auth |
+|--------|----------|-------------|------|
+| GET | `/api/resources` | List | Yes |
+| POST | `/api/resources` | Create | Yes |
+| GET | `/api/resources/:id` | Get | Yes |
+| PATCH | `/api/resources/:id` | Update | Yes |
+| DELETE | `/api/resources/:id` | Delete | Yes |
 
-| HTML File | PRD Screen | Status | Notes |
-|-----------|------------|--------|-------|
-| login.html | Login Screen | Matched | - |
-| signup.html | Sign Up Screen | Matched | - |
-| dashboard.html | Admin Dashboard | Matched | - |
-| extra-page.html | - | Extra Screen | Not in PRD |
-| - | Settings Screen | HTML Pending | Missing HTML |
+## HTML-PRD Cross-Check
 
----
+| HTML File | PRD Screen | Status |
+|-----------|------------|--------|
+| login.html | Login Screen | Matched |
+| signup.html | Sign Up Screen | Matched |
+| extra-page.html | - | Extra (not in PRD) |
+| - | Settings Screen | Missing HTML |
 
-## Example Frontend Pages to API Mapping
+## Screen-to-API Mapping
 
-### Auth Pages
-
-| HTML File | Route | Frontend | API Endpoints | Status |
-|-----------|-------|----------|---------------|--------|
-| login.html | /login | frontend | POST /api/v1/auth/login | ⬜ |
-
-### Admin Dashboard Pages
-
-| HTML File | Route | Frontend | API Endpoints | Role Access | Status |
-|-----------|-------|----------|---------------|-------------|--------|
-| admin-dashboard.html | /admin/dashboard | dashboard | GET /api/v1/admin/stats | admin | ⬜ |
+| Route | Frontend | API Endpoints | Status |
+|-------|----------|---------------|--------|
+| /login | frontend | POST /api/auth/login | ⬜ |

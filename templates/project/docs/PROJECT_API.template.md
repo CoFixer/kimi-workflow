@@ -9,8 +9,6 @@
 | Environment | URL |
 |-------------|-----|
 | Development | `http://localhost:{BACKEND_PORT}` |
-| Staging | TBD |
-| Production | TBD |
 
 ---
 
@@ -18,12 +16,10 @@
 
 | Method | Endpoint | Description | Auth |
 |--------|----------|-------------|------|
-| POST | `/api/v1/auth/register` | Register new user | No |
-| POST | `/api/v1/auth/login` | Login | No |
-| POST | `/api/v1/auth/refresh` | Refresh access token | No |
-| POST | `/api/v1/auth/logout` | Logout | Yes |
-| POST | `/api/v1/auth/forgot-password` | Request password reset | No |
-| POST | `/api/v1/auth/reset-password` | Reset password | No |
+| POST | `/api/auth/register` | Register | No |
+| POST | `/api/auth/login` | Login | No |
+| POST | `/api/auth/refresh` | Refresh token | No |
+| POST | `/api/auth/logout` | Logout | Yes |
 
 ---
 
@@ -31,10 +27,8 @@
 
 | Method | Endpoint | Description | Auth |
 |--------|----------|-------------|------|
-| GET | `/api/v1/users/me` | Get current user | Yes |
-| PATCH | `/api/v1/users/me` | Update current user | Yes |
-| GET | `/api/v1/users` | List users (admin) | Yes (Admin) |
-| GET | `/api/v1/users/:id` | Get user by ID (admin) | Yes (Admin) |
+| GET | `/api/users/me` | Current user | Yes |
+| PATCH | `/api/users/me` | Update user | Yes |
 
 ---
 
@@ -42,15 +36,15 @@
 
 | Method | Endpoint | Description | Auth |
 |--------|----------|-------------|------|
-| GET | `/api/v1/[module]` | List | Yes |
-| POST | `/api/v1/[module]` | Create | Yes |
-| GET | `/api/v1/[module]/:id` | Get by ID | Yes |
-| PATCH | `/api/v1/[module]/:id` | Update | Yes |
-| DELETE | `/api/v1/[module]/:id` | Delete | Yes |
+| GET | `/api/[module]` | List | Yes |
+| POST | `/api/[module]` | Create | Yes |
+| GET | `/api/[module]/:id` | Get | Yes |
+| PATCH | `/api/[module]/:id` | Update | Yes |
+| DELETE | `/api/[module]/:id` | Delete | Yes |
 
 ---
 
-## Common Response Formats
+## Response Formats
 
 ### Success
 
@@ -80,23 +74,9 @@
 
 All list endpoints support:
 
-| Query Param | Default | Description |
-|-------------|---------|-------------|
+| Param | Default | Description |
+|-------|---------|-------------|
 | `page` | 1 | Page number |
 | `limit` | 10 | Items per page |
 | `sort` | created_at | Sort field |
 | `order` | desc | asc / desc |
-
-Response includes:
-
-```json
-{
-  "data": [],
-  "meta": {
-    "page": 1,
-    "limit": 10,
-    "total": 100,
-    "totalPages": 10
-  }
-}
-```
