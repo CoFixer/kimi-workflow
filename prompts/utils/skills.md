@@ -49,7 +49,7 @@ These shortcuts map keywords to specific commands:
 
 | Keyword | Command | Description |
 |---------|---------|-------------|
-| team: | /team | Launch multi-agent orchestration (team/parallel/pipeline/solo) |
+| team: | /team | Launch multi-agent orchestration (team/parallel/solo/ticket) |
 | swarm: | /team team | (alias) Launch team mode (PM + Dev + QA loop) |
 | commit: | /commit-all | Commit to current branch, PR to dev |
 | ralph: | /ralph | Autonomous verify/fix workflow loops |

@@ -1,11 +1,11 @@
 ---
-description: Launch multi-agent orchestration with composable modes (team/parallel/pipeline/solo/ticket)
+description: Launch multi-agent orchestration with composable modes (team/parallel/solo/ticket)
 argument-hint: "<mode> [--task <desc>] [--prd <path>] [--project <name>] [--status <filter>] [--sprint <name>] [--split-dev] [--autopilot] [--agents <list>] [--stop] [--status]"
 ---
 
 # /team
 
-Launch agents with the right coordination pattern. Each mode composes agents from the registry into a team, parallel workers, pipeline, solo specialist, or ticket-driven fixer.
+Launch agents with the right coordination pattern. Each mode composes agents from the registry into a team, parallel workers, solo specialist, or ticket-driven fixer.
 
 ## Quick Start
 
@@ -21,13 +21,10 @@ Launch agents with the right coordination pattern. Each mode composes agents fro
 # Parallel mode: independent agents on separate problems
 /team parallel --task "fix auth bug + fix payment form + update user docs"
 
-# Pipeline mode: sequential phases with dependencies
-/team pipeline --prd .project/prd/my-app-prd.md
-
 # Solo mode: single specialist for focused task
 /team solo --task "review the user controller"
 
-# Status / Stop (for team, pipeline, and ticket modes)
+# Status / Stop (for team and ticket modes)
 /team --status
 /team --stop
 ```
@@ -39,21 +36,21 @@ Launch agents with the right coordination pattern. Each mode composes agents fro
 ### Step 1: Parse Arguments
 
 ```
-mode = $1 (team | parallel | pipeline | solo | ticket)
+mode = $1 (team | parallel | solo | ticket)
 task = --task value (task description, used by parallel/solo)
-prd = --prd value (PRD file path, used by team/pipeline)
+prd = --prd value (PRD file path, used by team)
 project = --project value (Notion project name, used by ticket mode, e.g., "Design Flow")
 status_filter = --status value (ticket mode: Notion status filter, e.g., "New", "Backlog")
 sprint = --sprint value (ticket mode: sprint filter, e.g., "Sprint 3")
 split_dev = --split-dev flag (team mode: spawn separate backend + frontend devs)
 autopilot = --autopilot flag (team mode: persistent execution with auto-resume)
 agents = --agents value (comma-separated agent name overrides)
-stop = --stop flag (stop running team/pipeline/ticket)
+stop = --stop flag (stop running team/ticket)
 status = --status flag (show current status)
 ```
 
 **Recommend --autopilot for long tasks:**
-- If mode is `team` or `pipeline` AND `--autopilot` is NOT set:
+- If mode is `team` AND `--autopilot` is NOT set:
   - Count estimated backlog items (from PRD complexity)
   - If items > 3, warn: "This looks like a long task. Consider using `--autopilot` for automatic recovery from rate limits and session drops. Continue without autopilot? (y/n)"
   - If user chooses autopilot, add the flag and proceed below
@@ -72,11 +69,10 @@ status = --status flag (show current status)
 
 **Auto-detect mode if not provided:**
 - Has `--project` (with or without other flags) → `ticket`
-- Has `--prd` + complex multi-phase project → `pipeline`
-- Has `--prd` + straightforward feature → `team`
+- Has `--prd` → `team`
 - Has `--task` with `+` or `,` separating independent items → `parallel`
 - Has `--task` with single focused request → `solo`
-- Ambiguous → Ask using AskUserQuestion with options: team, parallel, pipeline, solo, ticket
+- Ambiguous → Ask using AskUserQuestion with options: team, parallel, solo, ticket
 
 ### Step 2: Load Agent Registry
 
@@ -108,7 +104,6 @@ Follow the mode file's instructions, using:
 - **Merged agent registry** for agent selection
 - **Agent `.md` files** read from registry paths as agent personas
 - **Native tools**: Agent (subagent dispatch), SetTodoList (task tracking), Shell (scripts)
-- **Dispatcher**: `node .kimi/scripts/dispatcher.js` for executable orchestration
 - **Templates** from `.kimi/base/templates/` for status files
 
 Key execution patterns by mode:
@@ -125,13 +120,6 @@ Key execution patterns by mode:
 2. Select best agent for each domain from registry
 3. Dispatch ALL agents in a **single response** using multiple parallel Agent tool calls with `run_in_background=true`
 4. Use TaskList to check progress, review results when all complete, verify no conflicts
-
-#### Pipeline Mode
-1. Use the dispatcher: `node .kimi/scripts/dispatcher.js init <project>`
-2. The dispatcher creates `pipeline.json` (structured) and `PIPELINE_STATUS.md` (human-readable)
-3. Execute phases sequentially via `node .kimi/scripts/dispatcher.js run <project> --phase <name>`
-4. Each phase dispatches to an agent via the Agent tool
-5. Validate PHASE_RESULT, then `node .kimi/scripts/dispatcher.js complete ...`
 
 #### Solo Mode
 1. Parse task for domain signals
@@ -152,7 +140,6 @@ Key execution patterns by mode:
 
 - **Team mode**: Track in `.project/status/{slug}/TEAM_STATUS.md` + `CYCLE_LOG.md`
 - **Ticket mode**: Track in `.project/status/ticket-{slug}/TICKET_STATUS.md` + `CYCLE_LOG.md`
-- **Pipeline mode**: Track in `.project/status/{slug}/pipeline.json` (primary) + `PIPELINE_STATUS.md` (human-readable)
 - **Parallel/Solo**: No persistent status (one-shot execution)
 - On completion or stop: shut down agents, update status, clean up team
 

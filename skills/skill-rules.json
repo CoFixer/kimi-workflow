@@ -2,6 +2,11 @@
   "version": "2.0",
   "rules": [
     {
+      "name": "orchestrate",
+      "trigger": "/skill:orchestrate",
+      "description": "Auto-route to the right orchestration command (/team or /fullstack) based on task context"
+    },
+    {
       "name": "new-project",
       "trigger": "/skill:new-project",
       "description": "Create new project with .kimi config, boilerplate, and .project docs"
@@ -80,6 +85,11 @@
       "name": "security-checklist",
       "trigger": "/skill:security-checklist",
       "description": "Run OWASP-style security review checklist"
+    },
+    {
+      "name": "run-fullstack",
+      "trigger": "/skill:run-fullstack",
+      "description": "Full-stack development pipeline orchestrator from project setup to deployment"
     },
     {
       "name": "performance-audit",

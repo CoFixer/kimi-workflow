@@ -113,7 +113,7 @@ prompts/
 | Command | Description |
 |---------|-------------|
 | `/ralph` | Run autonomous workflow loops |
-| `/team` | Launch multi-agent orchestration |
+| `/team` | Launch multi-agent orchestration (team/parallel/solo/ticket) |
 | `/agent-report` | Generate agent monitoring reports |
 | `/review-command` | Review a command file |
 | `/build-registry` | Build registry of skills and commands |

@@ -116,6 +116,7 @@ Skills are loaded by Kimi Code CLI and invoked with `/skill:<name>`:
 
 | Skill | Command | Purpose |
 |-------|---------|---------|
+| `orchestrate` | `/skill:orchestrate` | Auto-route to /team or /fullstack |
 | `commit` | `/skill:commit` | Git commit & PR workflow |
 | `feature` | `/skill:feature` | Feature development pipeline |
 | `gap` | `/skill:gap` | Find implementation gaps |
