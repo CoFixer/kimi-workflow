@@ -34,12 +34,12 @@ app/
 - React Router 7
 - Tailwind CSS 4
 - TanStack Query
-- Zustand (state)
+- Redux Toolkit (dashboard/auth state)
 - react-hook-form + zod (forms)
 
 ## Notes
 
-- `frontend/` and `dashboard/` are separate apps
-- Both use the same stack
+- Dashboard pages use Redux Toolkit
+- Public pages use TanStack Query
+- Types live in `app/types/*.d.ts`
 - Routing lives under `app/routes/`
-- Server rendering with React Router 7

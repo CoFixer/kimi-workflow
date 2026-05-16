@@ -21,11 +21,11 @@
       },
       "frontend-developer": {
         "name": "Frontend Developer",
-        "description": "React UI development with Router 7, Tailwind, TanStack Query, and Zustand",
+        "description": "React UI development with Router 7, Tailwind, TanStack Query, and Redux Toolkit",
         "role": "frontend_developer",
         "stack": "react",
         "file": "development/frontend-developer.md",
-        "tags": ["frontend", "react", "ui", "tailwind", "tanstack-query", "zustand"]
+        "tags": ["frontend", "react", "ui", "tailwind", "tanstack-query", "redux-toolkit"]
       },
       "mobile-developer": {
         "name": "Mobile Developer",
